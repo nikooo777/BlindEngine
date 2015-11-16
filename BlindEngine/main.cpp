@@ -1,8 +1,9 @@
 // This is a file
 #include <iostream>
 
+using namespace std;
 int main(int argc, char *argv[])
 {
-	std::cout << "ciao" << std::endl;
+	cout << "ciao" << endl;
 	return 9;
 }
