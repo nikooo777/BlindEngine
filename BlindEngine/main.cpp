@@ -1,6 +1,9 @@
 // This is a file
+#include <iostream>
 
+using namespace std;
 int main(int argc, char *argv[])
 {
-	return 0;
+	cout << "test" << endl;
+	return 1337;
 }
