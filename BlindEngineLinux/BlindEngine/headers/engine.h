@@ -6,7 +6,7 @@ class engine
 {
 public:
 	static engine* instance();
-
+    void init();
 private:
 
 	static engine* __instance;

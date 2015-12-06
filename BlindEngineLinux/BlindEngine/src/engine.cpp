@@ -18,3 +18,8 @@ engine::engine()
 engine::~engine()
 {
 }
+
+engine::init()
+{
+
+}
