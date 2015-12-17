@@ -21,9 +21,15 @@
     <ClCompile Include="BEengine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BELight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BEengine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BELight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
