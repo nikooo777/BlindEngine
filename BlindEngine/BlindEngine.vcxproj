@@ -11,11 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="engine.cpp" />
+    <ClCompile Include="BEengine.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="engine.h" />
+    <ClInclude Include="BEengine.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{765D2080-3C56-4612-A955-5676323949C5}</ProjectGuid>
