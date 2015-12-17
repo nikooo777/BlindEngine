@@ -52,3 +52,15 @@ int BEengine::start()
 	//the engine wasn't initialized
 	return EXIT_FAILURE;
 }
+
+// Return the index of the light
+int add_light(BELight lightToAdd){
+
+	return -1; //TODO
+}
+
+// Return true on successful remove
+bool remove_light(int indexLight){
+
+	return false; //TODO
+}
