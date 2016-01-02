@@ -1,8 +1,10 @@
 #pragma once
-class BELight
+
+#include "be_node.h"
+
+class BELight : public BEnode
 {
 public:
 	BELight();
 	~BELight();
 };
-

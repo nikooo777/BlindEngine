@@ -54,7 +54,7 @@ int BEengine::start()
 }
 
 // Return the index of the light
-int add_light(BELight lightToAdd){
+int add_light(BELight *light){
 
 	return -1; //TODO
 }

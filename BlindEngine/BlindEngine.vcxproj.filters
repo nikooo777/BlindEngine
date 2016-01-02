@@ -24,12 +24,51 @@
     <ClCompile Include="be_light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="be_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="be_scene_loader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="be_camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="be_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="be_texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="be_mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="be_engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="be_light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="be_node.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="be_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="be_scene_loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="be_camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="be_list.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="be_texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="be_mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
