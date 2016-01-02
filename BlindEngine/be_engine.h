@@ -19,9 +19,9 @@ public:
 	bool remove_light(int indexLight);
 
 private:
-	static BEengine* __instance;
-	int window_id;
-	bool initialized = false;
+	static BEengine* instance_;
+	int window_id_;
+	bool initialized_ = false;
 	BEengine();
 	~BEengine();
 };

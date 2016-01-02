@@ -18,18 +18,12 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BEengine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BELight.cpp">
+    <ClCompile Include="be_engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BEengine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BELight.h">
+    <ClInclude Include="be_engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

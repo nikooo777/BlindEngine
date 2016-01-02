@@ -1,15 +1,15 @@
-#include "BEengine.h"
+#include "be_engine.h"
 
-BEengine* BEengine::__instance = nullptr;
+BEengine* BEengine::instance_ = nullptr;
 
 
 BEengine* BEengine::getInstance()
 {
-	if (__instance == nullptr)
+	if (instance_ == nullptr)
 	{
-		__instance = new BEengine();
+		instance_ = new BEengine();
 	}
-	return __instance;
+	return instance_;
 }
 
 BEengine::BEengine()
@@ -34,13 +34,13 @@ void BEengine::init(char* window_name, int x_position, int y_position, int width
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 
 	// Create the window with a specific title:   
-	window_id = glutCreateWindow(window_name);
-	BEengine::initialized = true;
+	window_id_ = glutCreateWindow(window_name);
+	BEengine::initialized_ = true;
 }
 
 int BEengine::start()
 {
-	if (BEengine::initialized)
+	if (BEengine::initialized_)
 	{
 		// Enter the main FreeGLUT processing loop:     
 		glutMainLoop();
