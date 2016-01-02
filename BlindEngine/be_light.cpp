@@ -1,4 +1,4 @@
-#include "BELight.h"
+#include "be_light.h"
 
 
 BELight::BELight()

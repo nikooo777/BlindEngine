@@ -3,7 +3,7 @@
 #include <GL/freeglut.h>
 
 // OurClasses
-#include "BELight.h"
+#include "be_Light.h"
 
 /*
 	SINGLETON class

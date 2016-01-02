@@ -11,10 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="be_light.cpp" />
     <ClCompile Include="be_engine.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="be_light.h" />
     <ClInclude Include="be_engine.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
