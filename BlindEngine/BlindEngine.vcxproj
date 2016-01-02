@@ -15,6 +15,7 @@
     <ClCompile Include="be_light.cpp" />
     <ClCompile Include="be_engine.cpp" />
     <ClCompile Include="be_list.cpp" />
+    <ClCompile Include="be_logging.cpp" />
     <ClCompile Include="be_mesh.cpp" />
     <ClCompile Include="be_scene_loader.cpp" />
     <ClCompile Include="be_object.cpp" />
@@ -26,6 +27,7 @@
     <ClInclude Include="be_light.h" />
     <ClInclude Include="be_engine.h" />
     <ClInclude Include="be_list.h" />
+    <ClInclude Include="be_logging.h" />
     <ClInclude Include="be_mesh.h" />
     <ClInclude Include="be_scene_loader.h" />
     <ClInclude Include="be_node.h" />

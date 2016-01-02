@@ -3,7 +3,7 @@
 BEengine* BEengine::instance_ = nullptr;
 
 
-BEengine* BEengine::getInstance()
+BEengine* BEengine::GetInstance()
 {
 	if (instance_ == nullptr)
 	{
@@ -21,7 +21,7 @@ BEengine::~BEengine()
 {
 }
 
-void BEengine::init(char* window_name, int x_position, int y_position, int width, int heigth, void(*keyCallback)(int, int, int), int argc, char *argv[])
+void BEengine::Init(char* window_name, int x_position, int y_position, int width, int heigth, void(*keyCallback)(int, int, int), int argc, char *argv[])
 {
 	// Init context:
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
@@ -38,7 +38,7 @@ void BEengine::init(char* window_name, int x_position, int y_position, int width
 	BEengine::initialized_ = true;
 }
 
-int BEengine::start()
+int BEengine::Start()
 {
 	if (BEengine::initialized_)
 	{
@@ -54,13 +54,13 @@ int BEengine::start()
 }
 
 // Return the index of the light
-int add_light(BELight *light){
+int AddLight(BELight *light){
 
 	return -1; //TODO
 }
 
 // Return true on successful remove
-bool remove_light(int indexLight){
+bool RemoveLight(int indexLight){
 
 	return false; //TODO
 }
