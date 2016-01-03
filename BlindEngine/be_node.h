@@ -5,8 +5,8 @@ class BEnode : public BEobject
 {
 public:
 	BEnode();
-	~BEnode();
-	void Render();
+	virtual ~BEnode();
+	virtual void Render();
 private:
 
 };

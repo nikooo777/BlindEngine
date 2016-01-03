@@ -20,7 +20,7 @@
     <ClCompile Include="be_node.cpp" />
     <ClCompile Include="be_scene_loader.cpp" />
     <ClCompile Include="be_object.cpp" />
-    <ClCompile Include="be_texture.cpp" />
+    <ClCompile Include="be_material.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -33,7 +33,7 @@
     <ClInclude Include="be_scene_loader.h" />
     <ClInclude Include="be_node.h" />
     <ClInclude Include="be_object.h" />
-    <ClInclude Include="be_texture.h" />
+    <ClInclude Include="be_material.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{765D2080-3C56-4612-A955-5676323949C5}</ProjectGuid>

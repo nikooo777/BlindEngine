@@ -1,14 +1,19 @@
 #pragma once
 #include <iostream>
+#include <sstream>
 
 class BEobject
 {
 public:
 	virtual void Render()=0;
+	virtual ~BEobject();
+	BEobject();
+	BEobject(std::string);
+
 
 private:
-	static long GenerateId();
+	virtual void GenerateId();
 	 long id_;
-	 std::string name;
+	 std::string name_;
 };
 

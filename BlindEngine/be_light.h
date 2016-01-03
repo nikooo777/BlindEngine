@@ -9,8 +9,8 @@ public:
 	BELight();
 	~BELight();
 private:
-
+	//light index
 	int light_number_;
 	// The light properties
-	glm::vec4 ambient_, diffuse_, specular_, shininess_, light_position_, direction_;
+	glm::vec4 ambient_, diffuse_, specular_, light_position_, direction_;
 };
