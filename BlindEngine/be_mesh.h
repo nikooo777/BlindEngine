@@ -1,7 +1,7 @@
 #pragma once
-#include "be_object.h"
+#include "be_node.h"
 
-class BEmesh : public BEobject
+class BEmesh : public BEnode
 {
 public:
 	BEmesh();
