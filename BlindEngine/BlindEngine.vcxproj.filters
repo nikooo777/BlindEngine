@@ -80,5 +80,8 @@
     <ClInclude Include="be_material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="be_includes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

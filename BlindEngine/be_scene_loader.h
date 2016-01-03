@@ -1,12 +1,7 @@
 #pragma once
 #include "be_node.h"
 #include "be_logging.h"
-//#include "FreeImage.h"
-// Assimp:
-#include <Importer.hpp>
-#include <scene.h>
-#include <postprocess.h>
-#include <version.h>
+#include "be_includes.h"
 
 class BEsceneLoader
 {

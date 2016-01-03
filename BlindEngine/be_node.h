@@ -1,7 +1,6 @@
 #pragma once
 #include "be_object.h"
-#include <glm\glm.hpp>
-#include <vector>
+#include "be_includes.h"
 
 class BEnode : public BEobject
 {

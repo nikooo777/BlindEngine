@@ -14,8 +14,3 @@ BEnode::~BEnode()
 {
 
 }
-
-void BEnode::Render()
-{
-
-}

@@ -1,8 +1,7 @@
 #pragma once
 #include "be_node.h"
-#include <vector>
 #include "be_material.h"
-#include <glm/glm.hpp>
+#include "be_includes.h"
 
 class BEmesh : public BEnode
 {

@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="be_camera.h" />
+    <ClInclude Include="be_includes.h" />
     <ClInclude Include="be_light.h" />
     <ClInclude Include="be_engine.h" />
     <ClInclude Include="be_list.h" />
