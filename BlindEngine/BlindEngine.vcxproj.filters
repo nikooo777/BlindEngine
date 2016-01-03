@@ -45,6 +45,9 @@
     <ClCompile Include="be_logging.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="be_node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="be_engine.h">

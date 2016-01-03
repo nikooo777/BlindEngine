@@ -4,8 +4,9 @@
 class BEnode : public BEobject
 {
 public:
-	
-
+	BEnode();
+	~BEnode();
+	void Render();
 private:
 
 };

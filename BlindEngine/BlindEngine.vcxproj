@@ -17,6 +17,7 @@
     <ClCompile Include="be_list.cpp" />
     <ClCompile Include="be_logging.cpp" />
     <ClCompile Include="be_mesh.cpp" />
+    <ClCompile Include="be_node.cpp" />
     <ClCompile Include="be_scene_loader.cpp" />
     <ClCompile Include="be_object.cpp" />
     <ClCompile Include="be_texture.cpp" />
@@ -76,12 +77,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;FREEGLUT_STATIC;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include;..\dependencies\assimp\include\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\dependencies\assimp\lib\$(Platform)\$(Configuration);..\dependencies\freeimage\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freeimage.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
