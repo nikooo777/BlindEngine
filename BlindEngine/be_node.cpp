@@ -1,12 +1,11 @@
 #include "be_node.h"
 
-
-BEnode::BEnode()
+BEnode::BEnode() : BEobject()
 {
 	
 }
 
-BEnode::BEnode(std::string name) : BEobject::BEobject(name)
+BEnode::BEnode(const std::string name) : BEobject(name)
 {
 
 }

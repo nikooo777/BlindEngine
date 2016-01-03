@@ -36,7 +36,7 @@ BEnode*  BEsceneLoader::LoadScene(char * scene_path)
 
 BEnode* BEsceneLoader::BuildScene(aiNode * root)
 {
-	BEnode *node = new BEnode();
+	BEnode *node= nullptr;
 
 
 	return node;

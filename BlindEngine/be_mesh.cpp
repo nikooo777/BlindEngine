@@ -5,9 +5,7 @@ BEmesh::BEmesh()
 {
 }
 
-BEmesh::BEmesh(glm::vec3* verts, glm::vec3* norms, glm::vec2* tex_coords , 
-	BEmaterial* mat, std::string name)
-	: BEnode::BEnode(name)
+BEmesh::BEmesh(glm::vec3* verts, glm::vec3* norms, glm::vec2* tex_coords, BEmaterial* mat, std::string name): BEnode(name)
 {
 	this->vertices_ = verts;
 	this->normals_ = norms;
@@ -15,8 +13,7 @@ BEmesh::BEmesh(glm::vec3* verts, glm::vec3* norms, glm::vec2* tex_coords ,
 	this->material_ = mat;
 }
 
-BEmesh::BEmesh(glm::vec3* verts, glm::vec3* norms, glm::vec2* tex_coords,
-	BEmaterial* mat)
+BEmesh::BEmesh(glm::vec3* verts, glm::vec3* norms, glm::vec2* tex_coords, BEmaterial* mat) : BEnode()
 {
 	this->vertices_ = verts;
 	this->normals_ = norms;

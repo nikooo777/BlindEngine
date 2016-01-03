@@ -8,7 +8,7 @@ public:
 	virtual void Render()=0;
 	virtual ~BEobject();
 	BEobject();
-	BEobject(std::string);
+	BEobject(const std::string);
 
 
 private:

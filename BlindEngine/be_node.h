@@ -7,9 +7,9 @@ class BEnode : public BEobject
 {
 public:
 	BEnode();
-	BEnode(std::string);
+	BEnode(const std::string);
 	virtual ~BEnode();
-	virtual void Render();
+	virtual void Render()=0;
 private:
 	glm::mat4 position_;
 
