@@ -3,9 +3,13 @@
 
 BEnode::BEnode()
 {
-
+	
 }
 
+BEnode::BEnode(std::string name) : BEobject::BEobject(name)
+{
+
+}
 
 BEnode::~BEnode()
 {
