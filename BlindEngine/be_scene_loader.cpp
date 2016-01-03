@@ -11,7 +11,7 @@ BEsceneLoader::~BEsceneLoader()
 }
 
 
-BEnode *  BEsceneLoader::LoadScene(char * scene_path)
+BEnode*  BEsceneLoader::LoadScene(char * scene_path)
 {
 	be_logging::log("loading scene located in:");
 	be_logging::log(scene_path);
@@ -34,7 +34,7 @@ BEnode *  BEsceneLoader::LoadScene(char * scene_path)
 	return BuildScene(scene_->mRootNode);
 }
 
-BEnode * BEsceneLoader::BuildScene(aiNode * root)
+BEnode* BEsceneLoader::BuildScene(aiNode * root)
 {
 	BEnode *node = new BEnode();
 
