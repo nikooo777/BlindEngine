@@ -8,3 +8,4 @@ dependencies/assimp/lib/Win32/Release/assimp.lib
 dependencies/assimp/lib/Win32/Release/zlibstatic.lib
 dependencies/freeImage/lib/Win32/Debug/freeimage.lib
 dependencies/freeImage/lib/Win32/Release/freeimage.lib
+BlindEngine/BlindEngine.v12.suo
