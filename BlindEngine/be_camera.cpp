@@ -9,3 +9,8 @@ BEcamera::BEcamera()
 BEcamera::~BEcamera()
 {
 }
+
+void BEcamera::Render()
+{
+
+}

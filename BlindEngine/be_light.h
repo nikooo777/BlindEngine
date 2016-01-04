@@ -42,5 +42,5 @@ public:
 	~BELight();
 
 	//inherited render method
-	virtual void Render();
+	virtual void Render() override;
 };
