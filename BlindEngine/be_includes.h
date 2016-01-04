@@ -1,5 +1,7 @@
 #pragma once
 
+#define GLM_FORCE_RADIANS
+
 //GLM
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>

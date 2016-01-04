@@ -19,6 +19,7 @@ BEengine::BEengine()
 
 BEengine::~BEengine()
 {
+	delete instance_;
 }
 
 void BEengine::Init(char* window_name, int x_position, int y_position, int width, int heigth, void(*keyCallback)(int, int, int), int argc, char *argv[])
