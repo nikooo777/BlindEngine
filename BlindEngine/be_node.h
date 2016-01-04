@@ -11,7 +11,7 @@ public:
 	virtual ~BEnode();
 	//functions
 	void AddChild(BEnode *);
-	virtual void Render();
+	virtual void Render() override;
 	void ChangeParent(BEnode *);
 	void RemoveChild(BEnode * node, bool = false);
 	BEnode* find(std::string name);

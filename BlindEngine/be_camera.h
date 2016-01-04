@@ -5,5 +5,6 @@ class BEcamera : public BEnode
 public:
 	BEcamera();
 	~BEcamera();
+	virtual void Render() override;
 };
 
