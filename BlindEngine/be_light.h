@@ -5,7 +5,7 @@
 #include "be_node.h"
 
 #include "be_includes.h"
-class BELight : public BEnode
+class BElight : public BEnode
 {
 private:
 	//type of lights
@@ -20,7 +20,7 @@ private:
 	static int total_lights;
 
 	//global constructor
-	BELight(const LightType type, const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff);
+	BElight(const LightType type, const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff);
 
 	//the type of the instantiated light
 	LightType type_;
@@ -34,12 +34,12 @@ private:
 	float cutoff_;
 public:
 	//factory methods used to create lights
-	static BELight* CreateOmnidirectionalLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position);
-	static BELight* CreateDirectionalLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 direction);
-	static BELight* CreateSpotLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff);
+	static BElight* CreateOmnidirectionalLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position);
+	static BElight* CreateDirectionalLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 direction);
+	static BElight* CreateSpotLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff);
 
 	//destructor
-	~BELight();
+	~BElight();
 
 	//inherited render method
 	virtual void Render() override;

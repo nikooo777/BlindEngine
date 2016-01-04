@@ -1,10 +1,10 @@
 #include "be_light.h"
 
 //initialization of the counter
-int BELight::total_lights = 0;
+int BElight::total_lights = 0;
 
 //global constructor
-BELight::BELight(const LightType type, const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff) : BEnode(name)
+BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff) : BEnode(name)
 {
 	if (total_lights <= 7)
 		light_number_ = (total_lights++) + GL_LIGHT0;
@@ -36,22 +36,22 @@ BELight::BELight(const LightType type, const std::string name, glm::vec4 ambient
 	}
 }
 
-BELight* BELight::CreateOmnidirectionalLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position)
+BElight* BElight::CreateOmnidirectionalLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position)
 {
-	return new BELight(OMNIDIRECTIONAL, name, ambient, diffuse, specular, position, glm::vec3(), 0);
+	return new BElight(OMNIDIRECTIONAL, name, ambient, diffuse, specular, position, glm::vec3(), 0);
 }
 
-BELight* BELight::CreateDirectionalLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 direction)
+BElight* BElight::CreateDirectionalLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 direction)
 {
-	return new BELight(DIRECTIONAL, name, ambient, diffuse, specular, glm::vec3(), direction, 180.f);
+	return new BElight(DIRECTIONAL, name, ambient, diffuse, specular, glm::vec3(), direction, 180.f);
 }
 
-BELight* BELight::CreateSpotLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff)
+BElight* BElight::CreateSpotLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff)
 {
-	return new BELight(SPOTLIGHT, name, ambient, diffuse, specular, position, direction, cutoff);
+	return new BElight(SPOTLIGHT, name, ambient, diffuse, specular, position, direction, cutoff);
 }
 
-void BELight::Render()
+void BElight::Render()
 {
 
 	//Common color property
@@ -70,6 +70,6 @@ void BELight::Render()
 	}
 }
 
-BELight::~BELight()
+BElight::~BElight()
 {
 }

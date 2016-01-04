@@ -3,7 +3,7 @@
 #include <GL/freeglut.h>
 
 // OurClasses
-#include "be_Light.h"
+#include "be_light.h"
 
 /*
 	SINGLETON class
@@ -15,7 +15,7 @@ public:
 	void Init(char* window_name, int x_position, int y_position, int width, int heigth, void(*keyCallback)(int, int, int), int argc, char *argv[]);
 	int Start();
 
-	int AddLight(BELight *);
+	int AddLight(BElight *);
 	bool RemoveLigh(int indexLight);
 
 private:
