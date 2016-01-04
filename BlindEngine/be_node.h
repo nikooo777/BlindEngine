@@ -5,13 +5,28 @@
 class BEnode : public BEobject
 {
 public:
-	BEnode();
+	//constructor and destructor
 	BEnode(const std::string);
+	BEnode();
 	virtual ~BEnode();
-	virtual void Render()=0;
+	//functions
+	void AddChild(BEnode *);
+	virtual void Render();
+	void ChangeParent(BEnode *);
+	void RemoveChild(BEnode * node, bool = false);
+	BEnode* find(std::string name);
+	BEnode* find(long id);
+	//members
 private:
-	glm::mat4 position_;
+	//constructor
+	//functions
+	static BEnode* GetRoot();
+	std::vector<BEnode*> GetChildren();
+	void Init();
 
+	//members
+	static BEnode* root_node;
+	glm::mat4 position_;
 	BEnode* parent_;
 	std::vector<BEnode*> children_;
 };

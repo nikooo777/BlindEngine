@@ -48,6 +48,9 @@
     <ClCompile Include="be_material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="be_texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="be_engine.h">
@@ -81,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="be_includes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="be_texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

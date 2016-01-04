@@ -8,7 +8,8 @@ public:
 	virtual ~BEobject();
 	BEobject();
 	BEobject(const std::string);
-
+	std::string get_name();
+	long get_id();
 
 private:
 	virtual void GenerateId();
