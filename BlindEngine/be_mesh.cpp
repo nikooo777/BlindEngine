@@ -42,10 +42,11 @@ void BEmesh::Render()
 	PrintName();
 	std::cout << "Children count: " << BEnode::GetChildren().size() << std::endl;
 
-	glBegin(GL_TRIANGLE_STRIP);
+	glBegin(GL_TRIANGLES);
 	for (long i = 0 ; i < vertices_count_; i++)
 	{
-		std::cout << " vertex " << i << ": x: " << vertices_[i].x << " y: " << vertices_[i].y << " z: " << vertices_[i].z << std::endl;
+		//std::cout << " vertex " << i << ": x: " << vertices_[i].x << " y: " << vertices_[i].y << " z: " << vertices_[i].z << std::endl;
+		glNormal3f(normals_[i].x, normals_[i].y, normals_[i].z);
 		glVertex3fv(glm::value_ptr(vertices_[i]));
 	}
 	glEnd();
