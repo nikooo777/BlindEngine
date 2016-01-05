@@ -17,6 +17,7 @@ public:
 
 	int AddLight(BElight *);
 	bool RemoveLigh(int indexLight);
+	int get_window_id();
 
 private:
 	static BEengine* instance_;

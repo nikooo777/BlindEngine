@@ -13,7 +13,6 @@ float angleX = 0.0f, angleY = 0.0f;
 float distance = -45.0f;
 float globalX = .0f;
 float globalY = .0f;
-int windowId;
 
 // Matrices:
 glm::mat4 perspective;
@@ -128,7 +127,7 @@ void displayCallback()
 		angleY += 0.2f;
 
 		// Force rendering refresh:
-		glutPostWindowRedisplay(windowId);
+		glutPostWindowRedisplay(BEengine::GetInstance()->get_window_id());
 	}
 
 	// Inc. frames:
@@ -189,7 +188,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	}
 
 	// Force rendering refresh:
-	glutPostWindowRedisplay(windowId);
+	glutPostWindowRedisplay(BEengine::GetInstance()->get_window_id());
 }
 
 
@@ -238,7 +237,7 @@ void specialCallback(int key, int mouseX, int mouseY)
 	}
 
 	// Force rendering refresh:
-	glutPostWindowRedisplay(windowId);
+	glutPostWindowRedisplay(BEengine::GetInstance()->get_window_id());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -284,6 +283,11 @@ int BEengine::Start()
 
 	//the engine wasn't initialized
 	return EXIT_FAILURE;
+}
+
+int BEengine::get_window_id()
+{
+	return window_id_;
 }
 
 
