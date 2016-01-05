@@ -151,8 +151,8 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 					std::cout << "Face: (" << tmp_face->mIndices[0] << ", " << tmp_face->mIndices[1] << ", " << tmp_face->mIndices[2] << ")" << std::endl;
 #endif					
 					faces[i] = glm::vec3(tmp_face->mIndices[0], tmp_face->mIndices[1], tmp_face->mIndices[2]);
-					mesh->SetFaces(faces);
 				}
+				mesh->SetFaces(faces);
 			}
 
 			// Vertices position
@@ -166,8 +166,8 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 					std::cout << "Vertex: (" << vertices[i] << ", " << vertices[i + 1] << ", " << vertices[i + 2] << ")" << std::endl;
 #endif // PRINT_DEBUG_MESH_INFO
 					vertex[i] = glm::vec3(tmp_mesh->mVertices[i].x, tmp_mesh->mVertices[i].y, tmp_mesh->mVertices[i].z);
-					mesh->SetVertices(vertex);
 				}
+				mesh->SetVertices(vertex);
 			}
 
 			// Normals position
@@ -181,8 +181,8 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 					std::cout << "Normal: (" << normals[i] << ", " << normals[i + 1] << ", " << normals[i + 2] << ")" << std::endl;
 #endif // PRINT_DEBUG_MESH_INFO
 					normals[i] = glm::vec3(tmp_mesh->mNormals[i].x, tmp_mesh->mNormals[i].y, tmp_mesh->mNormals[i].z);
-					mesh->SetNormals(normals);
 				}
+				mesh->SetNormals(normals);
 			}
 
 			// Texture Coords
@@ -196,8 +196,8 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 					std::cout << "TextCoord: (" << tmp_mesh->mTextureCoords[0][i].x << ", " << tmp_mesh->mTextureCoords[0][i].y << ")" << std::endl;
 #endif // PRINT_DEBUG_MESH_INFO
 					texture_coords[i] = glm::vec2(tmp_mesh->mTextureCoords[0][i].x, tmp_mesh->mTextureCoords[0][i].y);
-					mesh->SetTextureCoords(texture_coords);
 				}
+				mesh->SetTextureCoords(texture_coords);
 			}
 
 			// Material
@@ -219,25 +219,26 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 		else if ((tmp_animation = FindAnimation(this_node->mName)) != nullptr)
 		{
 			std::cout << "Animation not supported !" << std::endl;
-			node = nullptr; // @Todo: Edit it -> Only for not crash
+			node = nullptr; // @Todo: Edit it -> Only to avoid a crash
 		}
 		else if ((tmp_light = FindLight(this_node->mName)) != nullptr)
 		{
 			std::cout << "It's a Light" << std::endl;
 			BElight *light = new BElight();
 
+			//glm::vec3 ambient = glm::vec3(tmp_light->mColorAmbient.r, tmp_light->mColorAmbient.g, tmp_light->mColorAmbient.b);
+			//glm::vec3 diffuse = glm::vec3(tmp_light->mColorDiffuse.r, tmp_light->mColorDiffuse.g, tmp_light->mColorDiffuse.b);
+			//glm::vec3 specular = glm::vec3(tmp_light->mColorSpecular.r, tmp_light->mColorSpecular.g, tmp_light->mColorSpecular.b);
+			//glm::vec3 position = glm::vec3(tmp_light->mPosition.x, tmp_light->mPosition.y, tmp_light->mPosition.z);
+
 			light->SetAttenuationConstant(tmp_light->mAttenuationConstant);
 			light->SetAttenuationLinear(tmp_light->mAttenuationLinear);
 			light->SetAttenuationQuadratic(tmp_light->mAttenuationQuadratic);
 
-			glm::vec3 ambient = glm::vec3(tmp_light->mColorAmbient.r, tmp_light->mColorAmbient.g, tmp_light->mColorAmbient.b);
-			glm::vec3 diffuse = glm::vec3(tmp_light->mColorDiffuse.r, tmp_light->mColorDiffuse.g, tmp_light->mColorDiffuse.b);
-			glm::vec3 specular = glm::vec3(tmp_light->mColorSpecular.r, tmp_light->mColorSpecular.g, tmp_light->mColorSpecular.b);
-			glm::vec3 position = glm::vec3(tmp_light->mPosition.x, tmp_light->mPosition.y, tmp_light->mPosition.z);
-			light->SetAmbient(ambient);
-			light->SetDiffuse(diffuse);
-			light->SetSpecular(specular);
-			light->SetPosition(position);
+			light->SetAmbient(glm::vec3(tmp_light->mColorAmbient.r, tmp_light->mColorAmbient.g, tmp_light->mColorAmbient.b));
+			light->SetDiffuse(glm::vec3(tmp_light->mColorDiffuse.r, tmp_light->mColorDiffuse.g, tmp_light->mColorDiffuse.b));
+			light->SetSpecular(glm::vec3(tmp_light->mColorSpecular.r, tmp_light->mColorSpecular.g, tmp_light->mColorSpecular.b));
+			light->SetPosition(glm::vec3(tmp_light->mPosition.x, tmp_light->mPosition.y, tmp_light->mPosition.z));
 
 			glm::vec3 direction;
 			switch (tmp_light->mType)
@@ -395,8 +396,8 @@ aiMaterial* BEsceneLoader::FindMaterial(unsigned int mMaterialIndex)
 aiMesh* BEsceneLoader::FindMesh(aiString name)
 {
 	char tmp_string[255];
-	strcpy(tmp_string, name.C_Str());
-	strcat(tmp_string, "Mesh");
+	strcpy_s(tmp_string, sizeof tmp_string, name.C_Str());
+	strcat_s(tmp_string, sizeof tmp_string, "Mesh");
 
 	aiString to_compare;
 	to_compare.Set(tmp_string);
@@ -417,7 +418,7 @@ aiMesh* BEsceneLoader::FindMesh(aiString name)
 */
 aiTexture* BEsceneLoader::FindTexture(unsigned int texture_index)
 {
-	if (texture_index<0 || texture_index >(scene_->mNumTextures - 1))
+	if (texture_index < 0 || texture_index >(scene_->mNumTextures - 1))
 		return nullptr;
 
 	return scene_->mTextures[texture_index];

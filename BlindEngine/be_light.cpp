@@ -5,7 +5,10 @@ int BElight::total_lights = 0;
 
 BElight::BElight()
 {
-
+	if (total_lights <= 7)
+		light_number_ = (total_lights++) + GL_LIGHT0;
+	else
+		throw new std::runtime_error("There are too many lights in the scene!");
 }
 
 //global constructor

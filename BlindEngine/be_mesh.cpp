@@ -43,7 +43,7 @@ void BEmesh::Render()
 	std::cout << "Children count: " << BEnode::GetChildren().size() << std::endl;
 
 	glBegin(GL_TRIANGLES);
-	for (long i = 0 ; i < vertices_count_; i++)
+	for (unsigned int i = 0 ; i < vertices_count_; i++)
 	{
 		//std::cout << " vertex " << i << ": x: " << vertices_[i].x << " y: " << vertices_[i].y << " z: " << vertices_[i].z << std::endl;
 		glNormal3f(normals_[i].x, normals_[i].y, normals_[i].z);
