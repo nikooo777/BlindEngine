@@ -263,6 +263,13 @@ void BEengine::Init(char* window_name, int x_position, int y_position, int width
 	glutKeyboardFunc(keyboardCallback);
 	glutSpecialFunc(specialCallback);
 
+	// Global OpenGL settings:
+	glClearColor(1.0f, 0.6f, 0.1f, 1.0f);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+
+
 	BEengine::initialized_ = true;
 }
 
