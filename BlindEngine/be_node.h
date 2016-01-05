@@ -12,7 +12,7 @@ public:
 	//functions
 	void AddChild(BEnode *);
 	virtual void Render() override;
-	void ChangeParent(BEnode *);
+	void SetParent(BEnode *);
 	void RemoveChild(BEnode * node, bool = false);
 	BEnode* find(std::string name);
 	BEnode* find(long id);

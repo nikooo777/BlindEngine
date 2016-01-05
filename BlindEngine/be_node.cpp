@@ -25,7 +25,7 @@ BEnode::~BEnode()
 
 void BEnode::AddChild(BEnode* node)
 {
-	node->ChangeParent(this);
+	node->SetParent(this);
 	children_.push_back(node);
 }
 
@@ -35,12 +35,8 @@ void BEnode::AddChild(BEnode* node)
 * responsibility to call such function on the parent.
 * Forgetting such action will leave a semi-orphaned child hanging around
 */
-void BEnode::ChangeParent(BEnode* parent)
+void BEnode::SetParent(BEnode* parent)
 {
-	//if (parent_ != nullptr)
-	//{
-	//	parent_->RemoveChild(this);
-	//}
 	parent_ = parent;
 }
 
@@ -50,7 +46,7 @@ void BEnode::RemoveChild(BEnode * node, bool should_delete)
 	//for each children of the removed node, set the parent to the root node
 	for (auto&child : node->GetChildren())
 	{
-		child->ChangeParent(BEnode::GetRoot());
+		child->SetParent(BEnode::GetRoot());
 	}
 
 	//remove the node from the vector containing all children
