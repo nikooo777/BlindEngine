@@ -82,4 +82,3 @@ BEnode* BEnode::find(long id)
 	//there are no more children to look into
 	return nullptr;
 }
-

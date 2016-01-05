@@ -4,7 +4,7 @@
 class BEobject
 {
 public:
-	virtual void Render()=0;
+	virtual void Render() = 0;
 	virtual ~BEobject();
 	BEobject();
 	BEobject(const std::string);
@@ -13,7 +13,6 @@ public:
 
 private:
 	virtual void GenerateId();
-	 long id_;
-	 std::string name_;
+	long id_;
+	std::string name_;
 };
-

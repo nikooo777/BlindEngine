@@ -15,10 +15,10 @@ private:
 	aiScene* scene_;
 
 	BEnode* BuildScene(aiNode* root, BEnode* parent, aiNode* thisNode);
-	
+
 	/*******************************
-	 *	Find functions
-	 */
+	*	Find functions
+	*/
 	aiAnimation* FindAnimation(aiString name);
 	aiCamera* FindCamera(aiString name);
 	aiLight* FindLight(aiString name);
@@ -26,4 +26,3 @@ private:
 	aiMesh* FindMesh(aiString name);
 	aiTexture* FindTexture(unsigned int texture_index);
 };
-

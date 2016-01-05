@@ -137,4 +137,3 @@ void BElight::SetPosition(glm::vec3 position)
 {
 	position_ = position;
 }
-

@@ -8,4 +8,3 @@ public:
 	void Render() override;
 private:
 };
-
