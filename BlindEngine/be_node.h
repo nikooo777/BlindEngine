@@ -16,16 +16,18 @@ public:
 	void RemoveChild(BEnode * node, bool = false);
 	BEnode* find(std::string name);
 	BEnode* find(long id);
+	void SetPosition(glm::mat4);
+	void SetAsRoot();
+
 	//members
 private:
 	//constructor
 	//functions
 	static BEnode* GetRoot();
 	std::vector<BEnode*> GetChildren();
-	void Init();
 
 	//members
-	static BEnode* root_node;
+	static BEnode* super_root_node;
 	glm::mat4 position_;
 	BEnode* parent_;
 	std::vector<BEnode*> children_;

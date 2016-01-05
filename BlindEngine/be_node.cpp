@@ -1,22 +1,21 @@
 #include "be_node.h"
 
-BEnode * BEnode::root_node = nullptr;
+BEnode* BEnode::super_root_node = new BEnode("root_node");
 
 BEnode::BEnode()
 {
-	Init();
+	
 }
 
 BEnode::BEnode(const std::string name) : BEobject(name)
 {
-	Init();
+	
 }
 
-void BEnode::Init()
+// @TODO: Why this ?
+void BEnode::SetAsRoot()
 {
-	if (root_node == nullptr)
-		root_node = new BEnode("root_node");
-	parent_ = root_node;
+	parent_ = super_root_node;
 }
 
 BEnode::~BEnode()
@@ -78,7 +77,7 @@ std::vector<BEnode*> BEnode::GetChildren()
 //the root node is instantiated automatically
 BEnode* BEnode::GetRoot()
 {
-	return root_node;
+	return super_root_node;
 }
 
 void BEnode::Render()
@@ -123,3 +122,9 @@ BEnode* BEnode::find(long id)
 	//there are no more children to look into
 	return nullptr;
 }
+
+void BEnode::SetPosition(glm::mat4 position)
+{
+	position_ = position;
+}
+

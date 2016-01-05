@@ -1,5 +1,6 @@
 #include "be_scene_loader.h"
 #include "be_mesh.h"
+#include <map>
 
 
 BEsceneLoader::BEsceneLoader()
@@ -35,12 +36,12 @@ BEnode*  BEsceneLoader::LoadScene(char * scene_path)
 	std::cout << "   Anims    : " << scene_->mNumAnimations << std::endl;
 	std::cout << "   Cameras  : " << scene_->mNumCameras << std::endl;
 	std::cout << "   Textures : " << scene_->mNumTextures << std::endl;
-	
+
 	//////////////////////////////////////////////////////////////////////////
 	// Debug info
-	
-	std::cout << std::endl << "**Root node: **"<< scene_->mRootNode->mName.C_Str() << std::endl;
-	
+
+	std::cout << std::endl << "**Root node: **" << scene_->mRootNode->mName.C_Str() << std::endl;
+
 	std::cout << std::endl << "***********ANIMATIONS**************" << std::endl;
 	for (unsigned int i = 0; i < scene_->mNumAnimations; i++)
 	{
@@ -57,6 +58,35 @@ BEnode*  BEsceneLoader::LoadScene(char * scene_path)
 	for (unsigned int i = 0; i < scene_->mNumLights; i++)
 	{
 		std::cout << scene_->mLights[i]->mName.C_Str() << std::endl;
+	}
+
+	std::cout << std::endl << "***********MATERIALS**************" << std::endl;
+	for (unsigned int i = 0; i < scene_->mNumMaterials; i++)
+	{
+		aiString strMat;
+		aiMaterial* tmp = scene_->mMaterials[i];
+		tmp->Get(AI_MATKEY_NAME, strMat);
+		std::cout << strMat.C_Str() << std::endl;
+
+		std::map<std::string, GLuint> textureIdMap;
+
+		/* scan scene's materials for textures */
+		for (unsigned int m = 0; m < scene_->mNumMaterials; ++m)
+		{
+			int texIndex = 0;
+			aiString path;  // filename
+
+			aiReturn texFound = scene_->mMaterials[m]->GetTexture(aiTextureType_DIFFUSE, texIndex, &path);
+			while (texFound == AI_SUCCESS)
+			{
+				std::cout << "\tTexture: " << path.C_Str() << std::endl;
+				//fill map with textures, OpenGL image ids set to 0
+				textureIdMap[path.data] = 0;
+				// more textures?
+				texIndex++;
+				texFound = scene_->mMaterials[m]->GetTexture(aiTextureType_DIFFUSE, texIndex, &path);
+			}
+		}
 	}
 
 	std::cout << std::endl << "***********MESHES**************" << std::endl;
@@ -81,7 +111,7 @@ BEnode*  BEsceneLoader::LoadScene(char * scene_path)
 */
 BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_node)
 {
-	BEnode *node = nullptr;
+	BEnode *node = new BEnode(); // To change: Added only for compiling
 
 	be_logging::log("************");
 	std::cout << "   mName : " << this_node->mName.C_Str() << std::endl;
@@ -91,40 +121,90 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 	std::cout << "   mParent : " << this_node->mParent << std::endl;
 	std::cout << "   mTransformation : " << this_node->mTransformation[0][0] << std::endl;
 
-	aiAnimation *tmp_animation;
-	aiCamera *tmp_camera;
-	aiLight *tmp_light;
-	aiMaterial *tmp_material;
-	aiMesh *tmp_mesh;
-	aiTexture *tmp_texture;
+	// If parent is null, it's the root node
+	if (parent != nullptr)
+	{
+		aiAnimation *tmp_animation;
+		aiCamera *tmp_camera;
+		aiLight *tmp_light;
+		// aiMaterial *tmp_material; // NOT in SceneGraph !!
+		aiMesh *tmp_mesh;
+		// aiTexture *tmp_texture; // NOT in SceneGraph !!
 
 
-	if (scene_->mNumMeshes > 0 && (tmp_mesh = FindMesh(this_node->mName)) != nullptr)
-	{
-		std::cout << "It's a mesh" << std::endl;
-	}
-	else if ((tmp_camera = FindCamera(this_node->mName)) != nullptr)
-	{
-		std::cout << "It's a camera" << std::endl;
-	}
-	else if ((tmp_animation = FindAnimation(this_node->mName)) != nullptr)
-	{
-		std::cout << "It's an animation" << std::endl;
-	}
-	else if ((tmp_light = FindLight(this_node->mName)) != nullptr)
-	{
-		std::cout << "It's a Light" << std::endl;
+		if (scene_->mNumMeshes > 0 && (tmp_mesh = FindMesh(this_node->mName)) != nullptr)
+		{
+			std::cout << "It's a mesh" << std::endl;
+			// (glm::vec3* vertices, long vertices_count, glm::vec3* normals, glm::vec2* texture_coords, BEmaterial* material)
+
+
+
+
+
+
+
+
+			//node = new BEmesh();
+		}
+		else if ((tmp_camera = FindCamera(this_node->mName)) != nullptr)
+		{
+			std::cout << "It's a camera" << std::endl;
+		}
+		else if ((tmp_animation = FindAnimation(this_node->mName)) != nullptr)
+		{
+			std::cout << "Animation not supported !" << std::endl;
+		}
+		else if ((tmp_light = FindLight(this_node->mName)) != nullptr)
+		{
+			std::cout << "It's a Light" << std::endl;
+		}
+		else
+		{
+			std::cout << "I don't know what's that" << std::endl;
+		}
 	}
 	else
 	{
-		std::cout << "I don't know what's that" << std::endl;
+
+		// Create node and set name
+		const std::string name = std::string(this_node->mName.C_Str());
+		node = new BEnode(name);
+		node->SetAsRoot();
+
+		// Read matrix and set it
+		aiMatrix4x4 matrix = this_node->mTransformation; //row ordered
+		glm::mat4 position = glm::mat4(
+			matrix.a1,
+			matrix.b1,
+			matrix.c1,
+			matrix.d1,
+
+			matrix.a2,
+			matrix.b2,
+			matrix.c2,
+			matrix.d2,
+
+			matrix.a3,
+			matrix.b3,
+			matrix.c3,
+			matrix.d3,
+
+			matrix.a4,
+			matrix.b4,
+			matrix.c4,
+			matrix.d4
+			);
+		node->SetPosition(position);
+
 	}
+
+	std::cout << parent << std::endl;
 
 
 
 	for (unsigned int i = 0; i < this_node->mNumChildren; i++)
 	{
-		BuildScene(root, node, this_node->mChildren[i]);
+		node->AddChild(BuildScene(root, node, this_node->mChildren[i]));
 	}
 	return node;
 }
@@ -199,9 +279,16 @@ aiMaterial* BEsceneLoader::FindMaterial(unsigned int mMaterialIndex)
 */
 aiMesh* BEsceneLoader::FindMesh(aiString name)
 {
+	char tmp_string[255];
+	strcpy(tmp_string, name.C_Str());
+	strcat(tmp_string, "Mesh");
+
+	aiString to_compare;
+	to_compare.Set(tmp_string);
+
 	for (unsigned int i = 0; i < scene_->mNumMeshes; i++)
 	{
-		if (scene_->mMeshes[i]->mName == name)
+		if (scene_->mMeshes[i]->mName == to_compare)
 			return scene_->mMeshes[i];
 	}
 
