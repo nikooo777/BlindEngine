@@ -19,4 +19,3 @@ private:
 	std::map<BElight*, glm::mat4> lights_;
 	std::map<BEcamera*, glm::mat4> cameras_;
 };
-

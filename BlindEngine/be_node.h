@@ -10,7 +10,7 @@ public:
 
 	//functions
 	static BEnode* GetSuperRoot(){ return super_root_node; }
-	
+
 	void AddChild(BEnode *);
 	std::vector<BEnode*> GetChildren(){ return children_; }
 	void RemoveChild(BEnode * node, bool = false);
@@ -40,4 +40,3 @@ private:
 	//members
 	static BEnode* super_root_node;
 };
-

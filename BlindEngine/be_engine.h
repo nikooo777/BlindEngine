@@ -6,7 +6,7 @@
 #include "be_light.h"
 
 /*
-	SINGLETON class
+SINGLETON class
 */
 class BEengine
 {
@@ -26,8 +26,7 @@ private:
 	// Matrices:
 	glm::mat4 perspective;
 	glm::mat4 ortho;
-	
+
 	BEengine();
 	~BEengine();
 };
-

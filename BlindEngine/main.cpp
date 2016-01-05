@@ -10,10 +10,10 @@ int main(int argc, char *argv[])
 	engine->Init("BlindEngine - Rubik", 100, 100, 800, 600, nullptr, argc, argv);
 	be_logging::log("Engine initialized");
 	be_logging::log("Starting Engine...");
-	
+
 	// BEsceneLoader scene_loader;
 	// scene_loader.LoadScene("cornelbox.DAE");
-	
+
 	engine->Start();
 	be_logging::log("Program exiting...");
 	return EXIT_SUCCESS;

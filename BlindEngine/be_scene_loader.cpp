@@ -286,6 +286,9 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 
 		// Read matrix and set it
 		aiMatrix4x4 matrix = this_node->mTransformation; //row ordered
+
+		//aiMatrix has a different implementation and order than glm matrix
+		//the following lines take care of this problem by manually constructing the matrix
 		glm::mat4 tranformation = glm::mat4(
 			matrix.a1,
 			matrix.b1,

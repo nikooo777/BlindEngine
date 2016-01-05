@@ -20,4 +20,3 @@ void BEnodeHelper::Render()
 		n->Render();
 	}
 }
-
