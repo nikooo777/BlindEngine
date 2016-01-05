@@ -4,6 +4,7 @@
 
 //GLM
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 //Freeglut
@@ -21,3 +22,6 @@
 #include <sstream>
 #include <vector>
 #include <map>
+
+// Debug info
+//#define PRINT_DEBUG_MESH_INFO //Uncomment to print vertex, faces, and textcoords info for Mesh objects during the scene_loader

@@ -1,6 +1,8 @@
 #include "be_scene_loader.h"
 #include "be_mesh.h"
 #include <map>
+#include "be_light.h"
+#include "be_material.h"
 
 
 BEsceneLoader::BEsceneLoader()
@@ -111,7 +113,7 @@ BEnode*  BEsceneLoader::LoadScene(char * scene_path)
 */
 BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_node)
 {
-	BEnode *node = new BEnode(); // To change: Added only for compiling
+	BEnode *node; // To change: Added only for compiling
 
 	be_logging::log("************");
 	std::cout << "   mName : " << this_node->mName.C_Str() << std::endl;
@@ -121,7 +123,7 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 	std::cout << "   mParent : " << this_node->mParent << std::endl;
 	std::cout << "   mTransformation : " << this_node->mTransformation[0][0] << std::endl;
 
-	// If parent is null, it's the root node
+	// If parent isn't null, search wich type of node it is
 	if (parent != nullptr)
 	{
 		aiAnimation *tmp_animation;
@@ -135,41 +137,151 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 		if (scene_->mNumMeshes > 0 && (tmp_mesh = FindMesh(this_node->mName)) != nullptr)
 		{
 			std::cout << "It's a mesh" << std::endl;
-			// (glm::vec3* vertices, long vertices_count, glm::vec3* normals, glm::vec2* texture_coords, BEmaterial* material)
+			BEmesh *mesh = new BEmesh();
 
+			// Faces
+			if (tmp_mesh->HasFaces()){
+				unsigned int faceIndex = 0;
 
+				for (unsigned int t = 0; t < tmp_mesh->mNumFaces; ++t, faceIndex += 3) {
+					const aiFace* tmp_face = &tmp_mesh->mFaces[t];
+#ifdef PRINT_DEBUG_MESH_INFO
+					std::cout << "Face: (" << tmp_face->mIndices[0] << ", " << tmp_face->mIndices[1] << ", " << tmp_face->mIndices[2] << ")" << std::endl;
+#endif					
+					glm::vec3 face = glm::vec3(tmp_face->mIndices[0], tmp_face->mIndices[1], tmp_face->mIndices[2]);
+					mesh->AddFace(face);
+				}
+			}
 
+			// Vertices position
+			if (tmp_mesh->HasPositions()){
+				float*  vertices = (float*)malloc(sizeof(float) * 3 * tmp_mesh->mNumVertices);
+				memcpy(vertices, tmp_mesh->mVertices, sizeof(float) * 3 * tmp_mesh->mNumVertices);
 
+				for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i += 3)
+				{
+#ifdef PRINT_DEBUG_MESH_INFO
+					std::cout << "Vertex: (" << vertices[i] << ", " << vertices[i + 1] << ", " << vertices[i + 2] << ")" << std::endl;
+#endif // PRINT_DEBUG_MESH_INFO
+					glm::vec3 vertex = glm::vec3(vertices[i], vertices[i + 1], vertices[i + 2]);
+					mesh->AddVertex(vertex);
+				}
+				free(vertices);
+			}
 
+			// Normals position
+			if (tmp_mesh->HasNormals())
+			{
+				float*  normals = (float*)malloc(sizeof(float) * 3 * tmp_mesh->mNumVertices);
+				memcpy(normals, tmp_mesh->mNormals, sizeof(float) * 3 * tmp_mesh->mNumVertices);
 
+				for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i += 3)
+				{
+#ifdef PRINT_DEBUG_MESH_INFO
+					std::cout << "Normal: (" << normals[i] << ", " << normals[i + 1] << ", " << normals[i + 2] << ")" << std::endl;
+#endif // PRINT_DEBUG_MESH_INFO
+					glm::vec3 normal = glm::vec3(normals[i], normals[i + 1], normals[i + 2]);
+					mesh->AddNormal(normal);
+				}
+				free(normals);
+			}
 
+			// Texture Coords
+			if (tmp_mesh->HasTextureCoords(0))
+			{
+				for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i++)
+				{
+#ifdef PRINT_DEBUG_MESH_INFO
+					std::cout << "TextCoord: (" << tmp_mesh->mTextureCoords[0][i].x << ", " << tmp_mesh->mTextureCoords[0][i].y << ")" << std::endl;
+#endif // PRINT_DEBUG_MESH_INFO
+					glm::vec2 texture_coord = glm::vec2(tmp_mesh->mTextureCoords[0][i].x, tmp_mesh->mTextureCoords[0][i].y);
+					mesh->AddTextureCoord(texture_coord);
+				}
+			}
 
-			//node = new BEmesh();
+			// Material
+			aiMaterial *tmp_material;
+			if ((tmp_material = FindMaterial(tmp_mesh->mMaterialIndex)) != nullptr)
+			{
+				BEmaterial *material = new BEmaterial();
+				mesh->SetMaterial(material);
+			}
+
+			node = mesh;
+			node->SetName(tmp_mesh->mName.C_Str());
 		}
 		else if ((tmp_camera = FindCamera(this_node->mName)) != nullptr)
 		{
 			std::cout << "It's a camera" << std::endl;
+			node = new BEnode(); // @Todo: Edit it -> Only for not crash
 		}
 		else if ((tmp_animation = FindAnimation(this_node->mName)) != nullptr)
 		{
 			std::cout << "Animation not supported !" << std::endl;
+			node = new BEnode(); // @Todo: Edit it -> Only for not crash
 		}
 		else if ((tmp_light = FindLight(this_node->mName)) != nullptr)
 		{
 			std::cout << "It's a Light" << std::endl;
+			BElight *light = new BElight();
+
+			light->SetAttenuationConstant(tmp_light->mAttenuationConstant);
+			light->SetAttenuationLinear(tmp_light->mAttenuationLinear);
+			light->SetAttenuationQuadratic(tmp_light->mAttenuationQuadratic);
+
+			glm::vec3 ambient = glm::vec3(tmp_light->mColorAmbient.r, tmp_light->mColorAmbient.g, tmp_light->mColorAmbient.b);
+			glm::vec3 diffuse = glm::vec3(tmp_light->mColorDiffuse.r, tmp_light->mColorDiffuse.g, tmp_light->mColorDiffuse.b);
+			glm::vec3 specular = glm::vec3(tmp_light->mColorSpecular.r, tmp_light->mColorSpecular.g, tmp_light->mColorSpecular.b);
+			glm::vec3 position = glm::vec3(tmp_light->mPosition.x, tmp_light->mPosition.y, tmp_light->mPosition.z);
+			light->SetAmbient(ambient);
+			light->SetDiffuse(diffuse);
+			light->SetSpecular(specular);
+			light->SetPosition(position);
+
+			glm::vec3 direction;
+			switch (tmp_light->mType)
+			{
+			case aiLightSource_UNDEFINED:
+				throw "Light type undefined !";
+				break;
+			case aiLightSource_POINT:
+				// Not necessary
+				break;
+			case aiLightSource_SPOT:
+				light->SetAngleInnerCone(tmp_light->mAngleInnerCone);
+				light->SetAngleOuterCone(tmp_light->mAngleOuterCone);
+				// Don't break -> It has also a direction
+			case aiLightSource_DIRECTIONAL:
+				direction = glm::vec3(tmp_light->mDirection.x, tmp_light->mDirection.y, tmp_light->mDirection.z);
+				light->SetDirection(direction);
+				break;
+			case _aiLightSource_Force32Bit:
+				throw "Light type Force32bit ?";
+				break;
+			default:
+				throw "Light not supported !";
+				break;
+			}
+
+			node = light;
+			node->SetName(tmp_light->mName.C_Str());
 		}
 		else
 		{
 			std::cout << "I don't know what's that" << std::endl;
+			node = new BEnode(); // @Todo: Edit it -> Only for not crash
 		}
+
+		node->SetParent(parent);
 	}
+	// If parent is null, it's the root node of this scene
 	else
 	{
-
 		// Create node and set name
 		const std::string name = std::string(this_node->mName.C_Str());
 		node = new BEnode(name);
 		node->SetAsRoot();
+		node->SetName(name);
 
 		// Read matrix and set it
 		aiMatrix4x4 matrix = this_node->mTransformation; //row ordered
@@ -204,7 +316,7 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 
 	for (unsigned int i = 0; i < this_node->mNumChildren; i++)
 	{
-		node->AddChild(BuildScene(root, node, this_node->mChildren[i]));
+		node->AddChild(BuildScene(root, parent, this_node->mChildren[i]));
 	}
 	return node;
 }

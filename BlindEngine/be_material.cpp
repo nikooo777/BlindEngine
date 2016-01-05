@@ -9,3 +9,8 @@ BEmaterial::BEmaterial()
 BEmaterial::~BEmaterial()
 {
 }
+
+void BEmaterial::Render()
+{
+
+}

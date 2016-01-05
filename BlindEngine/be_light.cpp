@@ -3,6 +3,11 @@
 //initialization of the counter
 int BElight::total_lights = 0;
 
+BElight::BElight()
+{
+
+}
+
 //global constructor
 BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff) : BEnode(name)
 {
@@ -21,17 +26,20 @@ BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient
 	{
 	case DIRECTIONAL:
 		//slide 37 of cg_opengl.pdf
-		position_ = glm::vec4(direction, 0.f);  //the direction is meant to be hardcoded in the position with w=0
+		//position_ = glm::vec4(direction, 0.f);  //the direction is meant to be hardcoded in the position with w=0
+		position_ = position;
 		break;
 
 	case OMNIDIRECTIONAL:
 		//slide 38 of cg_opengl.pdf
-		position_ = glm::vec4(position, 1.f);
+		//position_ = glm::vec4(position, 1.f);
+		position_ = position;
 		break;
 
 	case SPOTLIGHT:
 		//slide 39 of cg_opengl.pdf
-		position_ = glm::vec4(position, 1.f);;
+		//position_ = glm::vec4(position, 1.f);;
+		position_ = position;
 		break;
 	}
 }
@@ -53,6 +61,8 @@ BElight* BElight::CreateSpotLight(const std::string name, glm::vec4 ambient, glm
 
 void BElight::Render()
 {
+	std::cout << "Rendering a Light ";
+	PrintName();
 
 	//Common color property
 	glLightfv(light_number_, GL_AMBIENT, glm::value_ptr(ambient_));
@@ -73,3 +83,54 @@ void BElight::Render()
 BElight::~BElight()
 {
 }
+
+void BElight::SetAngleInnerCone(float angle_inner_cone)
+{
+	angle_inner_cone_ = angle_inner_cone;
+}
+
+void BElight::SetAngleOuterCone(float angle_outer_cone)
+{
+	angle_outer_cone_ = angle_outer_cone;
+}
+
+void BElight::SetAttenuationConstant(float attenuation_constant)
+{
+	attenuation_constant_ = attenuation_constant;
+}
+
+void BElight::SetAttenuationLinear(float attenuation_linear)
+{
+	attenuation_linear_ = attenuation_linear;
+}
+
+void BElight::SetAttenuationQuadratic(float attenuation_quadratic)
+{
+	attenuation_quadratic_ = attenuation_quadratic;
+}
+
+void BElight::SetAmbient(glm::vec3 ambient)
+{
+	ambient_ = glm::vec4(ambient, 1.0f);
+}
+
+void BElight::SetDiffuse(glm::vec3 diffuse)
+{
+	diffuse_ = glm::vec4(diffuse, 1.0f);
+}
+
+void BElight::SetSpecular(glm::vec3 specular)
+{
+	specular_ = glm::vec4(specular, 1.0f);
+}
+
+void BElight::SetDirection(glm::vec3 direction)
+{
+	direction_ = direction;
+}
+
+void BElight::SetPosition(glm::vec3 position)
+{
+	position_ = position;
+}
+

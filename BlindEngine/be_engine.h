@@ -22,6 +22,11 @@ private:
 	static BEengine* instance_;
 	int window_id_;
 	bool initialized_ = false;
+
+	// Matrices:
+	glm::mat4 perspective;
+	glm::mat4 ortho;
+	
 	BEengine();
 	~BEengine();
 };

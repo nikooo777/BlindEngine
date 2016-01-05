@@ -4,12 +4,12 @@ BEnode* BEnode::super_root_node = new BEnode("root_node");
 
 BEnode::BEnode()
 {
-	
+
 }
 
 BEnode::BEnode(const std::string name) : BEobject(name)
 {
-	
+	name_ = name;
 }
 
 // @TODO: Why this ?
@@ -78,7 +78,11 @@ BEnode* BEnode::GetRoot()
 
 void BEnode::Render()
 {
-	throw new std::runtime_error("Rendering is unimplemented for element Node");
+	std::cout << "Rendering a node ";
+	PrintName();
+	for each (BEnode* n in children_){
+		n->Render();
+	}
 }
 
 BEnode* BEnode::find(std::string name)
@@ -122,5 +126,15 @@ BEnode* BEnode::find(long id)
 void BEnode::SetPosition(glm::mat4 position)
 {
 	position_ = position;
+}
+
+void BEnode::PrintName()
+{
+	std::cout << name_ << std::endl;
+}
+
+void BEnode::SetName(std::string name)
+{
+	name_ = name;
 }
 

@@ -5,4 +5,6 @@ class BEmaterial : public BEobject
 public:
 	BEmaterial();
 	~BEmaterial();
+
+	virtual void Render() override;
 };

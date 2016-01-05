@@ -18,6 +18,8 @@ public:
 	BEnode* find(long id);
 	void SetPosition(glm::mat4);
 	void SetAsRoot();
+	void PrintName();
+	void SetName(std::string);
 
 	//members
 private:
@@ -30,6 +32,7 @@ private:
 	static BEnode* super_root_node;
 	glm::mat4 position_;
 	BEnode* parent_;
+	std::string name_;
 	std::vector<BEnode*> children_;
 };
 
