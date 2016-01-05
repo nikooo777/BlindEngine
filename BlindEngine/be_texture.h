@@ -5,7 +5,7 @@ class BEtexture : public BEobject
 public:
 	BEtexture();
 	~BEtexture();
-	void Render();
+	void Render() override;
 private:
 };
 

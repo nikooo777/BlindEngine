@@ -40,12 +40,18 @@ void BEmesh::Render()
 	 
 	std::cout << "Rendering a Mesh ";
 	PrintName();
+	std::cout << "Children count: " << BEnode::GetChildren().size() << std::endl;
+
 	glBegin(GL_TRIANGLES);
 	for (long i = 0 ; i < vertices_count_; i++)
 	{
 		glVertex3fv(glm::value_ptr(vertices_[i]));
 	}
 	glEnd();
+
+	for each (BEnode* n in BEnode::children_){
+		n->Render();
+	}
 }
 
 void BEmesh::AddVertex(glm::vec3 vertex)

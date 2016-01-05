@@ -56,5 +56,5 @@ public:
 	~BElight();
 
 	//inherited render method
-	virtual void Render() override;
+	void Render() override;
 };

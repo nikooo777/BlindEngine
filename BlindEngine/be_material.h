@@ -6,5 +6,5 @@ public:
 	BEmaterial();
 	~BEmaterial();
 
-	virtual void Render() override;
+	void Render() override;
 };

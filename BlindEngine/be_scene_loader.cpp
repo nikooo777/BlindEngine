@@ -311,13 +311,12 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 
 	}
 
-	std::cout << parent << std::endl;
-
-
+	std::cout << parent;
+	node->PrintName();
 
 	for (unsigned int i = 0; i < this_node->mNumChildren; i++)
 	{
-		node->AddChild(BuildScene(root, parent, this_node->mChildren[i]));
+		node->AddChild(BuildScene(root, node, this_node->mChildren[i]));
 	}
 	return node;
 }

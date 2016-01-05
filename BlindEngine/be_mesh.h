@@ -10,7 +10,7 @@ public:
 	BEmesh(glm::vec3*, long, glm::vec3*, glm::vec2*, BEmaterial*, std::string);
 	BEmesh(glm::vec3*, long, glm::vec3*, glm::vec2*, BEmaterial*);
 	~BEmesh();
-	virtual void Render() override;
+	void Render() override;
 
 	void AddVertex(glm::vec3);
 	void AddNormal(glm::vec3);

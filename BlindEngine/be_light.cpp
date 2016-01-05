@@ -78,6 +78,10 @@ void BElight::Render()
 		glLightfv(light_number_, GL_SPOT_CUTOFF, &cutoff_);
 		glLightfv(light_number_, GL_SPOT_DIRECTION, glm::value_ptr(direction_));
 	}
+
+	for each (BEnode* n in BEnode::children_){
+		n->Render();
+	}
 }
 
 BElight::~BElight()

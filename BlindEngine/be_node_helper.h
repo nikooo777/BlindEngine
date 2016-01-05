@@ -7,6 +7,6 @@ public:
 	BEnodeHelper(std::string name){ BEnode::name_ = name; }
 	~BEnodeHelper();
 
-	virtual void Render() override;
+	void Render() override;
 };
 
