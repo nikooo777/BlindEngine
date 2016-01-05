@@ -45,7 +45,6 @@ float fps = 0.0f;
 
 BEengine* BEengine::instance_ = nullptr;
 
-
 BEengine* BEengine::GetInstance()
 {
 	if (instance_ == nullptr)
@@ -113,7 +112,7 @@ void displayCallback()
 
 	// Write some text:
 	char text[64];
-	sprintf(text, "FPS: %.1f", fps);
+	sprintf_s(text,sizeof text, "FPS: %.1f", fps);
 	glRasterPos2f(1.0f, 10.0f);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
 
