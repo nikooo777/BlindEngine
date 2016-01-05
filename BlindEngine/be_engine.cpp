@@ -100,7 +100,6 @@ void displayCallback()
 
 	//////
 	// 2D:
-
 	// Set orthographic projection:
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(glm::value_ptr(ortho));

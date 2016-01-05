@@ -42,8 +42,8 @@ void BEmesh::Render()
 	PrintName();
 	std::cout << "Children count: " << BEnode::GetChildren().size() << std::endl;
 
-	glBegin(GL_TRIANGLES);
-	for (long i = 0; i < vertices_count_; i++)
+	glBegin(GL_TRIANGLE_STRIP);
+	for (long i = 0 ; i < vertices_count_; i++)
 	{
 		std::cout << " vertex " << i << ": x: " << vertices_[i].x << " y: " << vertices_[i].y << " z: " << vertices_[i].z << std::endl;
 		glVertex3fv(glm::value_ptr(vertices_[i]));
@@ -53,29 +53,4 @@ void BEmesh::Render()
 	for each (BEnode* n in BEnode::children_){
 		n->Render();
 	}
-}
-
-void BEmesh::AddVertex(glm::vec3 vertex)
-{
-	// vertices_.push_back(vertex);
-}
-
-void BEmesh::AddNormal(glm::vec3 normal)
-{
-	// normals_.push_back(normal);
-}
-
-void BEmesh::AddFace(glm::vec3 face)
-{
-	// faces.push_back(face);
-}
-
-void BEmesh::AddTextureCoord(glm::vec2 texture_coord)
-{
-	// texture_coords_.push_back(texture_coord);
-}
-
-void BEmesh::SetMaterial(BEmaterial* material)
-{
-	material_ = material;
 }
