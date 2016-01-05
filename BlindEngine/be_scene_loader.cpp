@@ -226,33 +226,60 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 			std::cout << "It's a Light" << std::endl;
 			BElight *light = new BElight();
 
-			//glm::vec3 ambient = glm::vec3(tmp_light->mColorAmbient.r, tmp_light->mColorAmbient.g, tmp_light->mColorAmbient.b);
-			//glm::vec3 diffuse = glm::vec3(tmp_light->mColorDiffuse.r, tmp_light->mColorDiffuse.g, tmp_light->mColorDiffuse.b);
-			//glm::vec3 specular = glm::vec3(tmp_light->mColorSpecular.r, tmp_light->mColorSpecular.g, tmp_light->mColorSpecular.b);
-			//glm::vec3 position = glm::vec3(tmp_light->mPosition.x, tmp_light->mPosition.y, tmp_light->mPosition.z);
+			glm::vec3 ambient = glm::vec3(tmp_light->mColorAmbient.r, tmp_light->mColorAmbient.g, tmp_light->mColorAmbient.b);
+			glm::vec3 diffuse = glm::vec3(tmp_light->mColorDiffuse.r, tmp_light->mColorDiffuse.g, tmp_light->mColorDiffuse.b);
+			glm::vec3 specular = glm::vec3(tmp_light->mColorSpecular.r, tmp_light->mColorSpecular.g, tmp_light->mColorSpecular.b);
+			glm::vec3 position = glm::vec3(tmp_light->mPosition.x, tmp_light->mPosition.y, tmp_light->mPosition.z);
 
 			light->SetAttenuationConstant(tmp_light->mAttenuationConstant);
 			light->SetAttenuationLinear(tmp_light->mAttenuationLinear);
 			light->SetAttenuationQuadratic(tmp_light->mAttenuationQuadratic);
 
+/*
 			light->SetAmbient(glm::vec3(tmp_light->mColorAmbient.r, tmp_light->mColorAmbient.g, tmp_light->mColorAmbient.b));
 			light->SetDiffuse(glm::vec3(tmp_light->mColorDiffuse.r, tmp_light->mColorDiffuse.g, tmp_light->mColorDiffuse.b));
 			light->SetSpecular(glm::vec3(tmp_light->mColorSpecular.r, tmp_light->mColorSpecular.g, tmp_light->mColorSpecular.b));
 			light->SetPosition(glm::vec3(tmp_light->mPosition.x, tmp_light->mPosition.y, tmp_light->mPosition.z));
+*/
+			glm::vec3 direction = glm::vec3(tmp_light->mDirection.x, tmp_light->mDirection.y, tmp_light->mDirection.z);
+			std::string light_name = tmp_light->mName.C_Str();
 
-			glm::vec3 direction;
+			switch (tmp_light->mType)
+			{
+				//omnidirectional
+			case aiLightSource_POINT:
+				light = BElight::CreateOmnidirectionalLight(light_name, ambient, diffuse, specular, position);
+				break;
+
+				//spotlight
+			case aiLightSource_SPOT:
+				light = BElight::CreateSpotLight(light_name, ambient, diffuse, specular, position, direction, tmp_light->mAngleInnerCone);
+				//light->SetAngleOuterCone(tmp_light->mAngleOuterCone);
+				break;
+				//directional
+			case aiLightSource_DIRECTIONAL:
+				light = BElight::CreateDirectionalLight(light_name, ambient, diffuse, specular, direction);
+				//light->SetDirection(direction);
+				break;
+			}
+
 			switch (tmp_light->mType)
 			{
 			case aiLightSource_UNDEFINED:
 				throw "Light type undefined !";
 				break;
+
+				//omnidirectional
 			case aiLightSource_POINT:
 				// Not necessary
 				break;
+
+				//spotlight
 			case aiLightSource_SPOT:
 				light->SetAngleInnerCone(tmp_light->mAngleInnerCone);
 				light->SetAngleOuterCone(tmp_light->mAngleOuterCone);
 				// Don't break -> It has also a direction
+				//directional
 			case aiLightSource_DIRECTIONAL:
 				direction = glm::vec3(tmp_light->mDirection.x, tmp_light->mDirection.y, tmp_light->mDirection.z);
 				light->SetDirection(direction);

@@ -46,7 +46,7 @@ void BEmesh::Render()
 	for (unsigned int i = 0 ; i < vertices_count_; i++)
 	{
 		//std::cout << " vertex " << i << ": x: " << vertices_[i].x << " y: " << vertices_[i].y << " z: " << vertices_[i].z << std::endl;
-		glNormal3f(normals_[i].x, normals_[i].y, normals_[i].z);
+		glNormal3fv(glm::value_ptr(normals_[i]));
 		glVertex3fv(glm::value_ptr(vertices_[i]));
 	}
 	glEnd();

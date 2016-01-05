@@ -277,10 +277,6 @@ int BEengine::Start()
 {
 	if (BEengine::initialized_)
 	{
-		//@Todo: Delete
-		BEsceneLoader scene_loader;
-		root = scene_loader.LoadScene("cornelbox.DAE");
-
 		// Enter the main FreeGLUT processing loop:     
 		glutMainLoop();
 
@@ -290,6 +286,12 @@ int BEengine::Start()
 
 	//the engine wasn't initialized
 	return EXIT_FAILURE;
+}
+
+void BEengine::LoadScene(char *)
+{
+	BEsceneLoader scene_loader;
+	root = scene_loader.LoadScene("cornelbox.DAE");
 }
 
 //retrieves the window id of the current instance

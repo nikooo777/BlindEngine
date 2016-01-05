@@ -11,8 +11,7 @@ int main(int argc, char *argv[])
 	be_logging::log("Engine initialized");
 	be_logging::log("Starting Engine...");
 
-	// BEsceneLoader scene_loader;
-	// scene_loader.LoadScene("cornelbox.DAE");
+	engine->LoadScene("cornelbox.DAE");
 
 	engine->Start();
 	be_logging::log("Program exiting...");

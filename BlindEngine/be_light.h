@@ -35,9 +35,9 @@ private:
 public:
 	BElight();
 	//factory methods used to create lights
-	static BElight* CreateOmnidirectionalLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position);
-	static BElight* CreateDirectionalLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 direction);
-	static BElight* CreateSpotLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff);
+	static BElight* CreateOmnidirectionalLight(const std::string name, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position);
+	static BElight* CreateDirectionalLight(const std::string name, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 direction);
+	static BElight* CreateSpotLight(const std::string name, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position, glm::vec3 direction, float cutoff);
 
 	//Setters
 	void SetAngleInnerCone(float);

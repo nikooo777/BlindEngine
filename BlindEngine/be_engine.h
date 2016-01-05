@@ -18,6 +18,7 @@ public:
 	int AddLight(BElight *);
 	bool RemoveLigh(int indexLight);
 	int get_window_id();
+	void LoadScene(char *);
 
 private:
 	static BEengine* instance_;
