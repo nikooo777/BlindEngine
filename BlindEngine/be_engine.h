@@ -26,8 +26,8 @@ private:
 	bool initialized_ = false;
 
 	// Matrices:
-	glm::mat4 perspective;
-	glm::mat4 ortho;
+	glm::mat4 perspective_;
+	glm::mat4 ortho_;
 
 	BEengine();
 	~BEengine();

@@ -4,7 +4,7 @@ class BEnodeHelper : public BEnode
 {
 public:
 	BEnodeHelper();
-	BEnodeHelper(std::string name){ BEnode::name_ = name; }
+	BEnodeHelper(std::string name);
 	~BEnodeHelper();
 
 	void Render() override;

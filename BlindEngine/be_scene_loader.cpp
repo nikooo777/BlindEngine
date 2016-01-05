@@ -137,167 +137,90 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 
 		if (scene_->mNumMeshes > 0 && (tmp_mesh = FindMesh(this_node->mName)) != nullptr)
 		{
-			std::cout << "It's a mesh" << std::endl;
-			BEmesh *mesh = new BEmesh();
+			std::cout << "A mesh was found. Extracting..." << std::endl;
+			std::string name = tmp_mesh->mName.C_Str();
+			//glm::vec3 *faces = (glm::vec3*) malloc(sizeof(glm::vec3)*tmp_mesh->mNumVertices);
+			glm::vec3 *vertices = (glm::vec3*) malloc(sizeof(glm::vec3)*tmp_mesh->mNumVertices);
+			glm::vec3 *normals = (glm::vec3*) malloc(sizeof(glm::vec3)*tmp_mesh->mNumVertices);
+			glm::vec2 *texture_coords = (glm::vec2*) malloc(sizeof(glm::vec2)*tmp_mesh->mNumVertices);
+			BEmesh* mesh = nullptr;
 
-			// Faces
-			if (tmp_mesh->HasFaces()){
-				unsigned int faceIndex = 0;
-				glm::vec3 *faces = (glm::vec3*) malloc(sizeof(glm::vec3)*tmp_mesh->mNumVertices);
 
-				for (unsigned int i = 0; i < tmp_mesh->mNumFaces; ++i, faceIndex += 3) {
-					const aiFace* tmp_face = &tmp_mesh->mFaces[i];
-#ifdef PRINT_DEBUG_MESH_INFO
-					std::cout << "Face: (" << tmp_face->mIndices[0] << ", " << tmp_face->mIndices[1] << ", " << tmp_face->mIndices[2] << ")" << std::endl;
-#endif					
-					faces[i] = glm::vec3(tmp_face->mIndices[0], tmp_face->mIndices[1], tmp_face->mIndices[2]);
-				}
-				mesh->SetFaces(faces);
+			//BEmesh *mesh = new BEmesh();
+
+			//// Faces
+			//if (tmp_mesh->HasFaces()){
+			//	unsigned int faceIndex = 0;
+
+			//	for (unsigned int i = 0; i < tmp_mesh->mNumFaces; ++i, faceIndex += 3) {
+			//		const aiFace* tmp_face = &tmp_mesh->mFaces[i];
+			//		faces[i] = glm::vec3(tmp_face->mIndices[0], tmp_face->mIndices[1], tmp_face->mIndices[2]);
+			//	}
+			//	mesh->SetFaces(faces);
+			//}
+
+			// Vertices position and normals (they come in pair)
+			//if (tmp_mesh->HasPositions()){
+			//	mesh->SetVerticesCount(tmp_mesh->mNumVertices);
+
+			for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i++)
+			{
+				vertices[i] = glm::vec3(tmp_mesh->mVertices[i].x, tmp_mesh->mVertices[i].y, tmp_mesh->mVertices[i].z);
+				normals[i] = glm::vec3(tmp_mesh->mNormals[i].x, tmp_mesh->mNormals[i].y, tmp_mesh->mNormals[i].z);
 			}
-
-			// Vertices position
-			if (tmp_mesh->HasPositions()){
-				mesh->SetVerticesCount(tmp_mesh->mNumVertices);
-				glm::vec3 *vertex = (glm::vec3*) malloc(sizeof(glm::vec3)*tmp_mesh->mNumVertices);
-
-				for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i++)
-				{
-#ifdef PRINT_DEBUG_MESH_INFO
-					std::cout << "Vertex: (" << vertices[i] << ", " << vertices[i + 1] << ", " << vertices[i + 2] << ")" << std::endl;
-#endif // PRINT_DEBUG_MESH_INFO
-					vertex[i] = glm::vec3(tmp_mesh->mVertices[i].x, tmp_mesh->mVertices[i].y, tmp_mesh->mVertices[i].z);
-				}
-				mesh->SetVertices(vertex);
-			}
+			//mesh->SetVertices(vertex);
+			//}
 
 			// Normals position
-			if (tmp_mesh->HasNormals())
+			/*if (tmp_mesh->HasNormals())
 			{
-				glm::vec3 *normals = (glm::vec3*) malloc(sizeof(glm::vec3)*tmp_mesh->mNumVertices);
 
-				for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i += 3)
-				{
-#ifdef PRINT_DEBUG_MESH_INFO
-					std::cout << "Normal: (" << normals[i] << ", " << normals[i + 1] << ", " << normals[i + 2] << ")" << std::endl;
-#endif // PRINT_DEBUG_MESH_INFO
-					normals[i] = glm::vec3(tmp_mesh->mNormals[i].x, tmp_mesh->mNormals[i].y, tmp_mesh->mNormals[i].z);
-				}
-				mesh->SetNormals(normals);
+			for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i += 3)
+			{
+			normals[i] = glm::vec3(tmp_mesh->mNormals[i].x, tmp_mesh->mNormals[i].y, tmp_mesh->mNormals[i].z);
 			}
+			mesh->SetNormals(normals);
+			}*/
 
 			// Texture Coords
-			if (tmp_mesh->HasTextureCoords(0))
-			{
-				glm::vec2 *texture_coords = (glm::vec2*) malloc(sizeof(glm::vec2)*tmp_mesh->mNumVertices);
+			/*	if (tmp_mesh->HasTextureCoords(0))
+			{*/
 
-				for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i++)
-				{
-#ifdef PRINT_DEBUG_MESH_INFO
-					std::cout << "TextCoord: (" << tmp_mesh->mTextureCoords[0][i].x << ", " << tmp_mesh->mTextureCoords[0][i].y << ")" << std::endl;
-#endif // PRINT_DEBUG_MESH_INFO
-					texture_coords[i] = glm::vec2(tmp_mesh->mTextureCoords[0][i].x, tmp_mesh->mTextureCoords[0][i].y);
-				}
-				mesh->SetTextureCoords(texture_coords);
+			for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i++)
+			{
+				texture_coords[i] = glm::vec2(tmp_mesh->mTextureCoords[0][i].x, tmp_mesh->mTextureCoords[0][i].y);
 			}
+			//mesh->SetTextureCoords(texture_coords);
+			//	}
 
 			// Material
+			BEmaterial *material = nullptr;
 			aiMaterial *tmp_material;
 			if ((tmp_material = FindMaterial(tmp_mesh->mMaterialIndex)) != nullptr)
 			{
-				BEmaterial *material = new BEmaterial();
-				mesh->SetMaterial(material);
+				//BEmaterial *material = new BEmaterial();
+				//mesh->SetMaterial(material);
 			}
-
-			node = mesh;
-			node->SetName(tmp_mesh->mName.C_Str());
+			node = new BEmesh(name, vertices, tmp_mesh->mNumVertices, normals, texture_coords, material);
 		}
 		else if ((tmp_camera = FindCamera(this_node->mName)) != nullptr)
 		{
-			std::cout << "It's a camera" << std::endl;
+			std::cout << "A camera was found. Extracting..." << std::endl;
 			node = nullptr; // @Todo: Edit it -> Only for not crash
 		}
 		else if ((tmp_animation = FindAnimation(this_node->mName)) != nullptr)
 		{
-			std::cout << "Animation not supported !" << std::endl;
+			std::cout << "An animation was found in the tree but it's not supported." << std::endl;
 			node = nullptr; // @Todo: Edit it -> Only to avoid a crash
 		}
 		else if ((tmp_light = FindLight(this_node->mName)) != nullptr)
 		{
-			std::cout << "It's a Light" << std::endl;
-			BElight *light = new BElight();
-
-			glm::vec3 ambient = glm::vec3(tmp_light->mColorAmbient.r, tmp_light->mColorAmbient.g, tmp_light->mColorAmbient.b);
-			glm::vec3 diffuse = glm::vec3(tmp_light->mColorDiffuse.r, tmp_light->mColorDiffuse.g, tmp_light->mColorDiffuse.b);
-			glm::vec3 specular = glm::vec3(tmp_light->mColorSpecular.r, tmp_light->mColorSpecular.g, tmp_light->mColorSpecular.b);
-			glm::vec3 position = glm::vec3(tmp_light->mPosition.x, tmp_light->mPosition.y, tmp_light->mPosition.z);
-
-			light->SetAttenuationConstant(tmp_light->mAttenuationConstant);
-			light->SetAttenuationLinear(tmp_light->mAttenuationLinear);
-			light->SetAttenuationQuadratic(tmp_light->mAttenuationQuadratic);
-
-/*
-			light->SetAmbient(glm::vec3(tmp_light->mColorAmbient.r, tmp_light->mColorAmbient.g, tmp_light->mColorAmbient.b));
-			light->SetDiffuse(glm::vec3(tmp_light->mColorDiffuse.r, tmp_light->mColorDiffuse.g, tmp_light->mColorDiffuse.b));
-			light->SetSpecular(glm::vec3(tmp_light->mColorSpecular.r, tmp_light->mColorSpecular.g, tmp_light->mColorSpecular.b));
-			light->SetPosition(glm::vec3(tmp_light->mPosition.x, tmp_light->mPosition.y, tmp_light->mPosition.z));
-*/
-			glm::vec3 direction = glm::vec3(tmp_light->mDirection.x, tmp_light->mDirection.y, tmp_light->mDirection.z);
-			std::string light_name = tmp_light->mName.C_Str();
-
-			switch (tmp_light->mType)
-			{
-				//omnidirectional
-			case aiLightSource_POINT:
-				light = BElight::CreateOmnidirectionalLight(light_name, ambient, diffuse, specular, position);
-				break;
-
-				//spotlight
-			case aiLightSource_SPOT:
-				light = BElight::CreateSpotLight(light_name, ambient, diffuse, specular, position, direction, tmp_light->mAngleInnerCone);
-				//light->SetAngleOuterCone(tmp_light->mAngleOuterCone);
-				break;
-				//directional
-			case aiLightSource_DIRECTIONAL:
-				light = BElight::CreateDirectionalLight(light_name, ambient, diffuse, specular, direction);
-				//light->SetDirection(direction);
-				break;
-			}
-
-			switch (tmp_light->mType)
-			{
-			case aiLightSource_UNDEFINED:
-				throw "Light type undefined !";
-				break;
-
-				//omnidirectional
-			case aiLightSource_POINT:
-				// Not necessary
-				break;
-
-				//spotlight
-			case aiLightSource_SPOT:
-				light->SetAngleInnerCone(tmp_light->mAngleInnerCone);
-				light->SetAngleOuterCone(tmp_light->mAngleOuterCone);
-				// Don't break -> It has also a direction
-				//directional
-			case aiLightSource_DIRECTIONAL:
-				direction = glm::vec3(tmp_light->mDirection.x, tmp_light->mDirection.y, tmp_light->mDirection.z);
-				light->SetDirection(direction);
-				break;
-			case _aiLightSource_Force32Bit:
-				throw "Light type Force32bit ?";
-				break;
-			default:
-				throw "Light not supported !";
-				break;
-			}
-
-			node = light;
-			node->SetName(tmp_light->mName.C_Str());
+			std::cout << "A light was found. Extracting..." << std::endl;
+			node = ExtractLight(tmp_light);
 		}
 		else
 		{
-			std::cout << "I don't know what's that" << std::endl;
+			std::cout << "Something unknown in the tree was found." << std::endl;
 			node = nullptr; // @Todo: Edit it -> Only for not crash
 		}
 
@@ -308,36 +231,16 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 	{
 		// Create node and set name
 		const std::string name = std::string(this_node->mName.C_Str());
-		node = new BEnodeHelper(name);
+		node = new BEnode(name,BEnode::ROOT);
 		node->SetAsRoot();
-		node->SetName(name);
 
 		// Read matrix and set it
 		aiMatrix4x4 matrix = this_node->mTransformation; //row ordered
 
-		//aiMatrix has a different implementation and order than glm matrix
-		//the following lines take care of this problem by manually constructing the matrix
-		glm::mat4 tranformation = glm::mat4(
-			matrix.a1,
-			matrix.b1,
-			matrix.c1,
-			matrix.d1,
-
-			matrix.a2,
-			matrix.b2,
-			matrix.c2,
-			matrix.d2,
-
-			matrix.a3,
-			matrix.b3,
-			matrix.c3,
-			matrix.d3,
-
-			matrix.a4,
-			matrix.b4,
-			matrix.c4,
-			matrix.d4
-			);
+		// Convert aiMatrix into an OpenGL matrix:
+		glm::mat4 tranformation;
+		memcpy(&tranformation, &matrix, sizeof tranformation);
+		tranformation = glm::transpose(tranformation);
 		node->SetTransformation(tranformation);
 
 	}
@@ -449,4 +352,39 @@ aiTexture* BEsceneLoader::FindTexture(unsigned int texture_index)
 		return nullptr;
 
 	return scene_->mTextures[texture_index];
+}
+
+BElight* BEsceneLoader::ExtractLight(aiLight * tmp_light)
+{
+	BElight *light = nullptr;
+
+	glm::vec3 ambient = glm::vec3(tmp_light->mColorAmbient.r, tmp_light->mColorAmbient.g, tmp_light->mColorAmbient.b);
+	glm::vec3 diffuse = glm::vec3(tmp_light->mColorDiffuse.r, tmp_light->mColorDiffuse.g, tmp_light->mColorDiffuse.b);
+	glm::vec3 specular = glm::vec3(tmp_light->mColorSpecular.r, tmp_light->mColorSpecular.g, tmp_light->mColorSpecular.b);
+	glm::vec3 position = glm::vec3(tmp_light->mPosition.x, tmp_light->mPosition.y, tmp_light->mPosition.z);
+	glm::vec3 direction = glm::vec3(tmp_light->mDirection.x, tmp_light->mDirection.y, tmp_light->mDirection.z);
+	std::string light_name = tmp_light->mName.C_Str();
+
+	switch (tmp_light->mType)
+	{
+		//omnidirectional
+	case aiLightSource_POINT:
+		light = BElight::CreateOmnidirectionalLight(light_name, ambient, diffuse, specular, position);
+		break;
+
+		//spotlight
+	case aiLightSource_SPOT:
+		light = BElight::CreateSpotLight(light_name, ambient, diffuse, specular, position, direction, tmp_light->mAngleInnerCone);
+		//light->SetAngleOuterCone(tmp_light->mAngleOuterCone);
+		break;
+		//directional
+	case aiLightSource_DIRECTIONAL:
+		light = BElight::CreateDirectionalLight(light_name, ambient, diffuse, specular, direction);
+		break;
+	}
+
+	light->SetAttenuationConstant(tmp_light->mAttenuationConstant);
+	light->SetAttenuationLinear(tmp_light->mAttenuationLinear);
+	light->SetAttenuationQuadratic(tmp_light->mAttenuationQuadratic);
+	return light;
 }

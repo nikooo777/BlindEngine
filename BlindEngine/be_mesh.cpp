@@ -1,11 +1,6 @@
 #include "be_mesh.h"
 
-
-BEmesh::BEmesh()
-{
-}
-
-BEmesh::BEmesh(glm::vec3* vertices, long vertices_count, glm::vec3* normals, glm::vec2* texture_coords, BEmaterial* material, std::string name)
+BEmesh::BEmesh(std::string name, glm::vec3* vertices, long vertices_count, glm::vec3* normals, glm::vec2* texture_coords, BEmaterial* material) : BEnode(name,MESH)
 {
 	vertices_ = vertices;
 	normals_ = normals;
@@ -14,21 +9,21 @@ BEmesh::BEmesh(glm::vec3* vertices, long vertices_count, glm::vec3* normals, glm
 	vertices_count_ = vertices_count;
 }
 
-BEmesh::BEmesh(glm::vec3* vertices, long vertices_count, glm::vec3* normals, glm::vec2* texture_coords, BEmaterial* material) : BEnode()
-{
-	vertices_ = vertices;
-	normals_ = normals;
-	texture_coords_ = texture_coords;
-	material_ = material;
-	vertices_count_ = vertices_count;
-}
+//BEmesh::BEmesh(glm::vec3* vertices, long vertices_count, glm::vec3* normals, glm::vec2* texture_coords, BEmaterial* material) : BEnode()
+//{
+//	vertices_ = vertices;
+//	normals_ = normals;
+//	texture_coords_ = texture_coords;
+//	material_ = material;
+//	vertices_count_ = vertices_count;
+//}
 
 BEmesh::~BEmesh()
 {
-	delete vertices_;
-	delete normals_;
-	delete texture_coords_;
-	delete material_;
+	delete[] vertices_;
+	delete[] normals_;
+	delete[] texture_coords_;
+	delete[] material_;
 }
 
 void BEmesh::Render()
@@ -38,8 +33,7 @@ void BEmesh::Render()
 	//glDrawArrays(GL_TRIANGLES, 0, vertices_count_);
 	//glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
 
-	std::cout << "Rendering a Mesh ";
-	PrintName();
+	std::cout << "Rendering Mesh: " << BEobject::get_name() << std::endl;
 	std::cout << "Children count: " << BEnode::GetChildren().size() << std::endl;
 
 	glBegin(GL_TRIANGLES);

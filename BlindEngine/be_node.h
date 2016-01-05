@@ -5,7 +5,17 @@
 class BEnode : public BEobject
 {
 public:
+	//types
+	typedef enum Type
+	{
+		CAMERA,
+		MESH,
+		LIGHT,
+		ROOT
+	}Type;
+
 	//constructor and destructor
+	BEnode(std::string name, Type type);
 	virtual ~BEnode();
 
 	//functions
@@ -13,30 +23,26 @@ public:
 
 	void AddChild(BEnode *);
 	std::vector<BEnode*> GetChildren(){ return children_; }
-	void RemoveChild(BEnode * node, bool = false);
+	void RemoveChild(BEnode *, bool = false);
 
-	void SetName(std::string name){ name_ = name; }
 	void SetParent(BEnode *parent){ parent_ = parent; }
 	void SetTransformation(glm::mat4 transformation){ transformation_ = transformation; }
-	void SetAsRoot(){ parent_ = GetSuperRoot(); }
+	void SetAsRoot(){ parent_ = this;/*GetSuperRoot();*/ }
 
 	//Utility
-	BEnode* find(std::string name);
-	BEnode* find(long id);
-	void PrintName(){ std::cout << name_ << std::endl; }
-
-	virtual void Render() = 0;
+	BEnode* find(std::string);
+	BEnode* find(long);
+	//empty overridden render method
+	virtual void Render() override;
 
 protected:
 	// Fields common in all children
-	BEnode();
 	BEnode* parent_;
-	std::string name_;
 	glm::mat4 transformation_;
 	std::vector<BEnode*> children_;
 
-	//members
 private:
 	//members
+	Type type_;
 	static BEnode* super_root_node;
 };

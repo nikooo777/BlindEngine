@@ -1,11 +1,11 @@
 #include "be_node.h"
 #include "be_node_helper.h"
 
-BEnode* BEnode::super_root_node = new BEnodeHelper("root_node");
+BEnode* BEnode::super_root_node = new BEnode("root_node",ROOT);
 
-BEnode::BEnode()
+BEnode::BEnode(std::string name, Type type) : BEobject(name)
 {
-
+	type_ = type;
 }
 
 
@@ -44,7 +44,6 @@ void BEnode::RemoveChild(BEnode * node, bool should_delete)
 
 }
 
-
 BEnode* BEnode::find(std::string name)
 {
 	//the current node is the one sought
@@ -81,4 +80,26 @@ BEnode* BEnode::find(long id)
 	}
 	//there are no more children to look into
 	return nullptr;
+}
+
+void BEnode::Render()
+{
+	std::cout << "Wrong place" << std::endl;
+	for each (BEnode* n in BEnode::children_){
+		n->Render();
+	}
+	/*switch (type_)
+	{
+	case BEnode::CAMERA:
+	((BEcamera*)this)->Render();
+	break;
+	case BEnode::MESH:
+	((BEmesh*)this)->Render();
+	break;
+	case BEnode::LIGHT:
+	((BElight*)this)->Render();
+	break;
+	case BEnode::ROOT:
+	break;
+	}*/
 }

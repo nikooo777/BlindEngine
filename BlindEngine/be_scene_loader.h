@@ -1,5 +1,6 @@
 #pragma once
 #include "be_node.h"
+#include "be_light.h"
 #include "be_logging.h"
 #include "be_includes.h"
 
@@ -15,6 +16,8 @@ private:
 	aiScene* scene_;
 
 	BEnode* BuildScene(aiNode* root, BEnode* parent, aiNode* thisNode);
+
+	BElight* ExtractLight(aiLight* tmp_light);
 
 	/*******************************
 	*	Find functions

@@ -33,7 +33,6 @@ private:
 	glm::vec3 position_, direction_;
 	float cutoff_, angle_inner_cone_, angle_outer_cone_, attenuation_constant_, attenuation_linear_, attenuation_quadratic_;
 public:
-	BElight();
 	//factory methods used to create lights
 	static BElight* CreateOmnidirectionalLight(const std::string name, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position);
 	static BElight* CreateDirectionalLight(const std::string name, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 direction);
@@ -56,5 +55,5 @@ public:
 	~BElight();
 
 	//inherited render method
-	void Render() override;
+	virtual void Render() override;
 };

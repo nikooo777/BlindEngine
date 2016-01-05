@@ -3,16 +3,8 @@
 //initialization of the counter
 int BElight::total_lights = 0;
 
-BElight::BElight()
-{
-	if (total_lights <= 7)
-		light_number_ = (total_lights++) + GL_LIGHT0;
-	else
-		throw new std::runtime_error("There are too many lights in the scene!");
-}
-
 //global constructor
-BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff)
+BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff) : BEnode(name,LIGHT)
 {
 	if (total_lights <= 7)
 		light_number_ = (total_lights++) + GL_LIGHT0;
