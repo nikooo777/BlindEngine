@@ -19,6 +19,10 @@ public:
 	bool RemoveLigh(int indexLight);
 	int get_window_id();
 	void LoadScene(char *);
+	glm::mat4 get_perspective() const { return perspective_; }
+	glm::mat4 get_ortho() const { return ortho_; }
+	void SetPerspective(glm::mat4 perspective);
+	void SetOrtho(glm::mat4 ortho);
 
 private:
 	static BEengine* instance_;
@@ -28,7 +32,6 @@ private:
 	// Matrices:
 	glm::mat4 perspective_;
 	glm::mat4 ortho_;
-
 	BEengine();
 	~BEengine();
 };

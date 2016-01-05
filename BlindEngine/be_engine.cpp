@@ -15,8 +15,6 @@ float globalX = .0f;
 float globalY = .0f;
 
 // Matrices:
-glm::mat4 perspective;
-glm::mat4 ortho;
 
 // Texture:
 unsigned char *bitmap = NULL;
@@ -82,7 +80,7 @@ void displayCallback()
 
 	// Set perpsective matrix:
 	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(glm::value_ptr(perspective));
+	glLoadMatrixf(glm::value_ptr(BEengine::GetInstance()->get_perspective()));
 	glMatrixMode(GL_MODELVIEW);
 
 	// Set a matrix to move our triangle:
@@ -101,7 +99,7 @@ void displayCallback()
 	// 2D:
 	// Set orthographic projection:
 	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(glm::value_ptr(ortho));
+	glLoadMatrixf(glm::value_ptr(BEengine::GetInstance()->get_ortho()));
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(glm::value_ptr(glm::mat4(1.0)));
 
@@ -149,8 +147,8 @@ void reshapeCallback(int width, int height)
 	glViewport(0, 0, width, height);
 
 	// Update matrices:
-	perspective = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 100.0f);
-	ortho = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
+	BEengine::GetInstance()->SetPerspective(glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 100.0f));
+	BEengine::GetInstance()->SetOrtho(glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f));
 }
 
 
@@ -307,7 +305,15 @@ int BEengine::get_window_id()
 	return window_id_;
 }
 
+void BEengine::SetPerspective(glm::mat4 perspective)
+{
+	perspective_ = perspective;
+}
 
+void BEengine::SetOrtho(glm::mat4 ortho)
+{
+	ortho_ = ortho;
+}
 
 // Return the index of the light
 int AddLight(BElight *light){

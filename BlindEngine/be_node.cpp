@@ -88,18 +88,4 @@ void BEnode::Render()
 	for each (BEnode* n in BEnode::children_){
 		n->Render();
 	}
-	/*switch (type_)
-	{
-	case BEnode::CAMERA:
-	((BEcamera*)this)->Render();
-	break;
-	case BEnode::MESH:
-	((BEmesh*)this)->Render();
-	break;
-	case BEnode::LIGHT:
-	((BElight*)this)->Render();
-	break;
-	case BEnode::ROOT:
-	break;
-	}*/
 }
