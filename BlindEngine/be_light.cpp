@@ -9,7 +9,7 @@ BElight::BElight()
 }
 
 //global constructor
-BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff) : BEnode(name)
+BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff)
 {
 	if (total_lights <= 7)
 		light_number_ = (total_lights++) + GL_LIGHT0;
@@ -62,7 +62,7 @@ BElight* BElight::CreateSpotLight(const std::string name, glm::vec4 ambient, glm
 void BElight::Render()
 {
 	std::cout << "Rendering a Light ";
-	PrintName();
+	BEnode::PrintName();
 
 	//Common color property
 	glLightfv(light_number_, GL_AMBIENT, glm::value_ptr(ambient_));

@@ -19,7 +19,6 @@ public:
 	void SetMaterial(BEmaterial*);
 
 private:
-	std::string name_;
 	glm::vec3* vertices_;
 	glm::vec3* normals_;
 	glm::vec2* faces;

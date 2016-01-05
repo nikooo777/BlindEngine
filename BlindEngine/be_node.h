@@ -6,33 +6,38 @@ class BEnode : public BEobject
 {
 public:
 	//constructor and destructor
-	BEnode(const std::string);
-	BEnode();
 	virtual ~BEnode();
+
 	//functions
+	static BEnode* GetSuperRoot(){ return super_root_node; }
+	
 	void AddChild(BEnode *);
-	virtual void Render() override;
-	void SetParent(BEnode *);
+	std::vector<BEnode*> GetChildren(){ return children_; }
 	void RemoveChild(BEnode * node, bool = false);
+
+	void SetName(std::string name){ name_ = name; }
+	void SetParent(BEnode *parent){ parent_ = parent; }
+	void SetTransformation(glm::mat4 transformation){ transformation_ = transformation; }
+	void SetAsRoot(){ parent_ = GetSuperRoot(); }
+
+	//Utility
 	BEnode* find(std::string name);
 	BEnode* find(long id);
-	void SetPosition(glm::mat4);
-	void SetAsRoot();
-	void PrintName();
-	void SetName(std::string);
+	void PrintName(){ std::cout << name_ << std::endl; }
+
+	virtual void Render() = 0;
+
+protected:
+	// Fields common in all children
+	BEnode();
+	BEnode* parent_;
+	std::string name_;
+	glm::mat4 transformation_;
+	std::vector<BEnode*> children_;
 
 	//members
 private:
-	//constructor
-	//functions
-	static BEnode* GetRoot();
-	std::vector<BEnode*> GetChildren();
-
 	//members
 	static BEnode* super_root_node;
-	glm::mat4 position_;
-	BEnode* parent_;
-	std::string name_;
-	std::vector<BEnode*> children_;
 };
 

@@ -5,7 +5,7 @@ BEmesh::BEmesh()
 {
 }
 
-BEmesh::BEmesh(glm::vec3* vertices, long vertices_count, glm::vec3* normals, glm::vec2* texture_coords, BEmaterial* material, std::string name) : BEnode(name)
+BEmesh::BEmesh(glm::vec3* vertices, long vertices_count, glm::vec3* normals, glm::vec2* texture_coords, BEmaterial* material, std::string name)
 {
 	vertices_ = vertices;
 	normals_ = normals;

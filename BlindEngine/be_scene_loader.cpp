@@ -3,6 +3,7 @@
 #include <map>
 #include "be_light.h"
 #include "be_material.h"
+#include "be_node_helper.h"
 
 
 BEsceneLoader::BEsceneLoader()
@@ -213,12 +214,12 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 		else if ((tmp_camera = FindCamera(this_node->mName)) != nullptr)
 		{
 			std::cout << "It's a camera" << std::endl;
-			node = new BEnode(); // @Todo: Edit it -> Only for not crash
+			node = nullptr; // @Todo: Edit it -> Only for not crash
 		}
 		else if ((tmp_animation = FindAnimation(this_node->mName)) != nullptr)
 		{
 			std::cout << "Animation not supported !" << std::endl;
-			node = new BEnode(); // @Todo: Edit it -> Only for not crash
+			node = nullptr; // @Todo: Edit it -> Only for not crash
 		}
 		else if ((tmp_light = FindLight(this_node->mName)) != nullptr)
 		{
@@ -269,7 +270,7 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 		else
 		{
 			std::cout << "I don't know what's that" << std::endl;
-			node = new BEnode(); // @Todo: Edit it -> Only for not crash
+			node = nullptr; // @Todo: Edit it -> Only for not crash
 		}
 
 		node->SetParent(parent);
@@ -279,13 +280,13 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 	{
 		// Create node and set name
 		const std::string name = std::string(this_node->mName.C_Str());
-		node = new BEnode(name);
+		node = new BEnodeHelper(name);
 		node->SetAsRoot();
 		node->SetName(name);
 
 		// Read matrix and set it
 		aiMatrix4x4 matrix = this_node->mTransformation; //row ordered
-		glm::mat4 position = glm::mat4(
+		glm::mat4 tranformation = glm::mat4(
 			matrix.a1,
 			matrix.b1,
 			matrix.c1,
@@ -306,7 +307,7 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 			matrix.c4,
 			matrix.d4
 			);
-		node->SetPosition(position);
+		node->SetTransformation(tranformation);
 
 	}
 

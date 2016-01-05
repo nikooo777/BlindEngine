@@ -3,8 +3,8 @@
 #include <stdexcept>
 //BlindEngine
 #include "be_node.h"
-
 #include "be_includes.h"
+
 class BElight : public BEnode
 {
 private:
@@ -28,7 +28,6 @@ private:
 	//light index (from GL_LIGHT0 to GL_LIGHT7)
 	int light_number_;
 
-	std::string name_;
 	// The light properties
 	glm::vec4 ambient_, diffuse_, specular_;
 	glm::vec3 position_, direction_;
