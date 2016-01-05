@@ -10,7 +10,7 @@ public:
 	BEobject(const std::string);
 	std::string get_name();
 	long get_id();
-
+	void PrintName(){ std::cout << get_name() << std::endl; }
 private:
 	virtual void GenerateId();
 	long id_;

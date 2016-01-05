@@ -3,7 +3,7 @@
 class BEcamera : public BEnode
 {
 public:
-	BEcamera();
+	BEcamera(std::string);
 	~BEcamera();
-	void Render() override;
+	virtual void Render() override;
 };

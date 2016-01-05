@@ -273,14 +273,17 @@ void BEengine::Init(char* window_name, int x_position, int y_position, int width
 	BEengine::initialized_ = true;
 }
 
+//************************************
+// Method:    Start
+// FullName:  BEengine::Start
+// Access:    public 
+// Returns:   int -> EXIT_SUCCESS or EXIT_FAILURE
+// this method starts the engine by loading the main loop
+//************************************
 int BEengine::Start()
 {
 	if (BEengine::initialized_)
 	{
-		//@Todo: Delete
-		BEsceneLoader scene_loader;
-		root = scene_loader.LoadScene("cornelbox.DAE");
-
 		// Enter the main FreeGLUT processing loop:     
 		glutMainLoop();
 
@@ -292,6 +295,13 @@ int BEengine::Start()
 	return EXIT_FAILURE;
 }
 
+void BEengine::LoadScene(char *)
+{
+	BEsceneLoader scene_loader;
+	root = scene_loader.LoadScene("cornelbox.DAE");
+}
+
+//retrieves the window id of the current instance
 int BEengine::get_window_id()
 {
 	return window_id_;

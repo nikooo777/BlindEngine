@@ -18,6 +18,7 @@ public:
 	int AddLight(BElight *);
 	bool RemoveLigh(int indexLight);
 	int get_window_id();
+	void LoadScene(char *);
 
 private:
 	static BEengine* instance_;
@@ -25,8 +26,8 @@ private:
 	bool initialized_ = false;
 
 	// Matrices:
-	glm::mat4 perspective;
-	glm::mat4 ortho;
+	glm::mat4 perspective_;
+	glm::mat4 ortho_;
 
 	BEengine();
 	~BEengine();

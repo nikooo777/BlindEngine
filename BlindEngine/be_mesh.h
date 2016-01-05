@@ -6,11 +6,11 @@
 class BEmesh : public BEnode
 {
 public:
-	BEmesh();
-	BEmesh(glm::vec3*, long, glm::vec3*, glm::vec2*, BEmaterial*, std::string);
-	BEmesh(glm::vec3*, long, glm::vec3*, glm::vec2*, BEmaterial*);
+	//BEmesh();
+	BEmesh(std::string,glm::vec3*, long, glm::vec3*, glm::vec2*, BEmaterial* );
+	//BEmesh(glm::vec3*, long, glm::vec3*, glm::vec2*, BEmaterial*);
 	~BEmesh();
-	void Render() override;
+	virtual void Render() override;
 
 	void SetVertices(glm::vec3 *vertices){ vertices_ = vertices; }
 	void SetVerticesCount(unsigned int vertices_count){ vertices_count_ = vertices_count; }

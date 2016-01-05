@@ -3,13 +3,8 @@
 //initialization of the counter
 int BElight::total_lights = 0;
 
-BElight::BElight()
-{
-
-}
-
 //global constructor
-BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff)
+BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff) : BEnode(name,LIGHT)
 {
 	if (total_lights <= 7)
 		light_number_ = (total_lights++) + GL_LIGHT0;
@@ -44,19 +39,19 @@ BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient
 	}
 }
 
-BElight* BElight::CreateOmnidirectionalLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position)
+BElight* BElight::CreateOmnidirectionalLight(const std::string name, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position)
 {
-	return new BElight(OMNIDIRECTIONAL, name, ambient, diffuse, specular, position, glm::vec3(), 0);
+	return new BElight(OMNIDIRECTIONAL, name, glm::vec4(ambient, 1.0f), glm::vec4(diffuse, 1.0f), glm::vec4(specular, 1.0f), position, glm::vec3(), 0);
 }
 
-BElight* BElight::CreateDirectionalLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 direction)
+BElight* BElight::CreateDirectionalLight(const std::string name, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 direction)
 {
-	return new BElight(DIRECTIONAL, name, ambient, diffuse, specular, glm::vec3(), direction, 180.f);
+	return new BElight(DIRECTIONAL, name, glm::vec4(ambient, 1.0f), glm::vec4(diffuse, 1.0f), glm::vec4(specular, 1.0f), glm::vec3(), direction, 180.f);
 }
 
-BElight* BElight::CreateSpotLight(const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff)
+BElight* BElight::CreateSpotLight(const std::string name, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position, glm::vec3 direction, float cutoff)
 {
-	return new BElight(SPOTLIGHT, name, ambient, diffuse, specular, position, direction, cutoff);
+	return new BElight(SPOTLIGHT, name, glm::vec4(ambient, 1.0f), glm::vec4(diffuse, 1.0f), glm::vec4(specular, 1.0f), position, direction, cutoff);
 }
 
 void BElight::Render()
