@@ -12,17 +12,18 @@ public:
 	~BEmesh();
 	void Render() override;
 
-	void AddVertex(glm::vec3);
-	void AddNormal(glm::vec3);
-	void AddFace(glm::vec3);
-	void AddTextureCoord(glm::vec2);
-	void SetMaterial(BEmaterial*);
+	void SetVertices(glm::vec3 *vertices){ vertices_ = vertices; }
+	void SetVerticesCount(unsigned int vertices_count){ vertices_count_ = vertices_count; }
+	void SetNormals(glm::vec3 *normals){ normals_ = normals; }
+	void SetFaces(glm::vec3 *faces){ faces_ = faces; }
+	void SetTextureCoords(glm::vec2 *texture_coords){ texture_coords_ = texture_coords; }
+	void SetMaterial(BEmaterial *material){ material_ = material; }
 
 private:
+	unsigned int vertices_count_ = 0;
 	glm::vec3* vertices_;
 	glm::vec3* normals_;
-	glm::vec2* faces;
+	glm::vec3* faces_;
 	glm::vec2* texture_coords_;
-	long vertices_count_;
 	BEmaterial* material_;
 };

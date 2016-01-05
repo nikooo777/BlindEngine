@@ -143,60 +143,60 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 			// Faces
 			if (tmp_mesh->HasFaces()){
 				unsigned int faceIndex = 0;
+				glm::vec3 *faces = (glm::vec3*) malloc(sizeof(glm::vec3)*tmp_mesh->mNumVertices);
 
-				for (unsigned int t = 0; t < tmp_mesh->mNumFaces; ++t, faceIndex += 3) {
-					const aiFace* tmp_face = &tmp_mesh->mFaces[t];
+				for (unsigned int i = 0; i < tmp_mesh->mNumFaces; ++i, faceIndex += 3) {
+					const aiFace* tmp_face = &tmp_mesh->mFaces[i];
 #ifdef PRINT_DEBUG_MESH_INFO
 					std::cout << "Face: (" << tmp_face->mIndices[0] << ", " << tmp_face->mIndices[1] << ", " << tmp_face->mIndices[2] << ")" << std::endl;
 #endif					
-					glm::vec3 face = glm::vec3(tmp_face->mIndices[0], tmp_face->mIndices[1], tmp_face->mIndices[2]);
-					mesh->AddFace(face);
+					faces[i] = glm::vec3(tmp_face->mIndices[0], tmp_face->mIndices[1], tmp_face->mIndices[2]);
+					mesh->SetFaces(faces);
 				}
 			}
 
 			// Vertices position
 			if (tmp_mesh->HasPositions()){
-				float*  vertices = (float*)malloc(sizeof(float) * 3 * tmp_mesh->mNumVertices);
-				memcpy(vertices, tmp_mesh->mVertices, sizeof(float) * 3 * tmp_mesh->mNumVertices);
+				mesh->SetVerticesCount(tmp_mesh->mNumVertices);
+				glm::vec3 *vertex = (glm::vec3*) malloc(sizeof(glm::vec3)*tmp_mesh->mNumVertices);
 
-				for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i += 3)
+				for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i++)
 				{
 #ifdef PRINT_DEBUG_MESH_INFO
 					std::cout << "Vertex: (" << vertices[i] << ", " << vertices[i + 1] << ", " << vertices[i + 2] << ")" << std::endl;
 #endif // PRINT_DEBUG_MESH_INFO
-					glm::vec3 vertex = glm::vec3(vertices[i], vertices[i + 1], vertices[i + 2]);
-					mesh->AddVertex(vertex);
+					vertex[i] = glm::vec3(tmp_mesh->mVertices[i].x, tmp_mesh->mVertices[i].y, tmp_mesh->mVertices[i].z);
+					mesh->SetVertices(vertex);
 				}
-				free(vertices);
 			}
 
 			// Normals position
 			if (tmp_mesh->HasNormals())
 			{
-				float*  normals = (float*)malloc(sizeof(float) * 3 * tmp_mesh->mNumVertices);
-				memcpy(normals, tmp_mesh->mNormals, sizeof(float) * 3 * tmp_mesh->mNumVertices);
+				glm::vec3 *normals = (glm::vec3*) malloc(sizeof(glm::vec3)*tmp_mesh->mNumVertices);
 
 				for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i += 3)
 				{
 #ifdef PRINT_DEBUG_MESH_INFO
 					std::cout << "Normal: (" << normals[i] << ", " << normals[i + 1] << ", " << normals[i + 2] << ")" << std::endl;
 #endif // PRINT_DEBUG_MESH_INFO
-					glm::vec3 normal = glm::vec3(normals[i], normals[i + 1], normals[i + 2]);
-					mesh->AddNormal(normal);
+					normals[i] = glm::vec3(tmp_mesh->mNormals[i].x, tmp_mesh->mNormals[i].y, tmp_mesh->mNormals[i].z);
+					mesh->SetNormals(normals);
 				}
-				free(normals);
 			}
 
 			// Texture Coords
 			if (tmp_mesh->HasTextureCoords(0))
 			{
+				glm::vec2 *texture_coords = (glm::vec2*) malloc(sizeof(glm::vec2)*tmp_mesh->mNumVertices);
+
 				for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i++)
 				{
 #ifdef PRINT_DEBUG_MESH_INFO
 					std::cout << "TextCoord: (" << tmp_mesh->mTextureCoords[0][i].x << ", " << tmp_mesh->mTextureCoords[0][i].y << ")" << std::endl;
 #endif // PRINT_DEBUG_MESH_INFO
-					glm::vec2 texture_coord = glm::vec2(tmp_mesh->mTextureCoords[0][i].x, tmp_mesh->mTextureCoords[0][i].y);
-					mesh->AddTextureCoord(texture_coord);
+					texture_coords[i] = glm::vec2(tmp_mesh->mTextureCoords[0][i].x, tmp_mesh->mTextureCoords[0][i].y);
+					mesh->SetTextureCoords(texture_coords);
 				}
 			}
 
