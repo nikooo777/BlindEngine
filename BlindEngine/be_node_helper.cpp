@@ -12,7 +12,7 @@ BEnodeHelper::~BEnodeHelper()
 
 void BEnodeHelper::Render()
 {
-	std::cout << std::endl << "Rendering a node ";
+	std::cout << std::endl << "Rendering a node helper ";
 	BEnode::PrintName();
 	for each (BEnode* n in BEnode::children_){
 		n->Render();
