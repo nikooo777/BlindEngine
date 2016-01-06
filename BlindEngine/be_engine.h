@@ -4,6 +4,7 @@
 
 // OurClasses
 #include "be_light.h"
+#include "be_list.h"
 
 /*
 SINGLETON class
@@ -23,6 +24,8 @@ public:
 	glm::mat4 get_ortho() const { return ortho_; }
 	void SetPerspective(glm::mat4 perspective);
 	void SetOrtho(glm::mat4 ortho);
+
+	static BElist *lists_;
 
 private:
 	static BEengine* instance_;
