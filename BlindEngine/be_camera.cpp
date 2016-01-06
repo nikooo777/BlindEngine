@@ -10,10 +10,10 @@ BEcamera::~BEcamera()
 {
 }
 
-void BEcamera::Render()
+void BEcamera::Render(glm::mat4& f)
 {
 	std::cout << "Rendering a camera" << std::endl;
 	for each (BEnode* n in BEnode::children_){
-		n->Render();
+		n->Render(f*transformation_);
 	}
 }

@@ -1,5 +1,4 @@
 #include "be_node.h"
-#include "be_node_helper.h"
 
 BEnode* BEnode::super_root_node = new BEnode("root_node",ROOT);
 
@@ -82,10 +81,11 @@ BEnode* BEnode::find(long id)
 	return nullptr;
 }
 
-void BEnode::Render()
+void BEnode::Render(glm::mat4& f)
 {
+	glLoadMatrixf(glm::value_ptr(f));
 	std::cout << "Wrong place" << std::endl;
 	for each (BEnode* n in BEnode::children_){
-		n->Render();
+		n->Render(f*transformation_);
 	}
 }

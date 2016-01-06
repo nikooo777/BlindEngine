@@ -3,7 +3,6 @@
 #include <map>
 #include "be_light.h"
 #include "be_material.h"
-#include "be_node_helper.h"
 
 
 BEsceneLoader::BEsceneLoader()
@@ -242,8 +241,13 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 		memcpy(&tranformation, &matrix, sizeof tranformation);
 		tranformation = glm::transpose(tranformation);
 		node->SetTransformation(tranformation);
-
 	}
+
+	// Convert aiMatrix into an OpenGL matrix:
+	glm::mat4 tranformation;
+	memcpy(&tranformation, &this_node->mTransformation, sizeof tranformation);
+	tranformation = glm::transpose(tranformation);
+	node->SetTransformation(tranformation);
 
 	std::cout << parent;
 	node->PrintName();

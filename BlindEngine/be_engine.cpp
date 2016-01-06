@@ -93,7 +93,7 @@ void displayCallback()
 	// Set model matrix as current OpenGL matrix:
 	glLoadMatrixf(glm::value_ptr(f));
 
-	root->Render();
+	root->Render(f);
 
 	//////
 	// 2D:

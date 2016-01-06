@@ -20,20 +20,20 @@ void BElist::RenderMeshes()
 {
 	for (const auto& pair : meshes_)
 	{
-		pair.first->Render();
+		pair.first->Render(glm::mat4(1));
 	}
 }
 void BElist::RenderLights()
 {
 	for (const auto& pair : lights_)
 	{
-		pair.first->Render();
+		pair.first->Render(glm::mat4(1));
 	}
 }
 void BElist::RenderCameras()
 {
 	for (const auto& pair : cameras_)
 	{
-		pair.first->Render();
+		pair.first->Render(glm::mat4(1));
 	}
 }
