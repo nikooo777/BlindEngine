@@ -54,11 +54,13 @@ BElight* BElight::CreateSpotLight(const std::string name, glm::vec3 ambient, glm
 	return new BElight(SPOTLIGHT, name, glm::vec4(ambient, 1.0f), glm::vec4(diffuse, 1.0f), glm::vec4(specular, 1.0f), position, direction, cutoff);
 }
 
-void BElight::Render()
+void BElight::Render(glm::mat4& f)
 {
+	/*
 	std::cout << "Rendering a Light ";
 	BEnode::PrintName();
-
+	*/
+	/*
 	//Common color property
 	glLightfv(light_number_, GL_AMBIENT, glm::value_ptr(ambient_));
 	glLightfv(light_number_, GL_DIFFUSE, glm::value_ptr(diffuse_));
@@ -73,9 +75,11 @@ void BElight::Render()
 		glLightfv(light_number_, GL_SPOT_CUTOFF, &cutoff_);
 		glLightfv(light_number_, GL_SPOT_DIRECTION, glm::value_ptr(direction_));
 	}
-
+	}
+	}*/
+	glLoadMatrixf(glm::value_ptr(f));
 	for each (BEnode* n in BEnode::children_){
-		n->Render();
+		n->Render(f*transformation_);
 	}
 }
 

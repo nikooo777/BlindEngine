@@ -55,5 +55,5 @@ public:
 	~BElight();
 
 	//inherited render method
-	virtual void Render() override;
+	virtual void Render(glm::mat4&) override;
 };

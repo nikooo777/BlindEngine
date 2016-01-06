@@ -10,7 +10,7 @@ public:
 	BEmesh(std::string,glm::vec3*, long, glm::vec3*, glm::vec2*, BEmaterial* );
 	//BEmesh(glm::vec3*, long, glm::vec3*, glm::vec2*, BEmaterial*);
 	~BEmesh();
-	virtual void Render() override;
+	virtual void Render(glm::mat4&) override;
 
 	void SetVertices(glm::vec3 *vertices){ vertices_ = vertices; }
 	void SetVerticesCount(unsigned int vertices_count){ vertices_count_ = vertices_count; }

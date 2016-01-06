@@ -11,7 +11,7 @@ BEtexture::~BEtexture()
 }
 
 
-void BEtexture::Render()
+void BEtexture::Render(glm::mat4& f)
 {
 
 }

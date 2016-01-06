@@ -5,6 +5,6 @@ class BEtexture : public BEobject
 public:
 	BEtexture();
 	~BEtexture();
-	void Render() override;
+	void Render(glm::mat4&) override;
 private:
 };
