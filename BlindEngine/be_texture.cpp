@@ -39,9 +39,9 @@ void BEtexture::LoadTexture(std::string path, std::string name)
 	glGenTextures(1, &texture_id_);
 	glBindTexture(GL_TEXTURE_2D, texture_id_);
 	FIBITMAP *bitmap_image = FreeImage_Load(FreeImage_GetFileType(full_path.c_str(), 0), full_path.c_str());
-	if (bitmap_image == nullptr)
+	if (!bitmap_image)
 	{
-		std::cout << "Failed to load texture!"  << full_path<< std::endl;
+		std::cout << "Failed to load texture: "  << full_path<< std::endl;
 	}
 
 	texture_image_ = FreeImage_ConvertTo32Bits(bitmap_image);
