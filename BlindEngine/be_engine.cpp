@@ -10,7 +10,7 @@ BEnode *root;
 
 // Rotation angles:
 float angleX = 0.0f, angleY = 0.0f;
-float distance = -20.0f;
+float distance = -5.0f;
 float globalX = .0f;
 float globalY = .0f;
 
@@ -169,19 +169,19 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		automatic = !automatic;
 		break;
 	case 'a':
-		globalX -= 2.5f;
+		globalX -= 1.5f;
 		break;
 
 	case 'd':
-		globalX += 2.5f;
+		globalX += 1.5f;
 		break;
 
 	case 'w':
-		globalY += 2.5f;
+		globalY += 1.5f;
 		break;
 
 	case 's':
-		globalY -= 2.5f;
+		globalY -= 1.5f;
 		break;
 	}
 
@@ -226,11 +226,11 @@ void specialCallback(int key, int mouseX, int mouseY)
 		break;
 
 	case GLUT_KEY_PAGE_DOWN:
-		distance += 5.0f;
+		distance += 2.0f;
 		break;
 
 	case GLUT_KEY_PAGE_UP:
-		distance -= 5.0f;
+		distance -= 2.0f;
 		break;
 	}
 

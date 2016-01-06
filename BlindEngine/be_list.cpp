@@ -37,3 +37,13 @@ void BElist::RenderCameras()
 		pair.first->Render(glm::mat4(1));
 	}
 }
+
+void BElist::AddMaterial(BEmaterial* material)
+{
+	materials_.push_back(material);
+}
+
+BEmaterial* BElist::GetMaterial(unsigned int index)
+{
+	return materials_[index];
+}
