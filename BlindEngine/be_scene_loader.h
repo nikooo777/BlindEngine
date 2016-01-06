@@ -3,6 +3,7 @@
 #include "be_light.h"
 #include "be_logging.h"
 #include "be_includes.h"
+#include "be_mesh.h"
 
 class BEsceneLoader
 {
@@ -17,7 +18,7 @@ private:
 
 	BEnode* BuildScene(aiNode* root, BEnode* parent, aiNode* thisNode);
 
-	BEnode * ExtractMesh(aiMesh * tmp_mesh);
+	BEmesh * ExtractMesh(aiNode* node_container, aiMesh * mesh_container);
 
 	BElight* ExtractLight(aiLight* tmp_light);
 
@@ -30,5 +31,7 @@ private:
 	aiMaterial* FindMaterial(unsigned int mMaterialIndex);
 	aiMesh* FindMesh(aiString name);
 	aiTexture* FindTexture(unsigned int texture_index);
+
 	void ParseMaterials();
+	void ParseMeshes();
 };

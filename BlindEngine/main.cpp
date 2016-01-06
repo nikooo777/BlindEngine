@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 	be_logging::log("Engine initialized");
 	be_logging::log("Starting Engine...");
 
-	engine->LoadScene("cornelbox.DAE");
+	engine->LoadScene("Rubik_Downloaded.DAE");
 
 	engine->Start();
 	be_logging::log("Program exiting...");

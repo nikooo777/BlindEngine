@@ -3,8 +3,9 @@
 class BEtexture : public BEobject
 {
 public:
-	BEtexture();
+	BEtexture(std::string);
 	~BEtexture();
-	void Render(glm::mat4) override;
+	void Render(glm::mat4, bool is_sub_mesh = false) override;
 private:
+	std::string name_;
 };

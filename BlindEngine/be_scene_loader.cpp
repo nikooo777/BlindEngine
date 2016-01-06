@@ -1,8 +1,8 @@
 #include "be_scene_loader.h"
-#include "be_mesh.h"
 #include <map>
 #include "be_light.h"
 #include "be_material.h"
+#include "be_engine.h"
 
 
 BEsceneLoader::BEsceneLoader()
@@ -100,7 +100,8 @@ BEnode*  BEsceneLoader::LoadScene(char * scene_path)
 	// End debug info
 	//////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////// 
-	//ParseMaterials();
+	ParseMaterials();
+	ParseMeshes();
 
 	return BuildScene(scene_->mRootNode, nullptr, scene_->mRootNode);
 }
@@ -138,7 +139,7 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 
 		if (scene_->mNumMeshes > 0 && (tmp_mesh = FindMesh(this_node->mName)) != nullptr)
 		{
-			node = ExtractMesh(tmp_mesh);
+			node = ExtractMesh(this_node, tmp_mesh);
 		}
 		else if ((tmp_camera = FindCamera(this_node->mName)) != nullptr)
 		{
@@ -158,7 +159,9 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 		else
 		{
 			std::cout << "Something unknown in the tree was found." << std::endl;
-			node = nullptr; // @Todo: Edit it -> Only for not crash
+			//node = nullptr; // @Todo: Edit it -> Only for not crash
+			const std::string name = std::string(this_node->mName.C_Str());
+			node = new BEnode(name, BEnode::ROOT);
 		}
 
 		node->SetParent(parent);
@@ -230,9 +233,11 @@ aiCamera* BEsceneLoader::FindCamera(aiString name)
 */
 aiLight* BEsceneLoader::FindLight(aiString name)
 {
+	std::string target = std::string(name.C_Str());
+
 	for (unsigned int i = 0; i < scene_->mNumLights; i++)
 	{
-		if (scene_->mLights[i]->mName == name)
+		if (scene_->mLights[i]->mName == name || target.find(".Target") != std::string::npos)
 			return scene_->mLights[i];
 	}
 
@@ -323,7 +328,7 @@ BElight* BEsceneLoader::ExtractLight(aiLight * light_container)
 	return light;
 }
 
-BEnode * BEsceneLoader::ExtractMesh(aiMesh * mesh_container)
+BEmesh * BEsceneLoader::ExtractMesh(aiNode* node_container, aiMesh * mesh_container)
 {
 	std::cout << "A mesh was found. Extracting..." << std::endl;
 	std::string name = mesh_container->mName.C_Str();
@@ -356,69 +361,88 @@ BEnode * BEsceneLoader::ExtractMesh(aiMesh * mesh_container)
 	}
 
 
-	for (unsigned int i = 0; i < mesh_container->mNumVertices; i++)
-	{
-		texture_coords[i] = glm::vec2(mesh_container->mTextureCoords[0][i].x, mesh_container->mTextureCoords[0][i].y);
-	}
+	if (mesh_container->mTextureCoords && mesh_container->mTextureCoords[0])
+		for (unsigned int i = 0; i < mesh_container->mNumVertices; i++)
+		{
+			texture_coords[i] = glm::vec2(mesh_container->mTextureCoords[0][i].x, mesh_container->mTextureCoords[0][i].y);
+		}
 
 
 	// Material
 	BEmaterial *material = nullptr;
 	aiMaterial *material_container;
-	if ((material_container = FindMaterial(mesh_container->mMaterialIndex)) != nullptr)
-	{
-		//BEmaterial *material = new BEmaterial();
-		//mesh->SetMaterial(material);
+	std::cout << std::endl << "MATERIAL INDEX " << mesh_container->mMaterialIndex << std::endl;
+	//if (mesh_container->mMaterialIndex)
+	//{
+	material = BEengine::lists_->GetMaterial(mesh_container->mMaterialIndex);
+	//}
+
+	if (node_container){
+		std::cout << "RENDER " << node_container->mNumMeshes << std::endl;
+		return new BEmesh(name, vertices, mesh_container->mNumVertices, normals, texture_coords, material, node_container->mNumMeshes, node_container->mMeshes);
 	}
-	return new BEmesh(name, vertices, mesh_container->mNumVertices, normals, texture_coords, material);
+	else
+	{
+		return new BEmesh(name, vertices, mesh_container->mNumVertices, normals, texture_coords, material, 0, nullptr);
+	}
 }
 // Pass the materials' list in scene_ and add into the class BElist
 void BEsceneLoader::ParseMaterials()
 {
 	aiMaterial *material_container;
+	std::cout << std::endl << "NumMaterial: " << scene_->mNumMaterials << std::endl;
 	for (unsigned int i = 0; i < scene_->mNumMaterials; i++)
 	{
 		material_container = scene_->mMaterials[i];
 
+		aiString matName;
+		material_container->Get(AI_MATKEY_NAME, matName);
+		std::cout << "    MatName    : " << matName.C_Str() << std::endl;
 
+		// Get properties:
+		glm::vec4 ambient;
+		aiColor4D material_ambient;
+		material_container->Get(AI_MATKEY_COLOR_AMBIENT, material_ambient);
+		memcpy(&ambient, &material_ambient, sizeof ambient);
+		std::cout << "    Ambient : " << material_ambient.r << ", " << material_ambient.g << ", " << material_ambient.b << ", " << material_ambient.a << std::endl;
 
 		glm::vec4 diffuse;
 		aiColor4D material_diffuse;
-		if (AI_SUCCESS == aiGetMaterialColor(material_container, AI_MATKEY_COLOR_DIFFUSE, &material_diffuse))
-			memcpy(&diffuse, &material_diffuse, sizeof diffuse);
-		
-		glm::vec4 ambient;
-		aiColor4D material_ambient;
-		if (AI_SUCCESS == aiGetMaterialColor(material_container, AI_MATKEY_COLOR_AMBIENT, &material_ambient))
-			memcpy(&ambient, &material_ambient, sizeof ambient);
+		material_container->Get(AI_MATKEY_COLOR_DIFFUSE, material_diffuse);
+		memcpy(&diffuse, &material_diffuse, sizeof diffuse);
+		std::cout << "    Diffuse : " << material_diffuse.r << ", " << material_diffuse.g << ", " << material_diffuse.b << ", " << material_diffuse.a << std::endl;
 
 		glm::vec4 specular;
 		aiColor4D material_specular;
-		if (AI_SUCCESS == aiGetMaterialColor(material_container, AI_MATKEY_COLOR_SPECULAR, &material_specular))
-			memcpy(&specular, &material_specular, sizeof specular);
+		material_container->Get(AI_MATKEY_COLOR_SPECULAR, material_specular);
+		memcpy(&specular, &material_specular, sizeof specular);
+		std::cout << "    Specular: " << material_specular.r << ", " << material_specular.g << ", " << material_specular.b << ", " << material_specular.a << std::endl;
 
-		glm::vec4 emission;
-		aiColor4D material_emission;
-		if (AI_SUCCESS == aiGetMaterialColor(material_container, AI_MATKEY_COLOR_EMISSIVE, &material_emission))
-			memcpy(&emission, &material_emission, sizeof emission);
+		float shininess, shininess_strength;
+		material_container->Get(AI_MATKEY_SHININESS, shininess);
+		material_container->Get(AI_MATKEY_SHININESS_STRENGTH, shininess_strength);
+		std::cout << "    Shinin. : " << shininess << " " << shininess_strength << std::endl;
 
-		float shininess = 0.0;
-		unsigned int max;
-		aiGetMaterialFloatArray(material_container, AI_MATKEY_SHININESS, &shininess, &max);
+		BEtexture *texture = nullptr;
+		if (material_container->GetTextureCount(aiTextureType_DIFFUSE))
+		{
+			aiString textureName;
+			material_container->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), textureName);
+			std::cout << "    Texture : " << textureName.C_Str() << std::endl;
 
+			texture = new BEtexture(textureName.C_Str());
+		}
 
-		/************************************************************************/
-		/* To store:
-		 * 
-		 * - Diffuse
-		 * - Ambient
-		 * - Specular
-		 * - Emission
-		 * - Shininess 
-		/************************************************************************/
-
-		/************************************************************************/
-		/* Add to BElist
-		/************************************************************************/
+		BEmaterial *material = new BEmaterial(matName.C_Str(), ambient, diffuse, specular, shininess, shininess_strength, texture);
+		BEengine::lists_->AddMaterial(material);
 	}
+}
+
+void BEsceneLoader::ParseMeshes()
+{
+	BEmesh*material;
+
+	for (unsigned int i = 0; i < scene_->mNumMeshes; i++)
+		BEengine::lists_->AddMesh(ExtractMesh(nullptr, scene_->mMeshes[i]));
+
 }

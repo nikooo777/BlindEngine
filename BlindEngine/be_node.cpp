@@ -81,12 +81,12 @@ BEnode* BEnode::find(long id)
 	return nullptr;
 }
 
-void BEnode::Render(glm::mat4 f)
+void BEnode::Render(glm::mat4 f, bool is_sub_mesh)
 {
 	glm::mat4 tmpF = f*transformation_;
 	glLoadMatrixf(glm::value_ptr(tmpF));
 
-	std::cout << "Wrong place" << std::endl;
+	//std::cout << "Wrong place" << std::endl;
 	for each (BEnode* n in BEnode::children_){
 		n->Render(tmpF);
 	}

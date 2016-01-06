@@ -10,7 +10,7 @@ BEnode *root;
 
 // Rotation angles:
 float angleX = 0.0f, angleY = 0.0f;
-float distance = -5.0f;
+float distance = -10.0f;
 float globalX = .0f;
 float globalY = .0f;
 
@@ -23,18 +23,7 @@ float tiling = 1.0f;
 bool forceNewTexture = true;
 
 // Auto/manual flag:
-bool automatic = true;
-
-// Show/hide normals:
-bool showNormals = false;
-
-// Mipmaps?
-bool useMipmaps = false;
-
-// Anisotrophic?
-bool isAnisotropicSupported = false;
-bool anisotropic = false;
-int anisotropicLevel = 1;
+bool automatic = false;
 
 // Frame counter:
 int frames = 0;
@@ -144,8 +133,6 @@ void displayCallback()
 */
 void reshapeCallback(int width, int height)
 {
-	std::cout << "[reshape func invoked]" << std::endl;
-
 	// Update viewport size:
 	glViewport(0, 0, width, height);
 
@@ -241,6 +228,20 @@ void specialCallback(int key, int mouseX, int mouseY)
 	glutPostWindowRedisplay(BEengine::GetInstance()->get_window_id());
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+* This callback is invoked each second.
+* @param value passepartout value
+*/
+void timerCallback(int value)
+{
+	fps = frames / 1.0f;
+	frames = 0;
+
+	// Register the next update:
+	glutTimerFunc(1000, timerCallback, 0);
+}
+
 //////////////////////////////////////////////////////////////////////////
 void BEengine::Init(char* window_name, int x_position, int y_position, int width, int heigth, void(*keyCallback)(int, int, int), int argc, char *argv[])
 {
@@ -263,12 +264,15 @@ void BEengine::Init(char* window_name, int x_position, int y_position, int width
 	glutReshapeFunc(reshapeCallback);
 	glutKeyboardFunc(keyboardCallback);
 	glutSpecialFunc(specialCallback);
+	glutTimerFunc(1000, timerCallback, 0);
 
 	// Global OpenGL settings:
 	glClearColor(1.0f, 0.6f, 0.1f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
+	glEnable(GL_NORMALIZE);
+	glEnable(GL_CULL_FACE);
 
 
 	BEengine::initialized_ = true;
@@ -296,10 +300,10 @@ int BEengine::Start()
 	return EXIT_FAILURE;
 }
 
-void BEengine::LoadScene(char *)
+void BEengine::LoadScene(char *fileName)
 {
 	BEsceneLoader scene_loader;
-	root = scene_loader.LoadScene("cornelbox.DAE");
+	root = scene_loader.LoadScene(fileName);
 }
 
 //retrieves the window id of the current instance

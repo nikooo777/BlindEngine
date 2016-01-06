@@ -54,9 +54,9 @@ BElight* BElight::CreateSpotLight(const std::string name, glm::vec3 ambient, glm
 	return new BElight(SPOTLIGHT, name, glm::vec4(ambient, 1.0f), glm::vec4(diffuse, 1.0f), glm::vec4(specular, 1.0f), position, direction, cutoff);
 }
 
-void BElight::Render(glm::mat4 f)
+void BElight::Render(glm::mat4 f, bool is_sub_mesh)
 {
-	std::cout << "Rendering a Light: " << get_name() << std::endl;
+	//std::cout << "Rendering a Light: " << get_name() << std::endl;
 	/*
 	//Common color property
 	glLightfv(light_number_, GL_AMBIENT, glm::value_ptr(ambient_));
