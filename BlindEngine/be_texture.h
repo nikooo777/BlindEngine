@@ -8,7 +8,7 @@ public:
 	BEtexture(std::string name, std::string texture_path, std::string texture_name);
 	~BEtexture();
 	void Render(glm::mat4) override;
-	int texture_id_;
+	unsigned int texture_id_;
 	FIBITMAP * texture_image_;
 	void LoadTexture(std::string path, std::string name);
 private:

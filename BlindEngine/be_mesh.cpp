@@ -46,7 +46,7 @@ void BEmesh::Render(glm::mat4 cumulated_transformation_matrix)
 	//glDrawArrays(GL_TRIANGLES, 0, vertices_count_);
 	//glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
 
-	// std::cout << "Rendering Mesh: " << BEobject::get_name() << std::endl;
+	//std::cout << "Rendering Mesh: " << BEobject::get_name() << std::endl;
 	/*
 	std::cout << "Children count: " << BEnode::GetChildren().size() << std::endl;
 	*/
@@ -54,13 +54,16 @@ void BEmesh::Render(glm::mat4 cumulated_transformation_matrix)
 	glLoadMatrixf(glm::value_ptr(tmpF));
 
 	if (material_)
+	{
+		//std::cout << "The mesh contains a material"<< std::endl;
 		material_->Render(tmpF);
+	}
 
 	glBegin(GL_TRIANGLES);
 	for (unsigned int i = 0; i < vertices_count_; i++)
 	{
-		//std::cout << " vertex " << i << ": x: " << vertices_[i].x << " y: " << vertices_[i].y << " z: " << vertices_[i].z << std::endl;
 		glNormal3fv(glm::value_ptr(normals_[i]));
+		glTexCoord2fv(glm::value_ptr(texture_coords_[i]));
 		glVertex3fv(glm::value_ptr(vertices_[i]));
 	}
 	glEnd();

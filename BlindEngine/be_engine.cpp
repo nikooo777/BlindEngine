@@ -253,6 +253,8 @@ void BEengine::Init(char* window_name, int x_position, int y_position, int width
 	// FreeGLUT can parse command-line params, in case:
 	glutInit(&argc, argv);
 
+	FreeImage_Initialise();
+
 	// Set some optional flags:
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 

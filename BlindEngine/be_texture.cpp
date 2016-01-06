@@ -14,32 +14,38 @@ BEtexture::~BEtexture()
 
 void BEtexture::Render(glm::mat4 f)
 {
-	
+	//std::cout << "Rendering texture: " << get_name() << std::endl;
+
 	glEnable(GL_TEXTURE_2D);
 
 	// Update texture content
 	glBindTexture(GL_TEXTURE_2D, texture_id_);
-
 	// Set circular coordinates:
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
 
 	// Set min/mag filters:
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, FreeImage_GetWidth(texture_image_), FreeImage_GetHeight(texture_image_), GL_BGRA_EXT, GL_UNSIGNED_BYTE, (void*)FreeImage_GetBits(texture_image_));
-	//glDisable(GL_TEXTURE_2D);
-	std::cout << "Rendering texture: " << get_name() << std::endl;
-	
 }
 
 void BEtexture::LoadTexture(std::string path, std::string name)
 {
+
+	std::cout << "Loading a texture at path: " << path << "with name: " << name << std::endl;
 	std::string full_path = path + name;
 
 	// Load an image from file:
+	glGenTextures(1, &texture_id_);
+	glBindTexture(GL_TEXTURE_2D, texture_id_);
 	FIBITMAP *bitmap_image = FreeImage_Load(FreeImage_GetFileType(full_path.c_str(), 0), full_path.c_str());
+	if (bitmap_image == nullptr)
+	{
+		std::cout << "Failed to load texture!"  << full_path<< std::endl;
+	}
+
 	texture_image_ = FreeImage_ConvertTo32Bits(bitmap_image);
+	gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, FreeImage_GetWidth(texture_image_), FreeImage_GetHeight(texture_image_), GL_BGRA_EXT, GL_UNSIGNED_BYTE, (void*)FreeImage_GetBits(texture_image_));
+
 	FreeImage_Unload(bitmap_image);
 }
