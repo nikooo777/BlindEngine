@@ -4,7 +4,7 @@
 class BEobject
 {
 public:
-	virtual void Render(glm::mat4, bool is_sub_mesh = false) = 0;
+	virtual void Render(glm::mat4 cumulated_transformation_matrix) = 0;
 	virtual ~BEobject();
 	BEobject();
 	BEobject(const std::string);

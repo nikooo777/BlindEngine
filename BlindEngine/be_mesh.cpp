@@ -34,7 +34,7 @@ BEmesh::~BEmesh()
 	delete[] material_;
 }
 
-void BEmesh::Render(glm::mat4 f, bool is_sub_mesh)
+void BEmesh::Render(glm::mat4 cumulated_transformation_matrix)
 {
 	//TODO: eventually try other methods
 	//glVertexPointer(3, GL_FLOAT, 0, vertices_);
@@ -45,7 +45,7 @@ void BEmesh::Render(glm::mat4 f, bool is_sub_mesh)
 	/*
 	std::cout << "Children count: " << BEnode::GetChildren().size() << std::endl;
 	*/
-	glm::mat4 tmpF = f*transformation_;
+	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
 	glLoadMatrixf(glm::value_ptr(tmpF));
 
 	if (material_)
@@ -60,14 +60,12 @@ void BEmesh::Render(glm::mat4 f, bool is_sub_mesh)
 	}
 	glEnd();
 
-	if (!is_sub_mesh){
 		for (unsigned int i = 0; i < sub_meshes_count_; i++)
 		{
-			BEengine::lists_->GetMesh(sub_meshes_[i])->Render(tmpF, true);
+			BEengine::lists_->GetMesh(sub_meshes_[i])->Render(tmpF);
 		}
 
 		for each (BEnode* n in BEnode::children_){
 			n->Render(tmpF);
 		}
-	}
 }

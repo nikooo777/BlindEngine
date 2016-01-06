@@ -10,7 +10,7 @@ BEcamera::~BEcamera()
 {
 }
 
-void BEcamera::Render(glm::mat4 f, bool is_sub_mesh)
+void BEcamera::Render(glm::mat4 f)
 {
 	std::cout << "Rendering a camera" << std::endl;
 	for each (BEnode* n in BEnode::children_){

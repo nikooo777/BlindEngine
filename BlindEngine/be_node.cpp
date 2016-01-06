@@ -81,7 +81,7 @@ BEnode* BEnode::find(long id)
 	return nullptr;
 }
 
-void BEnode::Render(glm::mat4 f, bool is_sub_mesh)
+void BEnode::Render(glm::mat4 f)
 {
 	glm::mat4 tmpF = f*transformation_;
 	glLoadMatrixf(glm::value_ptr(tmpF));
