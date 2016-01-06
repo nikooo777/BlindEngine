@@ -1,16 +1,26 @@
 #include "be_material.h"
 
 
-BEmaterial::BEmaterial()
+BEmaterial::BEmaterial(std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, float shininess, BEtexture* texture) : BEobject(name)
 {
+	ambient_ = ambient;
+	diffuse_ = diffuse;
+	specular_ = specular;
+	shininess_ = shininess;
+	texture_ = texture;
 }
 
 
 BEmaterial::~BEmaterial()
 {
+
 }
 
 void BEmaterial::Render(glm::mat4 f)
 {
-
+	std::cout << "Rendering material: " << get_name() << std::endl;
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(ambient_));
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glm::value_ptr(diffuse_));
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, glm::value_ptr(specular_));
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininess_);
 }

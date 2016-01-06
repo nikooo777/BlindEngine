@@ -33,8 +33,8 @@ void BEmesh::Render(glm::mat4 f)
 	//glDrawArrays(GL_TRIANGLES, 0, vertices_count_);
 	//glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
 
-	/*
 	std::cout << "Rendering Mesh: " << BEobject::get_name() << std::endl;
+	/*
 	std::cout << "Children count: " << BEnode::GetChildren().size() << std::endl;
 	*/
 	glm::mat4 tmpF = f*transformation_;
@@ -49,6 +49,9 @@ void BEmesh::Render(glm::mat4 f)
 		glVertex3fv(glm::value_ptr(vertices_[i]));
 	}
 	glEnd();
+
+	if (material_ != nullptr)
+		material_->Render(f);
 
 	for each (BEnode* n in BEnode::children_){
 		n->Render(tmpF);
