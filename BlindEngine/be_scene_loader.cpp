@@ -99,6 +99,8 @@ BEnode*  BEsceneLoader::LoadScene(char * scene_path)
 
 	// End debug info
 	//////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////// 
+	ParseMaterials();
 
 	return BuildScene(scene_->mRootNode, nullptr, scene_->mRootNode);
 }
@@ -192,14 +194,8 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 			//mesh->SetTextureCoords(texture_coords);
 			//	}
 
-			// Material
+			// to change
 			BEmaterial *material = nullptr;
-			aiMaterial *tmp_material;
-			if ((tmp_material = FindMaterial(tmp_mesh->mMaterialIndex)) != nullptr)
-			{
-				//BEmaterial *material = new BEmaterial();
-				//mesh->SetMaterial(material);
-			}
 			node = new BEmesh(name, vertices, tmp_mesh->mNumVertices, normals, texture_coords, material);
 		}
 		else if ((tmp_camera = FindCamera(this_node->mName)) != nullptr)
@@ -383,4 +379,71 @@ BElight* BEsceneLoader::ExtractLight(aiLight * tmp_light)
 	light->SetAttenuationLinear(tmp_light->mAttenuationLinear);
 	light->SetAttenuationQuadratic(tmp_light->mAttenuationQuadratic);
 	return light;
+}
+
+void set_float4(float f[4], float a, float b, float c, float d)
+{
+	f[0] = a;
+	f[1] = b;
+	f[2] = c;
+	f[3] = d;
+}
+
+void color4_to_float4(const aiColor4D *c, float f[4])
+{
+	f[0] = c->r;
+	f[1] = c->g;
+	f[2] = c->b;
+	f[3] = c->a;
+}
+
+// Pass the materials' list in scene_ and add into the class BElist
+void BEsceneLoader::ParseMaterials()
+{
+	aiMaterial *material_container;
+	for (unsigned int i = 0; i < scene_->mNumMaterials; i++)
+	{
+		material_container = scene_->mMaterials[i];
+
+
+
+		glm::vec4 diffuse;
+		aiColor4D material_diffuse;
+		if (AI_SUCCESS == aiGetMaterialColor(material_container, AI_MATKEY_COLOR_DIFFUSE, &material_diffuse))
+			memcpy(&diffuse, &material_diffuse, sizeof diffuse);
+		
+		glm::vec4 ambient;
+		aiColor4D material_ambient;
+		if (AI_SUCCESS == aiGetMaterialColor(material_container, AI_MATKEY_COLOR_AMBIENT, &material_ambient))
+			memcpy(&ambient, &material_ambient, sizeof ambient);
+
+		glm::vec4 specular;
+		aiColor4D material_specular;
+		if (AI_SUCCESS == aiGetMaterialColor(material_container, AI_MATKEY_COLOR_SPECULAR, &material_specular))
+			memcpy(&specular, &material_specular, sizeof specular);
+
+		glm::vec4 emission;
+		aiColor4D material_emission;
+		if (AI_SUCCESS == aiGetMaterialColor(material_container, AI_MATKEY_COLOR_EMISSIVE, &material_emission))
+			memcpy(&emission, &material_emission, sizeof emission);
+
+		float shininess = 0.0;
+		unsigned int max;
+		aiGetMaterialFloatArray(material_container, AI_MATKEY_SHININESS, &shininess, &max);
+
+
+		/************************************************************************/
+		/* To store:
+		 * 
+		 * - Diffuse
+		 * - Ambient
+		 * - Specular
+		 * - Emission
+		 * - Shininess 
+		/************************************************************************/
+
+		/************************************************************************/
+		/* Add to BElist
+		/************************************************************************/
+	}
 }

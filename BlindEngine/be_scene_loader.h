@@ -28,4 +28,5 @@ private:
 	aiMaterial* FindMaterial(unsigned int mMaterialIndex);
 	aiMesh* FindMesh(aiString name);
 	aiTexture* FindTexture(unsigned int texture_index);
+	void ParseMaterials();
 };

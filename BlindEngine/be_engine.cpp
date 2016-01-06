@@ -41,6 +41,8 @@ int frames = 0;
 float fps = 0.0f;
 
 BEengine* BEengine::instance_ = nullptr;
+BElist* BEengine::lists_ = nullptr;
+
 
 BEengine* BEengine::GetInstance()
 {
@@ -53,6 +55,7 @@ BEengine* BEengine::GetInstance()
 
 BEengine::BEengine()
 {
+	lists_ = new BElist();
 }
 
 
