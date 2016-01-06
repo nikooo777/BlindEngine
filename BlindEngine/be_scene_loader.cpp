@@ -136,71 +136,8 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 
 		if (scene_->mNumMeshes > 0 && (tmp_mesh = FindMesh(this_node->mName)) != nullptr)
 		{
-			std::cout << "A mesh was found. Extracting..." << std::endl;
-			std::string name = tmp_mesh->mName.C_Str();
-			//glm::vec3 *faces = (glm::vec3*) malloc(sizeof(glm::vec3)*tmp_mesh->mNumVertices);
-			glm::vec3 *vertices = (glm::vec3*) malloc(sizeof(glm::vec3)*tmp_mesh->mNumVertices);
-			glm::vec3 *normals = (glm::vec3*) malloc(sizeof(glm::vec3)*tmp_mesh->mNumVertices);
-			glm::vec2 *texture_coords = (glm::vec2*) malloc(sizeof(glm::vec2)*tmp_mesh->mNumVertices);
-			BEmesh* mesh = nullptr;
+			node = ExtractMesh(tmp_mesh);
 
-
-			//BEmesh *mesh = new BEmesh();
-
-			//// Faces
-			//if (tmp_mesh->HasFaces()){
-			//	unsigned int faceIndex = 0;
-
-			//	for (unsigned int i = 0; i < tmp_mesh->mNumFaces; ++i, faceIndex += 3) {
-			//		const aiFace* tmp_face = &tmp_mesh->mFaces[i];
-			//		faces[i] = glm::vec3(tmp_face->mIndices[0], tmp_face->mIndices[1], tmp_face->mIndices[2]);
-			//	}
-			//	mesh->SetFaces(faces);
-			//}
-
-			// Vertices position and normals (they come in pair)
-			//if (tmp_mesh->HasPositions()){
-			//	mesh->SetVerticesCount(tmp_mesh->mNumVertices);
-
-			for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i++)
-			{
-				vertices[i] = glm::vec3(tmp_mesh->mVertices[i].x, tmp_mesh->mVertices[i].y, tmp_mesh->mVertices[i].z);
-				normals[i] = glm::vec3(tmp_mesh->mNormals[i].x, tmp_mesh->mNormals[i].y, tmp_mesh->mNormals[i].z);
-			}
-			//mesh->SetVertices(vertex);
-			//}
-
-			// Normals position
-			/*if (tmp_mesh->HasNormals())
-			{
-
-			for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i += 3)
-			{
-			normals[i] = glm::vec3(tmp_mesh->mNormals[i].x, tmp_mesh->mNormals[i].y, tmp_mesh->mNormals[i].z);
-			}
-			mesh->SetNormals(normals);
-			}*/
-
-			// Texture Coords
-			/*	if (tmp_mesh->HasTextureCoords(0))
-			{*/
-
-			for (unsigned int i = 0; i < tmp_mesh->mNumVertices; i++)
-			{
-				texture_coords[i] = glm::vec2(tmp_mesh->mTextureCoords[0][i].x, tmp_mesh->mTextureCoords[0][i].y);
-			}
-			//mesh->SetTextureCoords(texture_coords);
-			//	}
-
-			// Material
-			BEmaterial *material = nullptr;
-			aiMaterial *tmp_material;
-			if ((tmp_material = FindMaterial(tmp_mesh->mMaterialIndex)) != nullptr)
-			{
-				//BEmaterial *material = new BEmaterial();
-				//mesh->SetMaterial(material);
-			}
-			node = new BEmesh(name, vertices, tmp_mesh->mNumVertices, normals, texture_coords, material);
 		}
 		else if ((tmp_camera = FindCamera(this_node->mName)) != nullptr)
 		{
@@ -230,7 +167,7 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 	{
 		// Create node and set name
 		const std::string name = std::string(this_node->mName.C_Str());
-		node = new BEnode(name,BEnode::ROOT);
+		node = new BEnode(name, BEnode::ROOT);
 		node->SetAsRoot();
 	}
 
@@ -350,18 +287,18 @@ aiTexture* BEsceneLoader::FindTexture(unsigned int texture_index)
 	return scene_->mTextures[texture_index];
 }
 
-BElight* BEsceneLoader::ExtractLight(aiLight * tmp_light)
+BElight* BEsceneLoader::ExtractLight(aiLight * light_container)
 {
 	BElight *light = nullptr;
 
-	glm::vec3 ambient = glm::vec3(tmp_light->mColorAmbient.r, tmp_light->mColorAmbient.g, tmp_light->mColorAmbient.b);
-	glm::vec3 diffuse = glm::vec3(tmp_light->mColorDiffuse.r, tmp_light->mColorDiffuse.g, tmp_light->mColorDiffuse.b);
-	glm::vec3 specular = glm::vec3(tmp_light->mColorSpecular.r, tmp_light->mColorSpecular.g, tmp_light->mColorSpecular.b);
-	glm::vec3 position = glm::vec3(tmp_light->mPosition.x, tmp_light->mPosition.y, tmp_light->mPosition.z);
-	glm::vec3 direction = glm::vec3(tmp_light->mDirection.x, tmp_light->mDirection.y, tmp_light->mDirection.z);
-	std::string light_name = tmp_light->mName.C_Str();
+	glm::vec3 ambient = glm::vec3(light_container->mColorAmbient.r, light_container->mColorAmbient.g, light_container->mColorAmbient.b);
+	glm::vec3 diffuse = glm::vec3(light_container->mColorDiffuse.r, light_container->mColorDiffuse.g, light_container->mColorDiffuse.b);
+	glm::vec3 specular = glm::vec3(light_container->mColorSpecular.r, light_container->mColorSpecular.g, light_container->mColorSpecular.b);
+	glm::vec3 position = glm::vec3(light_container->mPosition.x, light_container->mPosition.y, light_container->mPosition.z);
+	glm::vec3 direction = glm::vec3(light_container->mDirection.x, light_container->mDirection.y, light_container->mDirection.z);
+	std::string light_name = light_container->mName.C_Str();
 
-	switch (tmp_light->mType)
+	switch (light_container->mType)
 	{
 		//omnidirectional
 	case aiLightSource_POINT:
@@ -370,7 +307,7 @@ BElight* BEsceneLoader::ExtractLight(aiLight * tmp_light)
 
 		//spotlight
 	case aiLightSource_SPOT:
-		light = BElight::CreateSpotLight(light_name, ambient, diffuse, specular, position, direction, tmp_light->mAngleInnerCone);
+		light = BElight::CreateSpotLight(light_name, ambient, diffuse, specular, position, direction, light_container->mAngleInnerCone);
 		//light->SetAngleOuterCone(tmp_light->mAngleOuterCone);
 		break;
 		//directional
@@ -379,8 +316,58 @@ BElight* BEsceneLoader::ExtractLight(aiLight * tmp_light)
 		break;
 	}
 
-	light->SetAttenuationConstant(tmp_light->mAttenuationConstant);
-	light->SetAttenuationLinear(tmp_light->mAttenuationLinear);
-	light->SetAttenuationQuadratic(tmp_light->mAttenuationQuadratic);
+	light->SetAttenuationConstant(light_container->mAttenuationConstant);
+	light->SetAttenuationLinear(light_container->mAttenuationLinear);
+	light->SetAttenuationQuadratic(light_container->mAttenuationQuadratic);
 	return light;
+}
+
+BEnode * BEsceneLoader::ExtractMesh(aiMesh * mesh_container)
+{
+	std::cout << "A mesh was found. Extracting..." << std::endl;
+	std::string name = mesh_container->mName.C_Str();
+	//glm::vec3 *faces = (glm::vec3*) malloc(sizeof(glm::vec3)*tmp_mesh->mNumVertices);
+	glm::vec3 *vertices = (glm::vec3*) malloc(sizeof(glm::vec3)*mesh_container->mNumVertices);
+	glm::vec3 *normals = (glm::vec3*) malloc(sizeof(glm::vec3)*mesh_container->mNumVertices);
+	glm::vec2 *texture_coords = (glm::vec2*) malloc(sizeof(glm::vec2)*mesh_container->mNumVertices);
+
+	//BEmesh *mesh = new BEmesh();
+
+	// Faces
+	//if (tmp_mesh->HasFaces()){
+	//	unsigned int faceIndex = 0;
+
+	//	for (unsigned int i = 0; i < tmp_mesh->mNumFaces; ++i, faceIndex += 3) {
+	//		const aiFace* tmp_face = &tmp_mesh->mFaces[i];
+	//		faces[i] = glm::vec3(tmp_face->mIndices[0], tmp_face->mIndices[1], tmp_face->mIndices[2]);
+	//	}
+	//	mesh->SetFaces(faces);
+	//}
+
+	// Vertices position and normals (they come in pair)
+	//if (tmp_mesh->HasPositions()){
+	//	mesh->SetVerticesCount(tmp_mesh->mNumVertices);
+
+	for (unsigned int i = 0; i < mesh_container->mNumVertices; i++)
+	{
+		vertices[i] = glm::vec3(mesh_container->mVertices[i].x, mesh_container->mVertices[i].y, mesh_container->mVertices[i].z);
+		normals[i] = glm::vec3(mesh_container->mNormals[i].x, mesh_container->mNormals[i].y, mesh_container->mNormals[i].z);
+	}
+
+
+	for (unsigned int i = 0; i < mesh_container->mNumVertices; i++)
+	{
+		texture_coords[i] = glm::vec2(mesh_container->mTextureCoords[0][i].x, mesh_container->mTextureCoords[0][i].y);
+	}
+
+
+	// Material
+	BEmaterial *material = nullptr;
+	aiMaterial *tmp_material;
+	if ((tmp_material = FindMaterial(mesh_container->mMaterialIndex)) != nullptr)
+	{
+			BEmaterial *material = new BEmaterial();
+		//mesh->SetMaterial(material);
+	}
+	return new BEmesh(name, vertices, mesh_container->mNumVertices, normals, texture_coords, material);
 }

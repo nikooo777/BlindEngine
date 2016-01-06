@@ -17,6 +17,8 @@ private:
 
 	BEnode* BuildScene(aiNode* root, BEnode* parent, aiNode* thisNode);
 
+	BEnode * ExtractMesh(aiMesh * tmp_mesh);
+
 	BElight* ExtractLight(aiLight* tmp_light);
 
 	/*******************************
