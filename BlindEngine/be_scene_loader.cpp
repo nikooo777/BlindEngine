@@ -390,7 +390,7 @@ void BEsceneLoader::ParseMaterials()
 			material_container->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), textureName);
 			std::cout << "    Texture : " << textureName.C_Str() << std::endl;
 
-			texture = new BEtexture(textureName.C_Str());
+			texture = new BEtexture(textureName.C_Str(),"","lava.png");
 		}
 
 		BEmaterial *material = new BEmaterial(matName.C_Str(), ambient, diffuse, specular, shininess, shininess_strength, texture);

@@ -39,7 +39,7 @@ BEmesh::~BEmesh()
 	delete[] material_;
 }
 
-void BEmesh::Render(glm::mat4 f)
+void BEmesh::Render(glm::mat4 cumulated_transformation_matrix)
 {
 	//TODO: eventually try other methods
 	//glVertexPointer(3, GL_FLOAT, 0, vertices_);
@@ -50,8 +50,7 @@ void BEmesh::Render(glm::mat4 f)
 	/*
 	std::cout << "Children count: " << BEnode::GetChildren().size() << std::endl;
 	*/
-
-	glm::mat4 tmpF = f*transformation_;
+	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
 	glLoadMatrixf(glm::value_ptr(tmpF));
 
 	if (material_)
