@@ -10,7 +10,7 @@ BEmaterial::~BEmaterial()
 {
 }
 
-void BEmaterial::Render(glm::mat4& f)
+void BEmaterial::Render(glm::mat4 f)
 {
 
 }

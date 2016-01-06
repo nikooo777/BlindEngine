@@ -26,14 +26,14 @@ public:
 	void RemoveChild(BEnode *, bool = false);
 
 	void SetParent(BEnode *parent){ parent_ = parent; }
-	void SetTransformation(glm::mat4& transformation){ transformation_ = transformation; }
+	void SetTransformation(glm::mat4 transformation){ transformation_ = transformation; }
 	void SetAsRoot(){ parent_ = this;/*GetSuperRoot();*/ }
 
 	//Utility
 	BEnode* find(std::string);
 	BEnode* find(long);
 	//empty overridden render method
-	virtual void Render(glm::mat4&) override;
+	virtual void Render(glm::mat4) override;
 
 protected:
 	// Fields common in all children

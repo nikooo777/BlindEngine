@@ -26,7 +26,7 @@ BEmesh::~BEmesh()
 	delete[] material_;
 }
 
-void BEmesh::Render(glm::mat4 &f)
+void BEmesh::Render(glm::mat4 f)
 {
 	//TODO: eventually try other methods
 	//glVertexPointer(3, GL_FLOAT, 0, vertices_);

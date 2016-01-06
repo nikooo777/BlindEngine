@@ -6,5 +6,5 @@ public:
 	BEmaterial();
 	~BEmaterial();
 
-	void Render(glm::mat4&) override;
+	void Render(glm::mat4) override;
 };

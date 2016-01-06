@@ -232,15 +232,6 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 		const std::string name = std::string(this_node->mName.C_Str());
 		node = new BEnode(name,BEnode::ROOT);
 		node->SetAsRoot();
-
-		// Read matrix and set it
-		aiMatrix4x4 matrix = this_node->mTransformation; //row ordered
-
-		// Convert aiMatrix into an OpenGL matrix:
-		glm::mat4 tranformation;
-		memcpy(&tranformation, &matrix, sizeof tranformation);
-		tranformation = glm::transpose(tranformation);
-		node->SetTransformation(tranformation);
 	}
 
 	// Convert aiMatrix into an OpenGL matrix:
@@ -248,6 +239,7 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 	memcpy(&tranformation, &this_node->mTransformation, sizeof tranformation);
 	tranformation = glm::transpose(tranformation);
 	node->SetTransformation(tranformation);
+	//////////////////////////////////////////////////////////////////////////
 
 	std::cout << parent;
 	node->PrintName();

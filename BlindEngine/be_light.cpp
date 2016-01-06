@@ -54,7 +54,7 @@ BElight* BElight::CreateSpotLight(const std::string name, glm::vec3 ambient, glm
 	return new BElight(SPOTLIGHT, name, glm::vec4(ambient, 1.0f), glm::vec4(diffuse, 1.0f), glm::vec4(specular, 1.0f), position, direction, cutoff);
 }
 
-void BElight::Render(glm::mat4& f)
+void BElight::Render(glm::mat4 f)
 {
 	/*
 	std::cout << "Rendering a Light ";

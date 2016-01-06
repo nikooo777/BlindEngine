@@ -81,7 +81,7 @@ BEnode* BEnode::find(long id)
 	return nullptr;
 }
 
-void BEnode::Render(glm::mat4& f)
+void BEnode::Render(glm::mat4 f)
 {
 	glLoadMatrixf(glm::value_ptr(f));
 	std::cout << "Wrong place" << std::endl;
