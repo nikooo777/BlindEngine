@@ -56,8 +56,7 @@ BElight* BElight::CreateSpotLight(const std::string name, glm::vec3 ambient, glm
 
 void BElight::Render()
 {
-	std::cout << "Rendering a Light ";
-	BEnode::PrintName();
+	std::cout << "Rendering a Light: " << get_name() << std::endl;
 
 	//Common color property
 	glLightfv(light_number_, GL_AMBIENT, glm::value_ptr(ambient_));
