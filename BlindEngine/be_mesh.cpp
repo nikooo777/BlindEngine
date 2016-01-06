@@ -37,8 +37,10 @@ void BEmesh::Render(glm::mat4 f)
 	std::cout << "Rendering Mesh: " << BEobject::get_name() << std::endl;
 	std::cout << "Children count: " << BEnode::GetChildren().size() << std::endl;
 	*/
+	glm::mat4 tmpF = f*transformation_;
+	glLoadMatrixf(glm::value_ptr(tmpF));
+	
 
-	glLoadMatrixf(glm::value_ptr(f));
 	glBegin(GL_TRIANGLES);
 	for (unsigned int i = 0 ; i < vertices_count_; i++)
 	{
@@ -49,6 +51,6 @@ void BEmesh::Render(glm::mat4 f)
 	glEnd();
 
 	for each (BEnode* n in BEnode::children_){
-		n->Render(f*transformation_);
+		n->Render(tmpF);
 	}
 }

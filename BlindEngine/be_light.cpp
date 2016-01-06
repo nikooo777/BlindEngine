@@ -74,9 +74,12 @@ void BElight::Render(glm::mat4 f)
 	}
 	}
 	}*/
-	glLoadMatrixf(glm::value_ptr(f));
+	
+	glm::mat4 tmpF = f*transformation_;
+	glLoadMatrixf(glm::value_ptr(tmpF));
+
 	for each (BEnode* n in BEnode::children_){
-		n->Render(f*transformation_);
+		n->Render(tmpF);
 	}
 }
 

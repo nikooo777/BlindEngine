@@ -10,7 +10,7 @@ BEnode *root;
 
 // Rotation angles:
 float angleX = 0.0f, angleY = 0.0f;
-float distance = -45.0f;
+float distance = -20.0f;
 float globalX = .0f;
 float globalY = .0f;
 
