@@ -17,7 +17,7 @@ BEmaterial::~BEmaterial()
 
 }
 
-void BEmaterial::Render(glm::mat4 f, bool is_sub_mesh)
+void BEmaterial::Render(glm::mat4 f)
 {
 	//std::cout << "Rendering material: " << get_name() << std::endl;
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(ambient_));

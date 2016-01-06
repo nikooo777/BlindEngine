@@ -11,7 +11,7 @@ public:
 	BEmesh(std::string,glm::vec3*, long, glm::vec3*, glm::vec2*, BEmaterial* , unsigned int, unsigned int*);
 	//BEmesh(glm::vec3*, long, glm::vec3*, glm::vec2*, BEmaterial*);
 	~BEmesh();
-	virtual void Render(glm::mat4, bool is_sub_mesh = false) override;
+	virtual void Render(glm::mat4) override;
 
 	void SetVertices(glm::vec3 *vertices){ vertices_ = vertices; }
 	void SetVerticesCount(unsigned int vertices_count){ vertices_count_ = vertices_count; }
@@ -19,6 +19,8 @@ public:
 	void SetFaces(glm::vec3 *faces){ faces_ = faces; }
 	void SetTextureCoords(glm::vec2 *texture_coords){ texture_coords_ = texture_coords; }
 	void SetMaterial(BEmaterial *material){ material_ = material; }
+
+	void SetSubMeshes(unsigned int sub_meshes_count, unsigned int* sub_meshes);
 
 private:
 	unsigned int vertices_count_ = 0;

@@ -9,12 +9,17 @@ BEmesh::BEmesh(std::string name, glm::vec3* vertices, long vertices_count, glm::
 	material_ = material;
 	vertices_count_ = vertices_count;
 	sub_meshes_count_ = sub_meshes_count;
-	sub_meshes_ = new unsigned int[sub_meshes_count];
 
-	for (unsigned int i = 0; i < sub_meshes_count; i++)
+	if (sub_meshes_count_)
 	{
-		sub_meshes_[i] = sub_meshes[i];
+		sub_meshes_ = new unsigned int[sub_meshes_count];
+		for (unsigned int i = 0; i < sub_meshes_count; i++)
+		{
+			sub_meshes_[i] = sub_meshes[i];
+		}
 	}
+	else
+		sub_meshes_ = nullptr;
 }
 
 //BEmesh::BEmesh(glm::vec3* vertices, long vertices_count, glm::vec3* normals, glm::vec2* texture_coords, BEmaterial* material) : BEnode()
@@ -34,7 +39,7 @@ BEmesh::~BEmesh()
 	delete[] material_;
 }
 
-void BEmesh::Render(glm::mat4 f, bool is_sub_mesh)
+void BEmesh::Render(glm::mat4 f)
 {
 	//TODO: eventually try other methods
 	//glVertexPointer(3, GL_FLOAT, 0, vertices_);
@@ -45,6 +50,7 @@ void BEmesh::Render(glm::mat4 f, bool is_sub_mesh)
 	/*
 	std::cout << "Children count: " << BEnode::GetChildren().size() << std::endl;
 	*/
+
 	glm::mat4 tmpF = f*transformation_;
 	glLoadMatrixf(glm::value_ptr(tmpF));
 
@@ -60,14 +66,36 @@ void BEmesh::Render(glm::mat4 f, bool is_sub_mesh)
 	}
 	glEnd();
 
-	if (!is_sub_mesh){
-		for (unsigned int i = 0; i < sub_meshes_count_; i++)
-		{
-			BEengine::lists_->GetMesh(sub_meshes_[i])->Render(tmpF, true);
-		}
+	for (unsigned int i = 0; i < sub_meshes_count_; i++)
+	{
+		BEmesh* tmp_mesh = BEengine::lists_->GetMesh(sub_meshes_[i]);
+		if (tmp_mesh != this)
+			tmp_mesh->Render(tmpF);
+	}
 
-		for each (BEnode* n in BEnode::children_){
-			n->Render(tmpF);
+
+	for each (BEnode* n in BEnode::children_){
+		n->Render(tmpF);
+	}
+
+
+
+}
+
+void BEmesh::SetSubMeshes(unsigned int sub_meshes_count, unsigned int* sub_meshes)
+{
+	sub_meshes_count_ = sub_meshes_count;
+
+	if (sub_meshes_count)
+	{
+		if (sub_meshes_)
+			delete[] sub_meshes_;
+
+		sub_meshes_ = new unsigned int[sub_meshes_count];
+
+		for (unsigned int i = 0; i < sub_meshes_count; i++)
+		{
+			sub_meshes_[i] = sub_meshes[i];
 		}
 	}
 }

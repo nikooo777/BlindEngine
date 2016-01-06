@@ -12,7 +12,7 @@ BEtexture::~BEtexture()
 }
 
 
-void BEtexture::Render(glm::mat4 f, bool is_sub_mesh)
+void BEtexture::Render(glm::mat4 f)
 {
 
 }

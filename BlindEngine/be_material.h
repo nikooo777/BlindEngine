@@ -9,7 +9,7 @@ public:
 	BEmaterial(std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, float shininess, float shininess_strength,  BEtexture* texture);
 	~BEmaterial();
 
-	void Render(glm::mat4, bool is_sub_mesh = false) override;
+	void Render(glm::mat4) override;
 	glm::vec4 ambient_;
 	glm::vec4 diffuse_;
 	glm::vec4 specular_;

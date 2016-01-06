@@ -33,7 +33,7 @@ public:
 	BEnode* find(std::string);
 	BEnode* find(long);
 	//empty overridden render method
-	virtual void Render(glm::mat4, bool is_sub_mesh = false) override;
+	virtual void Render(glm::mat4) override;
 
 protected:
 	// Fields common in all children

@@ -18,8 +18,6 @@ private:
 
 	BEnode* BuildScene(aiNode* root, BEnode* parent, aiNode* thisNode);
 
-	BEmesh * ExtractMesh(aiNode* node_container, aiMesh * mesh_container);
-
 	BElight* ExtractLight(aiLight* tmp_light);
 
 	/*******************************
@@ -29,7 +27,6 @@ private:
 	aiCamera* FindCamera(aiString name);
 	aiLight* FindLight(aiString name);
 	aiMaterial* FindMaterial(unsigned int mMaterialIndex);
-	aiMesh* FindMesh(aiString name);
 	aiTexture* FindTexture(unsigned int texture_index);
 
 	void ParseMaterials();
