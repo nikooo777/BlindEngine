@@ -14,7 +14,7 @@ BEtexture::~BEtexture()
 
 void BEtexture::Render(glm::mat4 f)
 {
-	
+	std::cout << "Good job Niko with K, you're rendering a Texture !!!! Yuppi !! :D" << std::endl;
 	glEnable(GL_TEXTURE_2D);
 
 	// Update texture content
