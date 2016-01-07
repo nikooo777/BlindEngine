@@ -25,8 +25,11 @@ void BEmaterial::Render(glm::mat4 f)
 	if (texture_ != nullptr)
 	{
 		//std::cout << "A texture was found" << std::endl;
+		glEnable(GL_TEXTURE_2D);
 		texture_->Render(glm::mat4());
 	}
+	else
+		glDisable(GL_TEXTURE_2D);
 
 	//std::cout << "Rendering material: " << get_name() << std::endl;
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(ambient_));
