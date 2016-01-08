@@ -16,7 +16,7 @@ void BEtexture::Render(glm::mat4 f)
 {
 	//std::cout << "Rendering texture: " << get_name() << std::endl;
 
-	glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_TEXTURE_2D);
 
 	// Update texture content
 	glBindTexture(GL_TEXTURE_2D, texture_id_);

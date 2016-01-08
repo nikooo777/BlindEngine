@@ -75,13 +75,9 @@ void BEmesh::Render(glm::mat4 cumulated_transformation_matrix)
 			tmp_mesh->Render(tmpF);
 	}
 
-
 	for each (BEnode* n in BEnode::children_){
 		n->Render(tmpF);
 	}
-
-
-
 }
 
 void BEmesh::SetSubMeshes(unsigned int sub_meshes_count, unsigned int* sub_meshes)
