@@ -91,3 +91,8 @@ void BEnode::Render(glm::mat4 f)
 		n->Render(tmpF);
 	}
 }
+
+void BEnode::RenderSingle(glm::mat4 f)
+{
+	std::cout << "RenderNode: Should not be here" << std::endl;
+}

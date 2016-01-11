@@ -79,6 +79,31 @@ void BEmesh::Render(glm::mat4 cumulated_transformation_matrix)
 		n->Render(tmpF);
 	}
 }
+void BEmesh::RenderSingle(glm::mat4 cumulated_transformation_matrix)
+{
+	glLoadMatrixf(glm::value_ptr(cumulated_transformation_matrix));
+
+	if (material_)
+	{
+		material_->Render(cumulated_transformation_matrix);
+	}
+
+	glBegin(GL_TRIANGLES);
+	for (unsigned int i = 0; i < vertices_count_; i++)
+	{
+		glNormal3fv(glm::value_ptr(normals_[i]));
+		glTexCoord2fv(glm::value_ptr(texture_coords_[i]));
+		glVertex3fv(glm::value_ptr(vertices_[i]));
+	}
+	glEnd();
+
+	for (unsigned int i = 0; i < sub_meshes_count_; i++)
+	{
+		BEmesh* tmp_mesh = BEengine::lists_->GetMesh(sub_meshes_[i]);
+		if (tmp_mesh != this)
+			tmp_mesh->Render(cumulated_transformation_matrix);
+	}
+}
 
 void BEmesh::SetSubMeshes(unsigned int sub_meshes_count, unsigned int* sub_meshes)
 {

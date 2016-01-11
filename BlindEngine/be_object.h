@@ -5,6 +5,7 @@ class BEobject
 {
 public:
 	virtual void Render(glm::mat4 cumulated_transformation_matrix) = 0;
+	virtual void RenderSingle(glm::mat4 cumulated_transformation_matrix) = 0;
 	virtual ~BEobject();
 	BEobject();
 	BEobject(const std::string);
