@@ -53,6 +53,8 @@ BEengine::~BEengine()
 	delete instance_;
 }
 
+void PrintFps();
+
 ///////////////
 // CALLBACKS //
 ///////////////
@@ -66,10 +68,8 @@ void displayCallback()
 	// Clear the screen:
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
 	//////
 	// 3D:
-
 	// Set perpsective matrix:
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(glm::value_ptr(BEengine::GetInstance()->get_perspective()));
@@ -95,17 +95,8 @@ void displayCallback()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(glm::value_ptr(glm::mat4(1.0)));
 
-	// Disable lighting before rendering 2D text:
-	glDisable(GL_LIGHTING);
+	PrintFps();
 
-	// Write some text:
-	char text[64];
-	sprintf_s(text,sizeof text, "FPS: %.1f", fps);
-	glRasterPos2f(1.0f, 10.0f);
-	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
-
-	// Redo ligting:
-	glEnable(GL_LIGHTING);
 
 	// Swap this context's buffer:
 	glutSwapBuffers();
@@ -272,7 +263,7 @@ void BEengine::Init(char* window_name, int x_position, int y_position, int width
 	glClearColor(1.0f, 0.6f, 0.1f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
+	//glEnable(GL_LIGHT0);
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
 
@@ -334,4 +325,19 @@ int AddLight(BElight *light){
 bool RemoveLight(int indexLight){
 
 	return false; //TODO
+}
+
+void PrintFps()
+{
+	// Disable lighting before rendering 2D text:
+	glDisable(GL_LIGHTING);
+
+	// Write some text:
+	char text[64];
+	sprintf_s(text, sizeof text, "FPS: %.1f", fps);
+	glRasterPos2f(1.0f, 10.0f);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
+
+	// Redo ligting:
+	glEnable(GL_LIGHTING);
 }

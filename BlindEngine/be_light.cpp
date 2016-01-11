@@ -4,7 +4,7 @@
 int BElight::total_lights = 0;
 
 //global constructor
-BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff) : BEnode(name,LIGHT)
+BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff) : BEnode(name, LIGHT)
 {
 	if (total_lights <= 7)
 	{
@@ -56,14 +56,15 @@ BElight* BElight::CreateSpotLight(const std::string name, glm::vec3 ambient, glm
 
 void BElight::Render(glm::mat4 cumulated_transformation_matrix)
 {
-	//std::cout << "Rendering a Light: " << get_name() << std::endl;
-	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
-	glLoadMatrixf(glm::value_ptr(tmpF));
+	std::cout << "Rendering a Light: " << get_name() << "number: "<< light_number_ <<std::endl;
+	glm::mat4 tmp_f = cumulated_transformation_matrix*transformation_;
+	glLoadMatrixf(glm::value_ptr(tmp_f));
+
 
 	//Common color property
-	glLightfv(light_number_, GL_AMBIENT, glm::value_ptr(ambient_));
+	/*glLightfv(light_number_, GL_AMBIENT, glm::value_ptr(ambient_));
 	glLightfv(light_number_, GL_DIFFUSE, glm::value_ptr(diffuse_));
-	glLightfv(light_number_, GL_SPECULAR, glm::value_ptr(specular_));
+	glLightfv(light_number_, GL_SPECULAR, glm::value_ptr(specular_))*/;
 
 	//if the current light is a directional light, then direction is passed instead
 	glLightfv(light_number_, GL_POSITION, glm::value_ptr(position_));
@@ -75,8 +76,9 @@ void BElight::Render(glm::mat4 cumulated_transformation_matrix)
 		glLightfv(light_number_, GL_SPOT_DIRECTION, glm::value_ptr(direction_));
 	}
 	
-	for each (BEnode* n in BEnode::children_){
-		n->Render(tmpF);
+	for each (BEnode* n in BEnode::children_)
+	{
+		n->Render(tmp_f);
 	}
 }
 
@@ -152,7 +154,7 @@ void BElight::SetDirection(glm::vec3 direction)
 	direction_ = direction;
 }
 
-void BElight::SetPosition(glm::vec3 position)
+void BElight::SetPosition(glm::vec4 position)
 {
 	position_ = position;
 }

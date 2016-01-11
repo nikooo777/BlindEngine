@@ -49,7 +49,7 @@ public:
 	void SetDiffuse(glm::vec3);
 	void SetSpecular(glm::vec3);
 	void SetDirection(glm::vec3);
-	void SetPosition(glm::vec3);
+	void SetPosition(glm::vec4);
 
 	//destructor
 	~BElight();
