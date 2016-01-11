@@ -291,7 +291,7 @@ BElight* BEsceneLoader::ExtractLight(aiLight * light_container)
 
 		//spotlight
 	case aiLightSource_SPOT:
-		light = BElight::CreateSpotLight(light_name, ambient, diffuse, specular, position, direction, light_container->mAngleInnerCone);
+		light = BElight::CreateSpotLight(light_name, ambient, diffuse, specular, position, direction, glm::degrees(light_container->mAngleInnerCone));
 		//light->SetAngleOuterCone(tmp_light->mAngleOuterCone);
 		break;
 		//directional

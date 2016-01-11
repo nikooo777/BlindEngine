@@ -35,18 +35,19 @@ BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient
 	case SPOTLIGHT:
 		//slide 39 of cg_opengl.pdf
 		position_ = glm::vec4(position, 1.f);;
+		std::cout << glm::to_string(direction) << std::endl;
 		break;
 	}
 }
 
 BElight* BElight::CreateOmnidirectionalLight(const std::string name, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position)
 {
-	return new BElight(OMNIDIRECTIONAL, name, glm::vec4(ambient, 1.0f), glm::vec4(diffuse, 1.0f), glm::vec4(specular, 1.0f), position, glm::vec3(), 0);
+	return new BElight(OMNIDIRECTIONAL, name, glm::vec4(ambient, 1.0f), glm::vec4(diffuse, 1.0f), glm::vec4(specular, 1.0f), position, glm::vec3(), 180.f);
 }
 
 BElight* BElight::CreateDirectionalLight(const std::string name, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 direction)
 {
-	return new BElight(DIRECTIONAL, name, glm::vec4(ambient, 1.0f), glm::vec4(diffuse, 1.0f), glm::vec4(specular, 1.0f), glm::vec3(), direction, 180.f);
+	return new BElight(DIRECTIONAL, name, glm::vec4(ambient, 1.0f), glm::vec4(diffuse, 1.0f), glm::vec4(specular, 1.0f), glm::vec3(), direction, 0.f);
 }
 
 BElight* BElight::CreateSpotLight(const std::string name, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position, glm::vec3 direction, float cutoff)
@@ -59,12 +60,13 @@ void BElight::Render(glm::mat4 f)
 	std::cout << "Rendering a Light: " << get_name() << "number: "<< light_number_ <<std::endl;
 
 	glm::mat4 tmp_f = f*transformation_;
+	tmp_f = glm::mat4();
 	glLoadMatrixf(glm::value_ptr(tmp_f));
 
 	//Common color property
-	/*glLightfv(light_number_, GL_AMBIENT, glm::value_ptr(ambient_));
+	glLightfv(light_number_, GL_AMBIENT, glm::value_ptr(ambient_));
 	glLightfv(light_number_, GL_DIFFUSE, glm::value_ptr(diffuse_));
-	glLightfv(light_number_, GL_SPECULAR, glm::value_ptr(specular_))*/;
+	glLightfv(light_number_, GL_SPECULAR, glm::value_ptr(specular_));
 
 	//if the current light is a directional light, then direction is passed instead
 	glLightfv(light_number_, GL_POSITION, glm::value_ptr(position_));
@@ -72,8 +74,13 @@ void BElight::Render(glm::mat4 f)
 	//light number goes from GL_LIGHT0 to GL_LIGHT7
 	if (type_ == SPOTLIGHT)
 	{
+		std::cout << "cutoff value: " << cutoff_ << std::endl;
 		glLightfv(light_number_, GL_SPOT_CUTOFF, &cutoff_);
 		glLightfv(light_number_, GL_SPOT_DIRECTION, glm::value_ptr(direction_));
+	}
+	if (type_ == OMNIDIRECTIONAL)
+	{
+		glLightfv(light_number_, GL_SPOT_CUTOFF, &cutoff_);
 	}
 
 	for each (BEnode* n in BEnode::children_)
