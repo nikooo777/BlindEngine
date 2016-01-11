@@ -12,6 +12,7 @@ public:
 	~BEmesh();
 	virtual void Render(glm::mat4 cumulated_transformation_matrix) override;
 	virtual void RenderSingle(glm::mat4 cumulated_transformation_matrix) override;
+	virtual void CalcTransformation(glm::mat4 cumulated_transformation_matrix) override;
 
 	void SetVertices(glm::vec3 *vertices){ vertices_ = vertices; }
 	void SetVerticesCount(unsigned int vertices_count){ vertices_count_ = vertices_count; }

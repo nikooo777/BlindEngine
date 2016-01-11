@@ -14,6 +14,8 @@ float distance = -10.0f;
 float globalX = .0f;
 float globalY = .0f;
 
+bool alreadyRendered = false;
+
 // Matrices:
 
 // Texture:
@@ -84,8 +86,8 @@ void displayCallback()
 
 	// Set model matrix as current OpenGL matrix:
 	glLoadMatrixf(glm::value_ptr(f));
-
-	root->Render(f);
+	root->CalcTransformation(f);
+	BEengine::lists_->RenderAll();
 
 	//////
 	// 2D:

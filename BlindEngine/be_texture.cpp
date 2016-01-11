@@ -64,3 +64,4 @@ void BEtexture::LoadTexture(std::string path, std::string name)
 
 	FreeImage_Unload(bitmap_image);
 }
+

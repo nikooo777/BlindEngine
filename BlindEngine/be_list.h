@@ -25,11 +25,15 @@ public:
 	BEmaterial* GetMaterial(unsigned int index){ return material_ordered_list_[index]; }
 
 	void AddMesh(BEmesh*mesh);
+	void AddMesh(BEmesh*mesh, glm::mat4 f);
+	void UpdateMesh(BEmesh*mesh, glm::mat4 f);
 	BEmesh* GetMesh(unsigned int index){ return mesh_ordered_list_[index]; }
 	glm::mat4 GetMeshTransformation(BEmesh* mesh){ return meshes_.at(mesh); }
 	BEmesh* GetMeshByName(std::string name);
 
 	void AddLight(BElight* light);
+	void AddLight(BElight* light, glm::mat4 f);
+	void UpdateLight(BElight* light, glm::mat4 f);
 
 private:
 	// Transformation

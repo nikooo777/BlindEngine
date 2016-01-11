@@ -52,6 +52,7 @@ void BEmesh::Render(glm::mat4 cumulated_transformation_matrix)
 	*/
 	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
 	glLoadMatrixf(glm::value_ptr(tmpF));
+	BEengine::lists_->UpdateMesh(this, tmpF);
 
 	if (material_)
 	{
@@ -102,6 +103,16 @@ void BEmesh::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 		BEmesh* tmp_mesh = BEengine::lists_->GetMesh(sub_meshes_[i]);
 		if (tmp_mesh != this)
 			tmp_mesh->Render(cumulated_transformation_matrix);
+	}
+}
+
+void BEmesh::CalcTransformation(glm::mat4 cumulated_transformation_matrix)
+{
+	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
+	BEengine::lists_->UpdateMesh(this, tmpF);
+
+	for each (BEnode* n in BEnode::children_){
+		n->CalcTransformation(tmpF);
 	}
 }
 
