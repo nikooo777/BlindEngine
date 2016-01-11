@@ -10,6 +10,9 @@ BElist::~BElist()
 {
 }
 
+/************************************************************************/
+/* Render
+/************************************************************************/
 void BElist::RenderAll()
 {
 	RenderLights();
@@ -40,11 +43,14 @@ void BElist::RenderCameras()
 }
 
 
+/************************************************************************/
+/* Mesh
+/************************************************************************/
 void BElist::AddMesh(BEmesh*mesh)
 {
 	std::cout << "Try to add -> " << mesh->get_name() << std::endl;
 
-	mesh_ordered_list_.push_back(mesh);
+	mesh_ordered_references_.push_back(mesh);
 	meshes_.insert(std::pair<BEmesh*, glm::mat4>(mesh, glm::mat4(1)));
 
 	if (meshes_by_name_.find(mesh->get_name()) == meshes_by_name_.end())
@@ -57,7 +63,7 @@ void BElist::AddMesh(BEmesh*mesh, glm::mat4 f)
 {
 	std::cout << "Try to add -> " << mesh->get_name() << std::endl;
 
-	mesh_ordered_list_.push_back(mesh);
+	mesh_ordered_references_.push_back(mesh);
 	meshes_.insert(std::pair<BEmesh*, glm::mat4>(mesh, f));
 
 	if (meshes_by_name_.find(mesh->get_name()) == meshes_by_name_.end())
@@ -80,6 +86,9 @@ BEmesh* BElist::GetMeshByName(std::string name)
 		return nullptr;
 }
 
+/************************************************************************/
+/* Light
+/************************************************************************/
 void BElist::AddLight(BElight* light)
 {
 	lights_.insert(std::pair<BElight*, glm::mat4>(light, glm::mat4(1)));
@@ -95,3 +104,20 @@ void BElist::UpdateLight(BElight* light, glm::mat4 f)
 }
 
 
+/************************************************************************/
+/* Camera
+/************************************************************************/
+void BElist::AddCamera(BEcamera* camera)
+{
+	cameras_.insert(std::pair<BEcamera*, glm::mat4>(camera, glm::mat4(1)));
+}
+
+void BElist::AddCamera(BEcamera* camera, glm::mat4 f)
+{
+	cameras_.insert(std::pair<BEcamera*, glm::mat4>(camera, f));
+}
+
+void BElist::UpdateCamera(BEcamera* camera, glm::mat4 f)
+{
+	cameras_.find(camera)->second = f;
+}
