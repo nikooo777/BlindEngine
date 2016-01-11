@@ -2,6 +2,7 @@
 #include "be_engine.h"
 #include "be_logging.h"
 #include "be_scene_loader.h"
+
 int main(int argc, char *argv[])
 {
 	be_logging::log("Welcome to Blind Engine 1.0");

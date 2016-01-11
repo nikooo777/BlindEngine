@@ -303,6 +303,9 @@ BElight* BEsceneLoader::ExtractLight(aiLight * light_container)
 	light->SetAttenuationConstant(light_container->mAttenuationConstant);
 	light->SetAttenuationLinear(light_container->mAttenuationLinear);
 	light->SetAttenuationQuadratic(light_container->mAttenuationQuadratic);
+
+	BEengine::lists_->AddLight(light);
+
 	return light;
 }
 

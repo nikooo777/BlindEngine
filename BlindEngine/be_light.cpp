@@ -1,4 +1,5 @@
 #include "be_light.h"
+#include "be_engine.h"
 
 //initialization of the counter
 int BElight::total_lights = 0;
@@ -60,6 +61,8 @@ void BElight::Render(glm::mat4 cumulated_transformation_matrix)
 	glm::mat4 tmp_f = cumulated_transformation_matrix*transformation_;
 	glLoadMatrixf(glm::value_ptr(tmp_f));
 
+	BEengine::lists_->UpdateLight(this, tmp_f);
+
 
 	//Common color property
 	/*glLightfv(light_number_, GL_AMBIENT, glm::value_ptr(ambient_));
@@ -99,6 +102,16 @@ void BElight::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 	{
 		glLightfv(light_number_, GL_SPOT_CUTOFF, &cutoff_);
 		glLightfv(light_number_, GL_SPOT_DIRECTION, glm::value_ptr(direction_));
+	}
+}
+
+void BElight::CalcTransformation(glm::mat4 cumulated_transformation_matrix)
+{
+	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
+	BEengine::lists_->UpdateLight(this, tmpF);
+
+	for each (BEnode* n in BEnode::children_){
+		n->CalcTransformation(tmpF);
 	}
 }
 
