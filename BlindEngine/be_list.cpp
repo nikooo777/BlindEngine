@@ -52,7 +52,7 @@ void BElist::AddMesh(BEmesh*mesh)
 	if (meshes_by_name_.find(mesh->get_name()) == meshes_by_name_.end())
 		meshes_by_name_.insert(std::pair<std::string, BEmesh*>(mesh->get_name(), mesh));
 	else
-		std::cout << mesh->get_name() << " already exists !" << std::endl;
+		std::cout << mesh->get_name() << " already exists!" << std::endl;
 }
 
 BEmesh* BElist::GetMeshByName(std::string name)

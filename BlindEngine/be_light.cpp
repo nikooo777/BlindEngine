@@ -7,7 +7,10 @@ int BElight::total_lights = 0;
 BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, glm::vec3 position, glm::vec3 direction, float cutoff) : BEnode(name,LIGHT)
 {
 	if (total_lights <= 7)
+	{
 		light_number_ = (total_lights++) + GL_LIGHT0;
+		glEnable(light_number_);
+	}
 	else
 		throw new std::runtime_error("There are too many lights in the scene!");
 
@@ -21,20 +24,17 @@ BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient
 	{
 	case DIRECTIONAL:
 		//slide 37 of cg_opengl.pdf
-		//position_ = glm::vec4(direction, 0.f);  //the direction is meant to be hardcoded in the position with w=0
-		position_ = position;
+		position_ = glm::vec4(direction, 0.f);  //the direction is meant to be hardcoded in the position with w=0
 		break;
 
 	case OMNIDIRECTIONAL:
 		//slide 38 of cg_opengl.pdf
-		//position_ = glm::vec4(position, 1.f);
-		position_ = position;
+		position_ = glm::vec4(position, 1.f);
 		break;
 
 	case SPOTLIGHT:
 		//slide 39 of cg_opengl.pdf
-		//position_ = glm::vec4(position, 1.f);;
-		position_ = position;
+		position_ = glm::vec4(position, 1.f);;
 		break;
 	}
 }
@@ -85,6 +85,9 @@ void BElight::Render(glm::mat4 f)
 
 BElight::~BElight()
 {
+	//this will break further lights
+	glDisable(light_number_);
+	total_lights--;
 }
 
 void BElight::SetAngleInnerCone(float angle_inner_cone)
