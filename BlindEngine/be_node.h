@@ -34,6 +34,7 @@ public:
 	BEnode* find(long);
 	//empty overridden render method
 	virtual void Render(glm::mat4 cumulated_transformation_matrix) override;
+	virtual void RenderSingle(glm::mat4 cumulated_transformation_matrix) override;
 
 protected:
 	// Fields common in all children

@@ -29,6 +29,8 @@ public:
 	glm::mat4 GetMeshTransformation(BEmesh* mesh){ return meshes_.at(mesh); }
 	BEmesh* GetMeshByName(std::string name);
 
+	void AddLight(BElight* light);
+
 private:
 	// Transformation
 	std::map<BEmesh*, glm::mat4> meshes_;
