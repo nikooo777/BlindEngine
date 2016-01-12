@@ -82,6 +82,7 @@ void BEmesh::Render(glm::mat4 cumulated_transformation_matrix)
 }
 void BEmesh::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 {
+	//std::cout << "Rendering Mesh: " << BEobject::get_name() << std::endl;
 	glLoadMatrixf(glm::value_ptr(cumulated_transformation_matrix));
 
 	if (material_)
@@ -102,7 +103,7 @@ void BEmesh::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 	{
 		BEmesh* tmp_mesh = BEengine::lists_->GetMesh(sub_meshes_[i]);
 		if (tmp_mesh != this)
-			tmp_mesh->Render(cumulated_transformation_matrix);
+			tmp_mesh->RenderSingle(cumulated_transformation_matrix);
 	}
 }
 

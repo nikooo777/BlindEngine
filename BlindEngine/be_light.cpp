@@ -59,7 +59,7 @@ BElight* BElight::CreateSpotLight(const std::string name, glm::vec3 ambient, glm
 
 void BElight::Render(glm::mat4 cumulated_transformation_matrix)
 {
-	std::cout << "Rendering a Light: " << get_name() << "number: "<< light_number_ <<std::endl;
+	std::cout << "Rendering a Light: " << get_name() << "number: " << light_number_ << std::endl;
 	glm::mat4 tmp_f = cumulated_transformation_matrix*transformation_;
 
 	glLoadMatrixf(glm::value_ptr(tmp_f));
@@ -110,7 +110,9 @@ void BElight::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 
 	if (type_ == SPOTLIGHT)
 	{
-		glLightfv(light_number_, GL_SPOT_CUTOFF, &cutoff_);
+		float new_cutoff = cutoff_ / 2.f;
+		std::cout <<"cutoff " << new_cutoff << std::endl;
+		glLightfv(light_number_, GL_SPOT_CUTOFF, &new_cutoff);
 		glLightfv(light_number_, GL_SPOT_DIRECTION, glm::value_ptr(direction_));
 		glLightfv(light_number_, GL_QUADRATIC_ATTENUATION, &attenuation_quadratic_);
 		glLightfv(light_number_, GL_CONSTANT_ATTENUATION, &attenuation_constant_);
