@@ -7,6 +7,8 @@
 
 BEsceneLoader::BEsceneLoader()
 {
+	cnt_materials_ = BEengine::lists_->GetMaterialCount();
+	cnt_meshes_ = BEengine::lists_->GetMeshCount();
 }
 
 
@@ -118,11 +120,10 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 {
 	BEnode *node; // To change: Added only for compiling
 
-	be_logging::log("************");
-	std::cout << "   mName : " << this_node->mName.C_Str() << std::endl;
+	//std::cout << "   mName : " << this_node->mName.C_Str() << std::endl;
 	//std::cout << "   mChildren : " << this_node->mChildren << std::endl;
-	std::cout << "   mNumChildren : " << this_node->mNumChildren << std::endl;
-	std::cout << "   mNumMeshes : " << this_node->mNumMeshes << std::endl;
+	//std::cout << "   mNumChildren : " << this_node->mNumChildren << std::endl;
+	//std::cout << "   mNumMeshes : " << this_node->mNumMeshes << std::endl;
 	//std::cout << "   mParent : " << this_node->mParent << std::endl;
 	//std::cout << "   mTransformation : " << this_node->mTransformation[0][0] << std::endl;
 
@@ -137,9 +138,9 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 
 		if (tmp_mesh = BEengine::lists_->GetMeshByName(this_node->mName.C_Str()))
 		{
-			std::cout << "A mesh was found. Extracting..." << std::endl;
+			//std::cout << "A mesh was found. Extracting..." << std::endl;
 
-			tmp_mesh->SetSubMeshes(this_node->mNumMeshes, this_node->mMeshes);
+			tmp_mesh->SetSubMeshes(this_node->mNumMeshes, this_node->mMeshes, cnt_meshes_);
 			node = tmp_mesh;
 		}
 		else if ((tmp_camera = FindCamera(this_node->mName)) != nullptr)
@@ -173,7 +174,7 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 		// Create node and set name
 		const std::string name = std::string(this_node->mName.C_Str());
 		node = new BEnode(name, BEnode::ROOT);
-		node->SetAsRoot();
+		node->SetAsSceneRoot();
 	}
 
 	// Convert aiMatrix into an OpenGL matrix:
@@ -338,7 +339,7 @@ void BEsceneLoader::ParseMeshes()
 
 		// Material
 		BEmaterial *material = nullptr;
-		material = BEengine::lists_->GetMaterial(mesh_container->mMaterialIndex);
+		material = BEengine::lists_->GetMaterial(mesh_container->mMaterialIndex + cnt_materials_);
 
 		//std::cout << "Mesh parsed: " << name << std::endl;
 		BEengine::lists_->AddMesh(new BEmesh(name, vertices, mesh_container->mNumVertices, normals, texture_coords, material, 0, nullptr));

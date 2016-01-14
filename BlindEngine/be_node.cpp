@@ -5,6 +5,7 @@ BEnode* BEnode::super_root_node = new BEnode("root_node",ROOT);
 BEnode::BEnode(std::string name, Type type) : BEobject(name)
 {
 	type_ = type;
+	transformation_ = glm::mat4(1);
 }
 
 
@@ -43,7 +44,7 @@ void BEnode::RemoveChild(BEnode * node, bool should_delete)
 
 }
 
-BEnode* BEnode::find(std::string name)
+BEnode* BEnode::Find(std::string name)
 {
 	//the current node is the one sought
 	if (this->get_name().compare(name) == 0)
@@ -55,14 +56,14 @@ BEnode* BEnode::find(std::string name)
 	BEnode *found_node = nullptr;
 	for each (BEnode* n in children_)
 	{
-		if ((found_node = n->find(name)) != nullptr)
+		if ((found_node = n->Find(name)) != nullptr)
 			return found_node;
 	}
 	//there are no more children to look into
 	return nullptr;
 }
 
-BEnode* BEnode::find(long id)
+BEnode* BEnode::Find(long id)
 {
 	//the current node is the one sought
 	if (this->get_id() == id)
@@ -74,12 +75,14 @@ BEnode* BEnode::find(long id)
 	BEnode *found_node = nullptr;
 	for each (BEnode* n in children_)
 	{
-		if ((found_node = n->find(id)) != nullptr)
+		if ((found_node = n->Find(id)) != nullptr)
 			return found_node;
 	}
 	//there are no more children to look into
 	return nullptr;
 }
+
+
 
 void BEnode::Render(glm::mat4 cumulated_transformation_matrix)
 {
@@ -100,8 +103,27 @@ void BEnode::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 void BEnode::CalcTransformation(glm::mat4 cumulated_transformation_matrix)
 {
 	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
-	//std::cout << "Wrong place" << std::endl;
 	for each (BEnode* n in BEnode::children_){
 		n->CalcTransformation(tmpF);
 	}
+}
+
+void BEnode::SetAsSceneRoot()
+{
+	BEnode::GetSuperRoot()->AddChild(this);
+}
+
+BEnode* BEnode::GetSceneRootByName(std::string node_name)
+{
+	BEnode* super_root = BEnode::GetSuperRoot();
+
+	//seek the node in the children
+	for each (BEnode* n in super_root->children_)
+	{
+		std::cout << "|" << n->get_name() << "|" << std::endl;
+		if (!(n->get_name().compare(node_name)))
+			return n;
+	}
+
+	return nullptr;
 }

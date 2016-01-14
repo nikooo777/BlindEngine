@@ -8,4 +8,8 @@ public:
 	virtual void Render(glm::mat4) override;
 	virtual void RenderSingle(glm::mat4 cumulated_transformation_matrix) override;
 	virtual void CalcTransformation(glm::mat4 cumulated_transformation_matrix) override;
+
+	//Utility
+	virtual BEnode* Find(std::string) override;
+	virtual BEnode* Find(long) override;
 };

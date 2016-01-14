@@ -111,7 +111,7 @@ void BElight::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 	if (type_ == SPOTLIGHT)
 	{
 		float new_cutoff = cutoff_ / 2.f;
-		std::cout <<"cutoff " << new_cutoff << std::endl;
+		//std::cout <<"cutoff " << new_cutoff << std::endl;
 		glLightfv(light_number_, GL_SPOT_CUTOFF, &new_cutoff);
 		glLightfv(light_number_, GL_SPOT_DIRECTION, glm::value_ptr(direction_));
 		glLightfv(light_number_, GL_QUADRATIC_ATTENUATION, &attenuation_quadratic_);
@@ -189,4 +189,43 @@ void BElight::SetDirection(glm::vec3 direction)
 void BElight::SetPosition(glm::vec4 position)
 {
 	position_ = position;
+}
+
+
+BEnode* BElight::Find(std::string name)
+{
+	//the current node is the one sought
+	if (this->get_name().compare(name) == 0)
+	{
+		return this;
+	}
+
+	//seek the node in the children
+	BEnode *found_node = nullptr;
+	for each (BEnode* n in children_)
+	{
+		if ((found_node = n->Find(name)) != nullptr)
+			return found_node;
+	}
+	//there are no more children to look into
+	return nullptr;
+}
+
+BEnode* BElight::Find(long id)
+{
+	//the current node is the one sought
+	if (this->get_id() == id)
+	{
+		return this;
+	}
+
+	//seek the node in the children
+	BEnode *found_node = nullptr;
+	for each (BEnode* n in children_)
+	{
+		if ((found_node = n->Find(id)) != nullptr)
+			return found_node;
+	}
+	//there are no more children to look into
+	return nullptr;
 }

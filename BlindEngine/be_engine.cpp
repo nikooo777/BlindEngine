@@ -1,6 +1,47 @@
 #include "be_engine.h"
+
+
+// FreeGLUT  
+#include <GL/freeglut.h>
+
 #include "be_includes.h"
 #include "be_scene_loader.h"
+#include <sys/stat.h>
+
+//////////////
+// DLL MAIN //
+//////////////
+
+#ifdef WIN32
+#include <Windows.h>
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+* DLL entry point. Avoid to rely on it for easier code portability (Linux doesn't use this method).
+* @param instDLL handle
+* @param reason reason
+* @param _reserved reserved
+* @return true on success, false on failure
+*/
+int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
+{
+	// Check use:
+	switch (reason)
+	{
+		///////////////////////////		
+	case DLL_PROCESS_ATTACH: //		                     
+		break;
+
+
+		///////////////////////////
+	case DLL_PROCESS_DETACH: //                 
+		break;
+	}
+
+	// Done:
+	return true;
+}
+#endif
+#include "be_node.h"
 
 /////////////
 // GLOBALS //
@@ -15,6 +56,7 @@ float globalX = .0f;
 float globalY = .0f;
 
 bool alreadyRendered = false;
+BEnode* node_selected = nullptr;
 
 // Matrices:
 
@@ -35,10 +77,13 @@ BEengine* BEengine::instance_ = nullptr;
 BElist* BEengine::lists_ = nullptr;
 
 
-BEengine* BEengine::GetInstance()
+LIB_API BEengine* BEengine::GetInstance()
 {
 	if (instance_ == nullptr)
 	{
+		std::cout << "*****************************" << std::endl;
+		std::cout << "\tBlindEngine v" << LIB_VERSION / 10 << std::endl;
+		std::cout << "*****************************" << std::endl;
 		instance_ = new BEengine();
 	}
 	return instance_;
@@ -55,7 +100,7 @@ BEengine::~BEengine()
 	delete instance_;
 }
 
-void PrintFps();
+void PrintTextInfo();
 
 ///////////////
 // CALLBACKS //
@@ -86,7 +131,7 @@ void displayCallback()
 
 	// Set model matrix as current OpenGL matrix:
 	glLoadMatrixf(glm::value_ptr(f));
-	root->CalcTransformation(f);
+	BEnode::GetSuperRoot()->CalcTransformation(f);
 	BEengine::lists_->RenderAll();
 
 	//////
@@ -97,7 +142,7 @@ void displayCallback()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(glm::value_ptr(glm::mat4(1.0)));
 
-	PrintFps();
+	PrintTextInfo();
 
 
 	// Swap this context's buffer:
@@ -134,6 +179,17 @@ void reshapeCallback(int width, int height)
 	BEengine::GetInstance()->SetOrtho(glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f));
 }
 
+void printGlmMat4(glm::mat4& gMat){
+	std::cout << std::endl;
+	for (int i = 0; i < 4; i++){
+		for (int j = 0; j < 4; j++){
+			std::cout << gMat[j][i] << "\t";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
@@ -144,7 +200,7 @@ void reshapeCallback(int width, int height)
 */
 void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 {
-	std::cout << "[std key pressed]" << std::endl;
+	//std::cout << "[std key pressed]" << std::endl;
 
 	switch (key)
 	{
@@ -152,19 +208,81 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		automatic = !automatic;
 		break;
 	case 'a':
-		globalX -= 1.5f;
-		break;
-
+	{
+		//globalX -= BEengine::GetInstance()->GetDeltaPadding();
+		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(-BEengine::GetInstance()->GetDeltaPadding(), 0.0f, 0.0f));
+		glm::mat4 new_translation = translation * node_selected->GetTransformation();
+		node_selected->SetTransformation(new_translation);
+	}
+	break;
 	case 'd':
-		globalX += 1.5f;
-		break;
+	{
+		//globalX += BEengine::GetInstance()->GetDeltaPadding();
 
+		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(BEengine::GetInstance()->GetDeltaPadding(), 0.0f, 0.0f));
+		glm::mat4 new_translation = translation * node_selected->GetTransformation();
+		node_selected->SetTransformation(new_translation);
+	}
+		break;
 	case 'w':
-		globalY += 1.5f;
+	{ // Necessary for scope
+		//globalY += BEengine::GetInstance()->GetDeltaPadding();
+
+		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, BEengine::GetInstance()->GetDeltaPadding(), 0.0f));
+		glm::mat4 new_translation = translation * node_selected->GetTransformation();
+		node_selected->SetTransformation(new_translation);
+	}
+	break;
+	case 's':
+	{ // Necessary for scope
+		//globalY -= BEengine::GetInstance()->GetDeltaPadding();
+
+		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, -BEengine::GetInstance()->GetDeltaPadding(), 0.0f));
+		glm::mat4 new_translation = translation * node_selected->GetTransformation();
+		node_selected->SetTransformation(new_translation);
+	}
+	break;
+	case 'q':
+	{
+		//globalX -= BEengine::GetInstance()->GetDeltaPadding();
+		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -BEengine::GetInstance()->GetDeltaPadding()));
+		glm::mat4 new_translation = translation * node_selected->GetTransformation();
+		node_selected->SetTransformation(new_translation);
+		break;
+	}
+	case 'y':
+	{
+		//globalX -= BEengine::GetInstance()->GetDeltaPadding();
+		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, BEengine::GetInstance()->GetDeltaPadding()));
+		glm::mat4 new_translation = translation * node_selected->GetTransformation();
+		node_selected->SetTransformation(new_translation);
+		break;
+	}
+
+	case '+':
+		BEengine::GetInstance()->SetDeltaPadding(BEengine::GetInstance()->GetDeltaPadding() + 0.5f);
+		break;
+	case '-':
+		BEengine::GetInstance()->SetDeltaPadding(BEengine::GetInstance()->GetDeltaPadding() - 0.5f);
 		break;
 
-	case 's':
-		globalY -= 1.5f;
+	case '1':
+		node_selected = BEnode::GetSuperRoot()->Find("Rubik_No_Light");
+		break;
+	case '2':
+		node_selected = BEnode::GetSuperRoot()->Find("Box001");
+		break;
+	case '3':
+		node_selected = BEnode::GetSuperRoot()->Find("Cone001");
+		break;
+	case '4':
+		node_selected = BEnode::GetSuperRoot()->Find("Sphere001");
+		break;
+	case '5':
+		node_selected = BEnode::GetSuperRoot()->Find("Torus Knot001");
+		break;
+	case '6':
+		node_selected = BEnode::GetSuperRoot()->Find("Teapot001");
 		break;
 	}
 
@@ -182,14 +300,14 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 */
 void specialCallback(int key, int mouseX, int mouseY)
 {
-	std::cout << "[key pressed]" << std::endl;
+	// std::cout << "[key pressed]" << std::endl;
 
 	// Automatic-mode, not needed:
-	if (automatic)
-		return;
+	//if (automatic)
+	//	return;
 
 	// Change box rotation:
-	const float speed = 2.5f;
+	const float speed = 1.5f;
 	switch (key)
 	{
 	case GLUT_KEY_UP:
@@ -209,11 +327,11 @@ void specialCallback(int key, int mouseX, int mouseY)
 		break;
 
 	case GLUT_KEY_PAGE_DOWN:
-		distance += 2.0f;
+		distance += BEengine::GetInstance()->GetDeltaZoom();
 		break;
 
 	case GLUT_KEY_PAGE_UP:
-		distance -= 2.0f;
+		distance -= BEengine::GetInstance()->GetDeltaZoom();
 		break;
 	}
 
@@ -236,7 +354,7 @@ void timerCallback(int value)
 }
 
 //////////////////////////////////////////////////////////////////////////
-void BEengine::Init(char* window_name, int x_position, int y_position, int width, int heigth, void(*keyCallback)(int, int, int), int argc, char *argv[])
+void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, int width, int heigth, void(*keyCallback)(int, int, int), int argc, char *argv[])
 {
 	// Init context:
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
@@ -280,10 +398,16 @@ void BEengine::Init(char* window_name, int x_position, int y_position, int width
 // Returns:   int -> EXIT_SUCCESS or EXIT_FAILURE
 // this method starts the engine by loading the main loop
 //************************************
-int BEengine::Start()
+int LIB_API BEengine::Start()
 {
+	if (!root){
+		std::cout << std::endl << "[Start Error] There is no scene loaded !!" << std::endl;
+		return EXIT_FAILURE;
+	}
+
 	if (BEengine::initialized_)
 	{
+		node_selected = BEnode::GetSuperRoot()->Find("Rubik_No_Light");
 		// Enter the main FreeGLUT processing loop:     
 		glutMainLoop();
 
@@ -295,10 +419,27 @@ int BEengine::Start()
 	return EXIT_FAILURE;
 }
 
-void BEengine::LoadScene(char *fileName)
+/**
+* Check if the file exists
+*/
+inline bool file_exists(const char* name)
 {
+	struct stat buffer;
+	return (stat(name, &buffer) == 0);
+}
+
+
+LIB_API BEnode* BEengine::LoadScene(char *fileName)
+{
+	if (!file_exists(fileName))
+	{
+		std::cout << std::endl << "[Error 404] File \"" << fileName << "\" not found !" << std::endl;
+		return nullptr;
+	}
+
 	BEsceneLoader scene_loader;
 	root = scene_loader.LoadScene(fileName);
+	return root;
 }
 
 //retrieves the window id of the current instance
@@ -307,12 +448,12 @@ int BEengine::get_window_id()
 	return window_id_;
 }
 
-void BEengine::SetPerspective(glm::mat4 perspective)
+void LIB_API BEengine::SetPerspective(glm::mat4 perspective)
 {
 	perspective_ = perspective;
 }
 
-void BEengine::SetOrtho(glm::mat4 ortho)
+void LIB_API BEengine::SetOrtho(glm::mat4 ortho)
 {
 	ortho_ = ortho;
 }
@@ -329,16 +470,28 @@ bool RemoveLight(int indexLight){
 	return false; //TODO
 }
 
-void PrintFps()
+void PrintTextInfo()
 {
 	// Disable lighting before rendering 2D text:
 	glDisable(GL_LIGHTING);
 
+	float go_up = 10.0f;
+	float delta = 20.0f;
+
 	// Write some text:
 	char text[64];
 	sprintf_s(text, sizeof text, "FPS: %.1f", fps);
-	glRasterPos2f(1.0f, 10.0f);
+	glRasterPos2f(1.0f, go_up );
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
+
+	sprintf_s(text, sizeof text, "Selected: %s", node_selected->get_name().c_str());
+	glRasterPos2f(1.0f, go_up += delta);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
+
+	sprintf_s(text, sizeof text, "Speed Padding: %.2f", BEengine::GetInstance()->GetDeltaPadding());
+	glRasterPos2f(1.0f, go_up += delta);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
+
 
 	// Redo ligting:
 	glEnable(GL_LIGHTING);

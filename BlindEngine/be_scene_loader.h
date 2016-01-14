@@ -31,4 +31,7 @@ private:
 
 	void ParseMaterials();
 	void ParseMeshes();
+
+	// Support
+	unsigned int cnt_materials_, cnt_meshes_;
 };

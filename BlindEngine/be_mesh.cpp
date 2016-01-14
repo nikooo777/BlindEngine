@@ -117,7 +117,7 @@ void BEmesh::CalcTransformation(glm::mat4 cumulated_transformation_matrix)
 	}
 }
 
-void BEmesh::SetSubMeshes(unsigned int sub_meshes_count, unsigned int* sub_meshes)
+void BEmesh::SetSubMeshes(unsigned int sub_meshes_count, unsigned int* sub_meshes, unsigned int delta)
 {
 	sub_meshes_count_ = sub_meshes_count;
 
@@ -130,7 +130,46 @@ void BEmesh::SetSubMeshes(unsigned int sub_meshes_count, unsigned int* sub_meshe
 
 		for (unsigned int i = 0; i < sub_meshes_count; i++)
 		{
-			sub_meshes_[i] = sub_meshes[i];
+			sub_meshes_[i] = sub_meshes[i] + delta;
 		}
 	}
+}
+
+
+BEnode* BEmesh::Find(std::string name)
+{
+	//the current node is the one sought
+	if (this->get_name().compare(name) == 0)
+	{
+		return this;
+	}
+
+	//seek the node in the children
+	BEnode *found_node = nullptr;
+	for each (BEnode* n in children_)
+	{
+		if ((found_node = n->Find(name)) != nullptr)
+			return found_node;
+	}
+	//there are no more children to look into
+	return nullptr;
+}
+
+BEnode* BEmesh::Find(long id)
+{
+	//the current node is the one sought
+	if (this->get_id() == id)
+	{
+		return this;
+	}
+
+	//seek the node in the children
+	BEnode *found_node = nullptr;
+	for each (BEnode* n in children_)
+	{
+		if ((found_node = n->Find(id)) != nullptr)
+			return found_node;
+	}
+	//there are no more children to look into
+	return nullptr;
 }

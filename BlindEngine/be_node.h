@@ -20,18 +20,21 @@ public:
 
 	//functions
 	static BEnode* GetSuperRoot(){ return super_root_node; }
+	static BEnode* GetSceneRootByName(std::string node_name);
 
 	void AddChild(BEnode *);
 	std::vector<BEnode*> GetChildren(){ return children_; }
 	void RemoveChild(BEnode *, bool = false);
 
 	void SetParent(BEnode *parent){ parent_ = parent; }
+	BEnode* GetParent(){ return parent_; }
 	void SetTransformation(glm::mat4 transformation){ transformation_ = transformation; }
-	void SetAsRoot(){ parent_ = this;/*GetSuperRoot();*/ }
+	glm::mat4 GetTransformation(){ return transformation_; }
+	void SetAsSceneRoot();
 
 	//Utility
-	BEnode* find(std::string);
-	BEnode* find(long);
+	virtual BEnode* Find(std::string);
+	virtual BEnode* Find(long);
 	//empty overridden render method
 	virtual void Render(glm::mat4 cumulated_transformation_matrix) override;
 	virtual void RenderSingle(glm::mat4 cumulated_transformation_matrix) override;
@@ -44,6 +47,7 @@ protected:
 	std::vector<BEnode*> children_;
 
 private:
+
 	//members
 	Type type_;
 	static BEnode* super_root_node;

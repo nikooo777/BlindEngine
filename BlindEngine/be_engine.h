@@ -1,6 +1,8 @@
 #pragma once
-// FreeGLUT  
-#include <GL/freeglut.h>
+
+// DLL
+#include "be_dll_interface.h"
+
 
 // OurClasses
 #include "be_light.h"
@@ -9,7 +11,7 @@
 /*
 SINGLETON class
 */
-class BEengine
+class LIB_API BEengine
 {
 public:
 	static BEengine* GetInstance();
@@ -19,11 +21,16 @@ public:
 	int AddLight(BElight *);
 	bool RemoveLigh(int indexLight);
 	int get_window_id();
-	void LoadScene(char *);
+	BEnode* LoadScene(char *);
 	glm::mat4 get_perspective() const { return perspective_; }
 	glm::mat4 get_ortho() const { return ortho_; }
 	void SetPerspective(glm::mat4 perspective);
 	void SetOrtho(glm::mat4 ortho);
+
+	void SetDeltaPadding(float delta_padding){ delta_padding_ = delta_padding; }
+	float GetDeltaPadding(){ return delta_padding_; }
+	void SetDeltaZoom(float delta_zoom){ delta_zoom_ = delta_zoom; }
+	float GetDeltaZoom(){ return delta_zoom_; }
 
 	static BElist *lists_;
 
@@ -31,6 +38,7 @@ private:
 	static BEengine* instance_;
 	int window_id_;
 	bool initialized_ = false;
+	float delta_padding_ = 1.f, delta_zoom_ =1.f;
 
 	// Matrices:
 	glm::mat4 perspective_;

@@ -31,3 +31,43 @@ void BEcamera::CalcTransformation(glm::mat4 cumulated_transformation_matrix)
 		n->CalcTransformation(tmpF);
 	}
 }
+
+
+
+BEnode* BEcamera::Find(std::string name)
+{
+	//the current node is the one sought
+	if (this->get_name().compare(name) == 0)
+	{
+		return this;
+	}
+
+	//seek the node in the children
+	BEnode *found_node = nullptr;
+	for each (BEnode* n in children_)
+	{
+		if ((found_node = n->Find(name)) != nullptr)
+			return found_node;
+	}
+	//there are no more children to look into
+	return nullptr;
+}
+
+BEnode* BEcamera::Find(long id)
+{
+	//the current node is the one sought
+	if (this->get_id() == id)
+	{
+		return this;
+	}
+
+	//seek the node in the children
+	BEnode *found_node = nullptr;
+	for each (BEnode* n in children_)
+	{
+		if ((found_node = n->Find(id)) != nullptr)
+			return found_node;
+	}
+	//there are no more children to look into
+	return nullptr;
+}

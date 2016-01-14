@@ -10,6 +10,7 @@ public:
 	BEmesh(std::string,glm::vec3*, long, glm::vec3*, glm::vec2*, BEmaterial* , unsigned int, unsigned int*);
 	//BEmesh(glm::vec3*, long, glm::vec3*, glm::vec2*, BEmaterial*);
 	~BEmesh();
+
 	virtual void Render(glm::mat4 cumulated_transformation_matrix) override;
 	virtual void RenderSingle(glm::mat4 cumulated_transformation_matrix) override;
 	virtual void CalcTransformation(glm::mat4 cumulated_transformation_matrix) override;
@@ -21,7 +22,11 @@ public:
 	void SetTextureCoords(glm::vec2 *texture_coords){ texture_coords_ = texture_coords; }
 	void SetMaterial(BEmaterial *material){ material_ = material; }
 
-	void SetSubMeshes(unsigned int sub_meshes_count, unsigned int* sub_meshes);
+	void SetSubMeshes(unsigned int sub_meshes_count, unsigned int* sub_meshes, unsigned int delta);
+
+	// Utility
+	virtual BEnode* Find(std::string) override;
+	virtual BEnode* Find(long) override;
 
 private:
 	unsigned int vertices_count_ = 0;

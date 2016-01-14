@@ -1,4 +1,5 @@
 #pragma once
+#include "be_dll_interface.h"
 #include <vector>
 #include "be_includes.h"
 #include "be_mesh.h"
@@ -6,7 +7,7 @@
 #include "be_camera.h"
 #include "be_material.h"
 
-class BElist
+class LIB_API BElist
 {
 public:
 	BElist();
@@ -19,6 +20,7 @@ public:
 	// Material
 	void AddMaterial(BEmaterial* material){ material_ordered_list_.push_back(material); }
 	BEmaterial* GetMaterial(unsigned int index){ return material_ordered_list_[index]; }
+	unsigned int GetMaterialCount(){ return material_ordered_list_.size(); }
 
 	// Mesh
 	void AddMesh(BEmesh*mesh);
@@ -27,6 +29,7 @@ public:
 	BEmesh* GetMesh(unsigned int index){ return mesh_ordered_references_[index]; }
 	glm::mat4 GetMeshTransformation(BEmesh* mesh){ return meshes_.at(mesh); }
 	BEmesh* GetMeshByName(std::string name);
+	unsigned int GetMeshCount(){ return meshes_.size(); }
 
 	// Light
 	void AddLight(BElight* light);

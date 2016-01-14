@@ -10,48 +10,20 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="be_camera.cpp" />
-    <ClCompile Include="be_light.cpp" />
-    <ClCompile Include="be_engine.cpp" />
-    <ClCompile Include="be_list.cpp" />
-    <ClCompile Include="be_logging.cpp" />
-    <ClCompile Include="be_mesh.cpp" />
-    <ClCompile Include="be_node.cpp" />
-    <ClCompile Include="be_scene_loader.cpp" />
-    <ClCompile Include="be_object.cpp" />
-    <ClCompile Include="be_material.cpp" />
-    <ClCompile Include="be_texture.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="be_camera.h" />
-    <ClInclude Include="be_dll_interface.h" />
-    <ClInclude Include="be_includes.h" />
-    <ClInclude Include="be_light.h" />
-    <ClInclude Include="be_engine.h" />
-    <ClInclude Include="be_list.h" />
-    <ClInclude Include="be_logging.h" />
-    <ClInclude Include="be_mesh.h" />
-    <ClInclude Include="be_scene_loader.h" />
-    <ClInclude Include="be_node.h" />
-    <ClInclude Include="be_object.h" />
-    <ClInclude Include="be_material.h" />
-    <ClInclude Include="be_texture.h" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{765D2080-3C56-4612-A955-5676323949C5}</ProjectGuid>
+    <ProjectGuid>{9D6B3D2B-E947-4BCC-A06A-588CAD620D1B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>BlindEngine</RootNamespace>
+    <RootNamespace>Rubik</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -69,9 +41,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -79,15 +53,15 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;FREEGLUT_STATIC;_DEBUG;_WINDOWS;_USRDLL;SIMPLEDYNAMICLIB_EXPORTS;_LIB;FREEIMAGE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeImage\include;..\dependencies\assimp\include\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;FREEGLUT_STATIC;_DEBUG;_CONSOLE;_LIB;FREEIMAGE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\BlindEngine;..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeImage\include;..\dependencies\assimp\include\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalDependencies>BlindEngine.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\dependencies\assimp\lib\$(Platform)\$(Configuration);..\dependencies\freeImage\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\dependencies\assimp\lib\$(Platform)\$(Configuration);..\dependencies\freeImage\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freeglut_static.lib;FreeImageLibd.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>BlindEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -98,19 +72,26 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;FREEGLUT_STATIC;NDEBUG;_WINDOWS;_USRDLL;SIMPLEDYNAMICLIB_EXPORTS;_LIB;FREEIMAGE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeImage\include;..\dependencies\assimp\include\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;FREEGLUT_STATIC;NDEBUG;_CONSOLE;_LIB;FREEIMAGE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\BlindEngine;..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeImage\include;..\dependencies\assimp\include\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalDependencies>BlindEngine.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\dependencies\assimp\lib\$(Platform)\$(Configuration);..\dependencies\freeImage\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\dependencies\assimp\lib\$(Platform)\$(Configuration);..\dependencies\freeImage\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freeglut_static.lib;FreeImage.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>BlindEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="rubik.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="rubik.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
