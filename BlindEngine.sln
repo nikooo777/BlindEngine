@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlindEngine", "BlindEngine\BlindEngine.vcxproj", "{765D2080-3C56-4612-A955-5676323949C5}"
 EndProject
@@ -21,8 +21,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{765D2080-3C56-4612-A955-5676323949C5}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{765D2080-3C56-4612-A955-5676323949C5}.Debug|Mixed Platforms.ActiveCfg = Release|Win32
-		{765D2080-3C56-4612-A955-5676323949C5}.Debug|Mixed Platforms.Build.0 = Release|Win32
+		{765D2080-3C56-4612-A955-5676323949C5}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{765D2080-3C56-4612-A955-5676323949C5}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{765D2080-3C56-4612-A955-5676323949C5}.Debug|Win32.ActiveCfg = Debug|Win32
 		{765D2080-3C56-4612-A955-5676323949C5}.Debug|Win32.Build.0 = Debug|Win32
 		{765D2080-3C56-4612-A955-5676323949C5}.Release|Any CPU.ActiveCfg = Release|Win32
@@ -31,8 +31,8 @@ Global
 		{765D2080-3C56-4612-A955-5676323949C5}.Release|Win32.ActiveCfg = Release|Win32
 		{765D2080-3C56-4612-A955-5676323949C5}.Release|Win32.Build.0 = Release|Win32
 		{9D6B3D2B-E947-4BCC-A06A-588CAD620D1B}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{9D6B3D2B-E947-4BCC-A06A-588CAD620D1B}.Debug|Mixed Platforms.ActiveCfg = Release|Win32
-		{9D6B3D2B-E947-4BCC-A06A-588CAD620D1B}.Debug|Mixed Platforms.Build.0 = Release|Win32
+		{9D6B3D2B-E947-4BCC-A06A-588CAD620D1B}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{9D6B3D2B-E947-4BCC-A06A-588CAD620D1B}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{9D6B3D2B-E947-4BCC-A06A-588CAD620D1B}.Debug|Win32.ActiveCfg = Debug|Win32
 		{9D6B3D2B-E947-4BCC-A06A-588CAD620D1B}.Debug|Win32.Build.0 = Debug|Win32
 		{9D6B3D2B-E947-4BCC-A06A-588CAD620D1B}.Release|Any CPU.ActiveCfg = Release|Win32
