@@ -127,3 +127,8 @@ BEnode* BEnode::GetSceneRootByName(std::string node_name)
 
 	return nullptr;
 }
+
+LIB_API BEnode* BEnode::GetSuperRoot()
+{
+	return super_root_node; 
+}

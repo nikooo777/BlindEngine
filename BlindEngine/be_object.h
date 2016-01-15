@@ -1,7 +1,8 @@
 #pragma once
+#include "be_dll_interface.h"
 #include "be_includes.h"
 
-class BEobject
+class LIB_API BEobject
 {
 public:
 	virtual void Render(glm::mat4 cumulated_transformation_matrix) = 0;

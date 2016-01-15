@@ -1,13 +1,6 @@
 #include "be_engine.h"
 
 
-// FreeGLUT  
-#include <GL/freeglut.h>
-
-#include "be_includes.h"
-#include "be_scene_loader.h"
-#include <sys/stat.h>
-
 //////////////
 // DLL MAIN //
 //////////////
@@ -56,7 +49,6 @@ float globalX = .0f;
 float globalY = .0f;
 
 bool alreadyRendered = false;
-BEnode* node_selected = nullptr;
 
 // Matrices:
 
@@ -73,8 +65,10 @@ bool automatic = false;
 int frames = 0;
 float fps = 0.0f;
 
+//these declarations are needed for the linker
 BEengine* BEengine::instance_ = nullptr;
 BElist* BEengine::lists_ = nullptr;
+void PrintTextInfo();
 
 
 LIB_API BEengine* BEengine::GetInstance()
@@ -94,13 +88,12 @@ BEengine::BEengine()
 	lists_ = new BElist();
 }
 
-
 BEengine::~BEengine()
 {
 	delete instance_;
+	delete lists_;
 }
 
-void PrintTextInfo();
 
 ///////////////
 // CALLBACKS //
@@ -124,10 +117,12 @@ void displayCallback()
 
 	// Set a matrix to move our triangle:
 	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(globalX, globalY, distance));
-	glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(angleX), glm::vec3(1.0f, 0.0f, 0.0f));
-	rotation = glm::rotate(rotation, glm::radians(angleY), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	glm::mat4 f = translation * rotation;
+	//the following 2 lines are useless (?) remove them
+	//glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(angleX), glm::vec3(1.0f, 0.0f, 0.0f));
+	//rotation = glm::rotate(rotation, glm::radians(angleY), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	glm::mat4 f = translation;// *rotation;
 
 	// Set model matrix as current OpenGL matrix:
 	glLoadMatrixf(glm::value_ptr(f));
@@ -154,9 +149,9 @@ void displayCallback()
 		angleX += 0.1f;
 		angleY += 0.2f;
 
-		// Force rendering refresh:
-		glutPostWindowRedisplay(BEengine::GetInstance()->get_window_id());
 	}
+	// Force rendering refresh:
+	glutPostWindowRedisplay(BEengine::GetInstance()->get_window_id());
 
 	// Inc. frames:
 	frames++;
@@ -190,104 +185,10 @@ void printGlmMat4(glm::mat4& gMat){
 	std::cout << std::endl;
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
-* This callback is invoked each time a standard keyboard key is pressed.
-* @param key key pressed id
-* @param mouseX mouse X coordinate
-* @param mouseY mouse Y coordinate
-*/
-void keyboardCallback(unsigned char key, int mouseX, int mouseY)
+void BEengine::SetKeyBoardCallBack(void(*callback)(unsigned char key, int mouseX, int mouseY))
 {
-	//std::cout << "[std key pressed]" << std::endl;
-
-	switch (key)
-	{
-	case ' ':
-		automatic = !automatic;
-		break;
-	case 'a':
-	{
-		//globalX -= BEengine::GetInstance()->GetDeltaPadding();
-		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(-BEengine::GetInstance()->GetDeltaPadding(), 0.0f, 0.0f));
-		glm::mat4 new_translation = translation * node_selected->GetTransformation();
-		node_selected->SetTransformation(new_translation);
-	}
-	break;
-	case 'd':
-	{
-		//globalX += BEengine::GetInstance()->GetDeltaPadding();
-
-		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(BEengine::GetInstance()->GetDeltaPadding(), 0.0f, 0.0f));
-		glm::mat4 new_translation = translation * node_selected->GetTransformation();
-		node_selected->SetTransformation(new_translation);
-	}
-		break;
-	case 'w':
-	{ // Necessary for scope
-		//globalY += BEengine::GetInstance()->GetDeltaPadding();
-
-		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, BEengine::GetInstance()->GetDeltaPadding(), 0.0f));
-		glm::mat4 new_translation = translation * node_selected->GetTransformation();
-		node_selected->SetTransformation(new_translation);
-	}
-	break;
-	case 's':
-	{ // Necessary for scope
-		//globalY -= BEengine::GetInstance()->GetDeltaPadding();
-
-		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, -BEengine::GetInstance()->GetDeltaPadding(), 0.0f));
-		glm::mat4 new_translation = translation * node_selected->GetTransformation();
-		node_selected->SetTransformation(new_translation);
-	}
-	break;
-	case 'q':
-	{
-		//globalX -= BEengine::GetInstance()->GetDeltaPadding();
-		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -BEengine::GetInstance()->GetDeltaPadding()));
-		glm::mat4 new_translation = translation * node_selected->GetTransformation();
-		node_selected->SetTransformation(new_translation);
-		break;
-	}
-	case 'y':
-	{
-		//globalX -= BEengine::GetInstance()->GetDeltaPadding();
-		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, BEengine::GetInstance()->GetDeltaPadding()));
-		glm::mat4 new_translation = translation * node_selected->GetTransformation();
-		node_selected->SetTransformation(new_translation);
-		break;
-	}
-
-	case '+':
-		BEengine::GetInstance()->SetDeltaPadding(BEengine::GetInstance()->GetDeltaPadding() + 0.5f);
-		break;
-	case '-':
-		BEengine::GetInstance()->SetDeltaPadding(BEengine::GetInstance()->GetDeltaPadding() - 0.5f);
-		break;
-
-	case '1':
-		node_selected = BEnode::GetSuperRoot()->Find("Rubik_No_Light");
-		break;
-	case '2':
-		node_selected = BEnode::GetSuperRoot()->Find("Box001");
-		break;
-	case '3':
-		node_selected = BEnode::GetSuperRoot()->Find("Cone001");
-		break;
-	case '4':
-		node_selected = BEnode::GetSuperRoot()->Find("Sphere001");
-		break;
-	case '5':
-		node_selected = BEnode::GetSuperRoot()->Find("Torus Knot001");
-		break;
-	case '6':
-		node_selected = BEnode::GetSuperRoot()->Find("Teapot001");
-		break;
-	}
-
-	// Force rendering refresh:
-	glutPostWindowRedisplay(BEengine::GetInstance()->get_window_id());
+	keyboard_callback_ = callback;
+	glutKeyboardFunc(keyboard_callback_);
 }
 
 
@@ -375,8 +276,14 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 	// Set callback functions:
 	glutDisplayFunc(displayCallback);
 	glutReshapeFunc(reshapeCallback);
-	glutKeyboardFunc(keyboardCallback);
+
+	//THIS MUST BE MOVED AWAY FROM HERE 
+	//==============================================
+	//the contained line is under arrest!
+	//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 	glutSpecialFunc(specialCallback);
+	//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 	glutTimerFunc(1000, timerCallback, 0);
 
 	// Global OpenGL settings:
@@ -401,18 +308,22 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 int LIB_API BEengine::Start()
 {
 	if (!root){
-		std::cout << std::endl << "[Start Error] There is no scene loaded !!" << std::endl;
+		std::cout << std::endl << "[Start Error] There is no scene loaded!" << std::endl;
 		return EXIT_FAILURE;
 	}
 
 	if (BEengine::initialized_)
 	{
-		node_selected = BEnode::GetSuperRoot()->Find("Rubik_No_Light");
+		node_selected_ = std::string("none or default");
 		// Enter the main FreeGLUT processing loop:     
 		glutMainLoop();
 
 		//application exited
 		return EXIT_SUCCESS;
+	}
+	else
+	{
+		std::cout << std::endl << "[Start Error] The engine hasn't been initialized! *Did you forget to call Init()?*" << std::endl;
 	}
 
 	//the engine wasn't initialized
@@ -433,7 +344,7 @@ LIB_API BEnode* BEengine::LoadScene(char *fileName)
 {
 	if (!file_exists(fileName))
 	{
-		std::cout << std::endl << "[Error 404] File \"" << fileName << "\" not found !" << std::endl;
+		std::cout << std::endl << "[Error 404] File \"" << fileName << "\" not found!" << std::endl;
 		return nullptr;
 	}
 
@@ -456,6 +367,16 @@ void LIB_API BEengine::SetPerspective(glm::mat4 perspective)
 void LIB_API BEengine::SetOrtho(glm::mat4 ortho)
 {
 	ortho_ = ortho;
+}
+
+std::string BEengine::get_node_selected()
+{
+	return node_selected_;
+}
+
+void BEengine::set_node_selected(std::string name)
+{
+	node_selected_ = name;
 }
 
 // Return the index of the light
@@ -481,10 +402,10 @@ void PrintTextInfo()
 	// Write some text:
 	char text[64];
 	sprintf_s(text, sizeof text, "FPS: %.1f", fps);
-	glRasterPos2f(1.0f, go_up );
+	glRasterPos2f(1.0f, go_up);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
 
-	sprintf_s(text, sizeof text, "Selected: %s", node_selected->get_name().c_str());
+	sprintf_s(text, sizeof text, "Selected: %s", BEengine::GetInstance()->get_node_selected().c_str());
 	glRasterPos2f(1.0f, go_up += delta);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
 

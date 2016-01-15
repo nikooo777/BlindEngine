@@ -1,8 +1,9 @@
 #pragma once
+#include "be_dll_interface.h"
 #include "be_object.h"
 #include "be_includes.h"
 
-class BEnode : public BEobject
+class LIB_API BEnode : public BEobject
 {
 public:
 	//types
@@ -19,7 +20,7 @@ public:
 	virtual ~BEnode();
 
 	//functions
-	static BEnode* GetSuperRoot(){ return super_root_node; }
+	static BEnode* GetSuperRoot();
 	static BEnode* GetSceneRootByName(std::string node_name);
 
 	void AddChild(BEnode *);

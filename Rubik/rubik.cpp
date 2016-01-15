@@ -41,6 +41,13 @@ Rubik::Rubik(BEnode* cube_root)
 	cube_faces_[0][2][2] = cube_root->Find("Block72");
 	cube_faces_[1][2][2] = cube_root->Find("Block70");
 	cube_faces_[2][2][2] = cube_root->Find("Block69");
+
+
+	/*for each (BEnode* n in cube_faces_)
+	{
+	if (n == nullptr)
+	throw "A reference to a block is invalid";
+	}*/
 }
 
 
@@ -50,12 +57,12 @@ Rubik::~Rubik()
 
 
 /************************************
- * Method:	TranslateSingleCubeX
- * Desc:	Translate a single cube in axis-x
- *
- * @param	unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x
- * @return	void
- ************************************/
+* Method:	TranslateSingleCubeX
+* Desc:	Translate a single cube in axis-x
+*
+* @param	unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x
+* @return	void
+************************************/
 void Rubik::TranslateSingleCubeX(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x)
 {
 	glm::mat4 f = cube_faces_[element_x][element_y][element_z]->GetTransformation();
@@ -100,17 +107,84 @@ void Rubik::TranslateSingleCubeZ(unsigned short element_x, unsigned short elemen
 
 
 /************************************
- * Method:	TranslateSingleCube
- * Desc:	Translate a single cube in all axis
- *
- * @param	unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x, float value_y, float value_z
- * @return	void
- ************************************/
+* Method:	TranslateSingleCube
+* Desc:	Translate a single cube in all axis
+*
+* @param	unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x, float value_y, float value_z
+* @return	void
+************************************/
 void Rubik::TranslateSingleCube(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x, float value_y, float value_z)
 {
 	glm::mat4 f = cube_faces_[element_x][element_y][element_z]->GetTransformation();
 
 	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(value_x, value_y, value_z));
-	glm::mat4 new_translation = translation * f ;
+	glm::mat4 new_translation = translation * f;
 	cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
+}
+
+void Rubik::RotateFace(Face face, bool inverse)
+{
+	switch (face)
+	{
+	case Rubik::U_FACE:
+		//y doesn't change
+		break;
+	case Rubik::R_FACE:
+		//y doesn't change
+		break;
+	case Rubik::D_FACE:
+		//x doesn't change
+		break;
+	case Rubik::L_FACE:
+		//x doesn't change
+		break;
+	case Rubik::F_FACE:
+		//z doesn't change
+	{
+		BEnode* faces_to_swap[9];
+
+		//gather the cubes to rotate
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				//x123 -> y123 /^
+				faces_to_swap[(i + 1)*(j + 1) - 1] = cube_faces_[i][j][0];
+			}
+		}
+
+		for (int i = 0; i < 9; i++)
+		{
+			if (i != 4)
+			{
+				faces_to_swap[i]->SetParent(faces_to_swap[4]);
+			}
+		}
+
+		glm::mat4 f = faces_to_swap[4]->GetTransformation();
+		glm::mat4 rotation = glm::rotate(rotation, 90.f, glm::vec3(0, 0, 1))*f;
+		faces_to_swap[4]->SetTransformation(rotation);
+
+		//glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(value_x, 0.0f, 0.0f));
+		//glm::mat4 new_translation = translation * f;
+		//cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
+
+
+		//update the cube matrix
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				cube_faces_[i][j][0] = faces_to_swap[(3 - i)*(3 - j) - 1];
+			}
+		}
+	}
+
+		break;
+	case Rubik::B_FACE:
+		//z doesn't change
+		break;
+	default:
+		break;
+	}
 }
