@@ -150,7 +150,9 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 			{
 				//x123 -> y123 /^
-				faces_to_swap[(i + 1)*(j + 1) - 1] = cube_faces_[i][j][0];
+				int index = (j+1)+(i*3)-1;
+				std::cout << "index: " << index << ": " << cube_faces_[i][j][0]->get_name() << std::endl;
+				faces_to_swap[index] = cube_faces_[i][j][0];
 			}
 		}
 		std::cout << "grabbed nodes" << std::endl;
@@ -158,7 +160,11 @@ void Rubik::RotateFace(Face face, bool inverse)
 		{
 			if (i != 4)
 			{
-				faces_to_swap[i]->SetParent(faces_to_swap[4]);
+				std::cout << "index: " << i << ": " << faces_to_swap[i]->get_name()<< std::endl;
+				faces_to_swap[i]->GetParent()->RemoveChild(faces_to_swap[i]);
+				std::cout << "child removed" << std::endl;
+				faces_to_swap[4]->AddChild(faces_to_swap[i]);
+				std::cout << "Parent set and child added" << std::endl;
 			}
 		}
 		std::cout << "Parents set" << std::endl;

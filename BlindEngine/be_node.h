@@ -29,7 +29,7 @@ public:
 	std::vector<BEnode*> GetChildren(){ return children_; }
 	void RemoveChild(BEnode *, bool = false);
 
-	void SetParent(BEnode *parent){ parent_ = parent; }
+	void SetParent(BEnode *parent);
 	BEnode* GetParent(){ return parent_; }
 	void SetTransformation(glm::mat4 transformation){ transformation_ = transformation; }
 	glm::mat4 GetTransformation(){ return transformation_; }

@@ -1,6 +1,6 @@
 #include "be_node.h"
 
-BEnode* BEnode::super_root_node = new BEnode("root_node",ROOT);
+BEnode* BEnode::super_root_node = new BEnode("root_node", ROOT);
 
 BEnode::BEnode(std::string name, Type type) : BEobject(name)
 {
@@ -17,7 +17,9 @@ BEnode::~BEnode()
 void BEnode::AddChild(BEnode* node)
 {
 	node->SetParent(this);
+	std::cout << "parent set" << std::endl;
 	children_.push_back(node);
+	std::cout << "child added" << std::endl;
 }
 
 
@@ -130,5 +132,10 @@ BEnode* BEnode::GetSceneRootByName(std::string node_name)
 
 LIB_API BEnode* BEnode::GetSuperRoot()
 {
-	return super_root_node; 
+	return super_root_node;
+}
+
+void BEnode::SetParent(BEnode *parent)
+{
+	parent_ = parent;
 }
