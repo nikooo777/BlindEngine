@@ -124,6 +124,7 @@ void Rubik::TranslateSingleCube(unsigned short element_x, unsigned short element
 
 void Rubik::RotateFace(Face face, bool inverse)
 {
+	std::cout << "Rotating" << std::endl;
 	switch (face)
 	{
 	case Rubik::U_FACE:
@@ -152,7 +153,7 @@ void Rubik::RotateFace(Face face, bool inverse)
 				faces_to_swap[(i + 1)*(j + 1) - 1] = cube_faces_[i][j][0];
 			}
 		}
-
+		std::cout << "grabbed nodes" << std::endl;
 		for (int i = 0; i < 9; i++)
 		{
 			if (i != 4)
@@ -160,11 +161,12 @@ void Rubik::RotateFace(Face face, bool inverse)
 				faces_to_swap[i]->SetParent(faces_to_swap[4]);
 			}
 		}
-
+		std::cout << "Parents set" << std::endl;
 		glm::mat4 f = faces_to_swap[4]->GetTransformation();
 		glm::mat4 rotation = glm::rotate(rotation, 90.f, glm::vec3(0, 0, 1))*f;
 		faces_to_swap[4]->SetTransformation(rotation);
 
+		std::cout << "something is happening here" << std::endl;
 		//glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(value_x, 0.0f, 0.0f));
 		//glm::mat4 new_translation = translation * f;
 		//cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);

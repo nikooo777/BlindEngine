@@ -1,9 +1,12 @@
 #pragma once
+// DLL
+#include "be_dll_interface.h"
+
 #include "be_node.h"
 #include "be_material.h"
 #include "be_includes.h"
 
-class BEmesh : public BEnode
+class LIB_API BEmesh : public BEnode
 {
 public:
 	//BEmesh();

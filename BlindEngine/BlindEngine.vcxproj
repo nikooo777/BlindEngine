@@ -82,12 +82,14 @@
       <PreprocessorDefinitions>WIN32;FREEGLUT_STATIC;_DEBUG;_WINDOWS;_USRDLL;SIMPLEDYNAMICLIB_EXPORTS;_LIB;FREEIMAGE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeImage\include;..\dependencies\assimp\include\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\dependencies\assimp\lib\$(Platform)\$(Configuration);..\dependencies\freeImage\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <DisableSpecificWarnings>4251 </DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\dependencies\assimp\lib\$(Platform)\$(Configuration);..\dependencies\freeImage\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>freeglut_static.lib;FreeImageLibd.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

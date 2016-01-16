@@ -1,9 +1,12 @@
 #pragma once
+// DLL
+#include "be_dll_interface.h"
+
 #include "be_object.h"
 #include "be_texture.h"
 
 
-class BEmaterial : public BEobject
+class LIB_API BEmaterial : public BEobject
 {
 public:
 	BEmaterial(std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, float shininess, float shininess_strength,  BEtexture* texture);

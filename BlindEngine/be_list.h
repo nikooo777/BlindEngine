@@ -1,6 +1,7 @@
 #pragma once
+// DLL
 #include "be_dll_interface.h"
-#include <vector>
+
 #include "be_includes.h"
 #include "be_mesh.h"
 #include "be_light.h"

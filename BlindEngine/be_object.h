@@ -1,5 +1,7 @@
 #pragma once
+// DLL
 #include "be_dll_interface.h"
+
 #include "be_includes.h"
 
 class LIB_API BEobject

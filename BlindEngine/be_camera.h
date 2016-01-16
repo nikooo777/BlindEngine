@@ -1,6 +1,9 @@
 #pragma once
+// DLL
+#include "be_dll_interface.h"
 #include "be_node.h"
-class BEcamera : public BEnode
+
+class LIB_API BEcamera : public BEnode
 {
 public:
 	BEcamera(std::string);

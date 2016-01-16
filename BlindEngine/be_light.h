@@ -1,11 +1,13 @@
 #pragma once
 
-#include <stdexcept>
+// DLL
+#include "be_dll_interface.h"
+
 //BlindEngine
 #include "be_node.h"
 #include "be_includes.h"
 
-class BElight : public BEnode
+class LIB_API BElight : public BEnode
 {
 private:
 	//type of lights

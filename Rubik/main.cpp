@@ -69,6 +69,11 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		node_selected->SetTransformation(new_translation);
 		break;
 	}
+	case 'l':
+	{
+		static Rubik* cube = new Rubik(BEnode::GetSuperRoot()->Find("Rubik_No_Light"));
+		cube->RotateFace(Rubik::F_FACE, false);
+	}
 
 	case '+':
 		BEengine::GetInstance()->SetDeltaPadding(BEengine::GetInstance()->GetDeltaPadding() + 0.5f);

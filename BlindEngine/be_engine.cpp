@@ -118,11 +118,11 @@ void displayCallback()
 	// Set a matrix to move our triangle:
 	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(globalX, globalY, distance));
 
-	//the following 2 lines are useless (?) remove them
-	//glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(angleX), glm::vec3(1.0f, 0.0f, 0.0f));
-	//rotation = glm::rotate(rotation, glm::radians(angleY), glm::vec3(0.0f, 1.0f, 0.0f));
+	//the following 2 lines will be obsolete when the special callback and/or the camera will be removed
+	glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(angleX), glm::vec3(1.0f, 0.0f, 0.0f));
+	rotation = glm::rotate(rotation, glm::radians(angleY), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	glm::mat4 f = translation;// *rotation;
+	glm::mat4 f = translation *rotation;
 
 	// Set model matrix as current OpenGL matrix:
 	glLoadMatrixf(glm::value_ptr(f));

@@ -1,11 +1,14 @@
 #pragma once
+// DLL
+#include "be_dll_interface.h"
+
 #include "be_node.h"
 #include "be_light.h"
 #include "be_logging.h"
 #include "be_includes.h"
 #include "be_mesh.h"
 
-class BEsceneLoader
+class LIB_API BEsceneLoader
 {
 public:
 	BEsceneLoader();
