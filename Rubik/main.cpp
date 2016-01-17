@@ -12,7 +12,7 @@
 void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 {
 	//std::cout << "[std key pressed]" << std::endl;
-	static BEnode* node_selected = BEnode::GetSuperRoot()->Find("Rubik_No_Light");
+	static BEnode* node_selected = BEnode::GetSuperRoot()->Find("Rubik_Downloaded");
 	switch (key)
 	{
 	case ' ':
@@ -71,8 +71,9 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	}
 	case 'l':
 	{
-		static Rubik* cube = new Rubik(BEnode::GetSuperRoot()->Find("Rubik_No_Light"));
+		static Rubik* cube = new Rubik(BEnode::GetSuperRoot()->Find("Rubik_Downloaded"));
 		cube->RotateFace(Rubik::F_FACE, false);
+		break;
 	}
 
 	case '+':
@@ -83,7 +84,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		break;
 
 	case '1':
-		node_selected = BEnode::GetSuperRoot()->Find("Rubik_No_Light");
+		node_selected = BEnode::GetSuperRoot()->Find("Rubik_Downloaded");
 		break;
 	case '2':
 		node_selected = BEnode::GetSuperRoot()->Find("Box001");
@@ -119,9 +120,9 @@ int main(int argc, char *argv[])
 	/************************************************************************/
 	/* Load scenes
 	/************************************************************************/
-	BEnode* cube_root = engine->LoadScene("Rubik_No_Light.DAE");
-
-	engine->LoadScene("modellosore.DAE");
+	//BEnode* cube_root = engine->LoadScene("Rubik_No_Light.DAE");
+	engine->LoadScene("Rubik_Downloaded.DAE");
+	//engine->LoadScene("modellosore.DAE");
 	//engine->LoadScene("scene_texture.DAE");
 
 

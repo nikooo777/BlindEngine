@@ -3,6 +3,7 @@
 
 Rubik::Rubik(BEnode* cube_root)
 {
+	cube_root_ = cube_root;
 	// z=0
 	cube_faces_[0][0][0] = cube_root->Find("Block59");
 	cube_faces_[1][0][0] = cube_root->Find("Block49");
@@ -143,19 +144,22 @@ void Rubik::RotateFace(Face face, bool inverse)
 		//z doesn't change
 	{
 		BEnode* faces_to_swap[9];
-
+		int index = 0;
 		//gather the cubes to rotate
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
 				//x123 -> y123 /^
-				int index = (j+1)+(i*3)-1;
 				std::cout << "index: " << index << ": " << cube_faces_[i][j][0]->get_name() << std::endl;
-				faces_to_swap[index] = cube_faces_[i][j][0];
+				faces_to_swap[index++] = cube_faces_[i][j][0];
 			}
 		}
 		std::cout << "grabbed nodes" << std::endl;
+
+		BEnode* rotation_helper = new BEnode("rotation_helper", BEnode::ROOT);
+		faces_to_swap[4]->AddChild(rotation_helper);
+		rotation_helper->SetTransformation(glm::inverse(faces_to_swap[4]->GetTransformation()));
 		for (int i = 0; i < 9; i++)
 		{
 			if (i != 4)
@@ -163,27 +167,36 @@ void Rubik::RotateFace(Face face, bool inverse)
 				std::cout << "index: " << i << ": " << faces_to_swap[i]->get_name()<< std::endl;
 				faces_to_swap[i]->GetParent()->RemoveChild(faces_to_swap[i]);
 				std::cout << "child removed" << std::endl;
-				faces_to_swap[4]->AddChild(faces_to_swap[i]);
+				rotation_helper->AddChild(faces_to_swap[i]);
 				std::cout << "Parent set and child added" << std::endl;
 			}
 		}
-		std::cout << "Parents set" << std::endl;
 		glm::mat4 f = faces_to_swap[4]->GetTransformation();
-		glm::mat4 rotation = glm::rotate(rotation, 90.f, glm::vec3(0, 0, 1))*f;
+		glm::mat4 rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, 1, 0))*f;
 		faces_to_swap[4]->SetTransformation(rotation);
 
-		std::cout << "something is happening here" << std::endl;
+		for (int i = 0; i < 9; i++)
+		{
+			if (i != 4)
+			{
+				faces_to_swap[i]->SetTransformation(faces_to_swap[i]->GetParent()->CalcTransformation())
+				std::cout << "child removed" << std::endl;
+				rotation_helper->AddChild(faces_to_swap[i]);
+				std::cout << "Parent set and child added" << std::endl;
+			}
+		}
 		//glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(value_x, 0.0f, 0.0f));
 		//glm::mat4 new_translation = translation * f;
 		//cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
 
 
 		//update the cube matrix
+		index = 0;
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				cube_faces_[i][j][0] = faces_to_swap[(3 - i)*(3 - j) - 1];
+				cube_faces_[i][j][0] = faces_to_swap[index++];
 			}
 		}
 	}

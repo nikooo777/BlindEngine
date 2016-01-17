@@ -1,6 +1,6 @@
 #pragma once
 #include "be_engine.h"
-
+#include <glm/gtx/constants.hpp>
 class Rubik
 {
 public:
@@ -54,6 +54,7 @@ private:
 	*/
 
 	BEnode* cube_faces_[3][3][3];
+	BEnode* cube_root_;
 	BEnode* get_green()	{ return cube_faces_[2][3][2]; }
 	BEnode* get_white()	{ return cube_faces_[3][2][2]; }
 	BEnode* get_red()	{ return cube_faces_[2][2][0]; }

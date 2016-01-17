@@ -17,9 +17,7 @@ BEnode::~BEnode()
 void BEnode::AddChild(BEnode* node)
 {
 	node->SetParent(this);
-	std::cout << "parent set" << std::endl;
 	children_.push_back(node);
-	std::cout << "child added" << std::endl;
 }
 
 
@@ -32,12 +30,13 @@ void BEnode::RemoveChild(BEnode * node, bool should_delete)
 	}
 
 	//remove the node from the vector containing all children
-	for (std::vector<BEnode*>::iterator iter = children_.begin(); iter != children_.end(); iter++)
+	std::vector<BEnode*>::iterator iter = children_.begin();
+	while (iter != children_.end())
 	{
 		if (*iter == node)
-		{
 			iter = children_.erase(iter);
-		}
+		else
+			iter++;
 	}
 	if (should_delete)
 	{

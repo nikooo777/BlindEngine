@@ -161,7 +161,6 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 		else
 		{
 			std::cout << "NodeHelper possible --> Something unknown in the tree was found." << std::endl;
-			//node = nullptr; // @Todo: Edit it -> Only for not crash
 			const std::string name = std::string(this_node->mName.C_Str());
 			node = new BEnode(name, BEnode::ROOT);
 		}
