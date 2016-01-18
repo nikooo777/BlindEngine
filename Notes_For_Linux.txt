@@ -1,0 +1,23 @@
+Install freeglut:
+sudo apt-get install freeglut3-dev
+
+--------------------------------------------
+
+Install FreeImage:
+sudo apt-get install libfreeimage-dev
+
+--------------------------------------------
+
+Assimp:
+
+sudo apt-get install libassimp-dev
+------
+Or, variant 2:
+
+– Dowload and unzip the source only package
+– Install cmake:
+• sudo apt-get install cmake
+– From the project root, run:
+• cmake –DENABLE_BOOST_WORKAROUND=ON –G ‘Unix Makefiles’
+• make
+• sudo make install
