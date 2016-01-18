@@ -15,9 +15,6 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	static BEnode* node_selected = BEnode::GetSuperRoot()->Find("Rubik_Downloaded");
 	switch (key)
 	{
-	case ' ':
-		//automatic = !automatic;
-		break;
 	case 'a':
 	{
 		//globalX -= BEengine::GetInstance()->GetDeltaPadding();
@@ -96,24 +93,6 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		BEengine::GetInstance()->SetDeltaPadding(BEengine::GetInstance()->GetDeltaPadding() - 0.5f);
 		break;
 
-	case '1':
-		node_selected = BEnode::GetSuperRoot()->Find("Rubik_Downloaded");
-		break;
-	case '2':
-		node_selected = BEnode::GetSuperRoot()->Find("Box001");
-		break;
-	case '3':
-		node_selected = BEnode::GetSuperRoot()->Find("Cone001");
-		break;
-	case '4':
-		node_selected = BEnode::GetSuperRoot()->Find("Sphere001");
-		break;
-	case '5':
-		node_selected = BEnode::GetSuperRoot()->Find("Torus Knot001");
-		break;
-	case '6':
-		node_selected = BEnode::GetSuperRoot()->Find("Teapot001");
-		break;
 	}
 	BEengine::GetInstance()->set_node_selected(node_selected->get_name());
 }

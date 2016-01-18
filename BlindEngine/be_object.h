@@ -12,8 +12,9 @@ public:
 	virtual ~BEobject();
 	BEobject();
 	BEobject(const std::string);
-	std::string get_name();
-	long get_id();
+	std::string get_name(){return name_;}
+	void set_name(std::string name){name_ = name;}
+	long get_id(){return id_;}
 	void PrintName(){ std::cout << get_name() << std::endl; }
 private:
 	virtual void GenerateId();

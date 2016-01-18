@@ -33,5 +33,9 @@
 #include <sys/stat.h>
 #include <stdexcept>
 
+#ifdef WIN32
+#define snprintf sprintf_s
+#endif
+
 // Debug info
 //#define PRINT_DEBUG_MESH_INFO //Uncomment to print vertex, faces, and textcoords info for Mesh objects during the scene_loader

@@ -37,16 +37,21 @@ public:
 	std::string get_node_selected();
 	void set_node_selected(std::string name);
 	static BElist *lists_;
+	void(*keyboard_callback_)(unsigned char key, int mouseX, int mouseY); // Client callback
+
 private:
 	std::string node_selected_;
 	static BEengine* instance_;
 	int window_id_;
 	bool initialized_ = false;
 	float delta_padding_ = 1.f, delta_zoom_ =1.f;
-	void(*keyboard_callback_)(unsigned char key, int mouseX, int mouseY);
+	
+	
+
 	// Matrices:
 	glm::mat4 perspective_;
 	glm::mat4 ortho_;
 	BEengine();
 	~BEengine();
+
 };

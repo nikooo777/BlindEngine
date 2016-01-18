@@ -198,7 +198,9 @@ void Rubik::RotateFace(Face face, bool inverse)
 		//apply the rotation to the center cube (here could come the animation)
 		f = faces_to_swap[4]->GetTransformation();
 		rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, 1, 0))*f;
-		faces_to_swap[4]->SetTransformation(rotation);
+		
+		BEengine::GetInstance()->lists_->UpdateMesh((BEmesh*) faces_to_swap[4], rotation);
+		//faces_to_swap[4]->SetTransformation(rotation);
 
 		//update the cube matrix
 		index = 0;
@@ -206,7 +208,8 @@ void Rubik::RotateFace(Face face, bool inverse)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				faces_to_swap[index]->SetTransformation(rotation_helper->GetTransformation()*faces_to_swap[4]->GetTransformation()*faces_to_swap[index]->GetTransformation());
+				BEengine::GetInstance()->lists_->UpdateMesh((BEmesh*)faces_to_swap[index], rotation_helper->GetTransformation()*faces_to_swap[4]->GetTransformation()*faces_to_swap[index]->GetTransformation());
+				//faces_to_swap[index]->SetTransformation(rotation_helper->GetTransformation()*faces_to_swap[4]->GetTransformation()*faces_to_swap[index]->GetTransformation());
 				rotation_helper->RemoveChild(faces_to_swap[index]);
 				faces_to_swap[4]->GetParent()->AddChild(faces_to_swap[index]);
 
