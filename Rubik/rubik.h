@@ -22,6 +22,8 @@ public:
 	void TranslateSingleCube(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x, float value_y, float value_z);
 	void RotateFace(Face face, bool inverse);
 
+	void PushBackFace(BEnode** faces_to_swap, BEnode* rotation_helper);
+
 	void RelinkCubes(BEnode** faces_to_swap, BEnode* rotation_helper);
 
 private:

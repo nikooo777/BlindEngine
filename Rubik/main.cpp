@@ -12,83 +12,54 @@
 void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 {
 	//std::cout << "[std key pressed]" << std::endl;
-	static BEnode* node_selected = BEnode::GetSuperRoot()->Find("Rubik_Downloaded");
+	static BEnode* rubik_root_node = BEnode::GetSuperRoot()->Find("Rubik_Downloaded");
+	static Rubik* cube = new Rubik(rubik_root_node);
 	switch (key)
 	{
-	case ' ':
-		//automatic = !automatic;
-		break;
+
+		//navigation
 	case 'a':
 	{
-		//globalX -= BEengine::GetInstance()->GetDeltaPadding();
 		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(-BEengine::GetInstance()->GetDeltaPadding(), 0.0f, 0.0f));
-		glm::mat4 new_translation = translation * node_selected->GetTransformation();
-		node_selected->SetTransformation(new_translation);
+		glm::mat4 new_translation = translation * rubik_root_node->GetTransformation();
+		rubik_root_node->SetTransformation(new_translation);
 	}
 		break;
 	case 'd':
 	{
-		//globalX += BEengine::GetInstance()->GetDeltaPadding();
-
 		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(BEengine::GetInstance()->GetDeltaPadding(), 0.0f, 0.0f));
-		glm::mat4 new_translation = translation * node_selected->GetTransformation();
-		node_selected->SetTransformation(new_translation);
+		glm::mat4 new_translation = translation * rubik_root_node->GetTransformation();
+		rubik_root_node->SetTransformation(new_translation);
 	}
 		break;
 	case 'w':
-	{ // Necessary for scope
-		//globalY += BEengine::GetInstance()->GetDeltaPadding();
-
+	{
 		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, BEengine::GetInstance()->GetDeltaPadding(), 0.0f));
-		glm::mat4 new_translation = translation * node_selected->GetTransformation();
-		node_selected->SetTransformation(new_translation);
+		glm::mat4 new_translation = translation * rubik_root_node->GetTransformation();
+		rubik_root_node->SetTransformation(new_translation);
 	}
 		break;
 	case 's':
-	{ // Necessary for scope
-		//globalY -= BEengine::GetInstance()->GetDeltaPadding();
-
+	{
 		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, -BEengine::GetInstance()->GetDeltaPadding(), 0.0f));
-		glm::mat4 new_translation = translation * node_selected->GetTransformation();
-		node_selected->SetTransformation(new_translation);
+		glm::mat4 new_translation = translation * rubik_root_node->GetTransformation();
+		rubik_root_node->SetTransformation(new_translation);
 	}
 		break;
 	case 'q':
 	{
-		//globalX -= BEengine::GetInstance()->GetDeltaPadding();
 		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -BEengine::GetInstance()->GetDeltaPadding()));
-		glm::mat4 new_translation = translation * node_selected->GetTransformation();
-		node_selected->SetTransformation(new_translation);
+		glm::mat4 new_translation = translation * rubik_root_node->GetTransformation();
+		rubik_root_node->SetTransformation(new_translation);
 		break;
 	}
 	case 'y':
 	{
-		//globalX -= BEengine::GetInstance()->GetDeltaPadding();
 		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, BEengine::GetInstance()->GetDeltaPadding()));
-		glm::mat4 new_translation = translation * node_selected->GetTransformation();
-		node_selected->SetTransformation(new_translation);
+		glm::mat4 new_translation = translation * rubik_root_node->GetTransformation();
+		rubik_root_node->SetTransformation(new_translation);
 		break;
 	}
-	case 'f':
-	{
-		static Rubik* cube = new Rubik(BEnode::GetSuperRoot()->Find("Rubik_Downloaded"));
-		cube->RotateFace(Rubik::F_FACE, false);
-		break;
-	}
-
-	case 'b':
-	{
-		static Rubik* cube = new Rubik(BEnode::GetSuperRoot()->Find("Rubik_Downloaded"));
-		cube->RotateFace(Rubik::B_FACE, false);
-		break;
-	}
-	case 'l':
-	{
-		static Rubik* cube = new Rubik(BEnode::GetSuperRoot()->Find("Rubik_Downloaded"));
-		cube->RotateFace(Rubik::L_FACE, false);
-		break;
-	}
-
 	case '+':
 		BEengine::GetInstance()->SetDeltaPadding(BEengine::GetInstance()->GetDeltaPadding() + 0.5f);
 		break;
@@ -96,31 +67,36 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		BEengine::GetInstance()->SetDeltaPadding(BEengine::GetInstance()->GetDeltaPadding() - 0.5f);
 		break;
 
-	case '1':
-		node_selected = BEnode::GetSuperRoot()->Find("Rubik_Downloaded");
+		/************************************************************************/
+		/* Cube controls                                                        */
+		/************************************************************************/
+	case 'f':
+		cube->RotateFace(Rubik::F_FACE, false);
 		break;
-	case '2':
-		node_selected = BEnode::GetSuperRoot()->Find("Box001");
+	case 'b':
+		cube->RotateFace(Rubik::B_FACE, false);
 		break;
-	case '3':
-		node_selected = BEnode::GetSuperRoot()->Find("Cone001");
+	case 'r':
+		cube->RotateFace(Rubik::R_FACE, false);
 		break;
-	case '4':
-		node_selected = BEnode::GetSuperRoot()->Find("Sphere001");
+	case 'l':
+		cube->RotateFace(Rubik::L_FACE, false);
 		break;
-	case '5':
-		node_selected = BEnode::GetSuperRoot()->Find("Torus Knot001");
+	case 'u':
+		cube->RotateFace(Rubik::U_FACE, false);
 		break;
-	case '6':
-		node_selected = BEnode::GetSuperRoot()->Find("Teapot001");
+		//find something better than "ground". d should be the one used but it's already used, so either solve that or IDK
+	case 'g':
+		cube->RotateFace(Rubik::D_FACE, false);
 		break;
+
 	}
-	BEengine::GetInstance()->set_node_selected(node_selected->get_name());
+	BEengine::GetInstance()->set_node_selected(rubik_root_node->get_name());
 }
 
 int main(int argc, char *argv[])
 {
-	
+
 	BEengine *engine = BEengine::GetInstance();
 
 	/************************************************************************/
@@ -146,7 +122,7 @@ int main(int argc, char *argv[])
 	//Rubik* rubik_cube = new Rubik(cube_root);
 
 	// Test: Translation of a single cube
-	
+
 	//rubik_cube->TranslateSingleCubeY(0, 0, 0, 20.0f);
 	//rubik_cube->TranslateSingleCube(0, 0, 0, -20.0f, 0.0f, -10.0f);
 
