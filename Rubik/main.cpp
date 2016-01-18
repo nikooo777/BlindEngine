@@ -16,7 +16,6 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	static Rubik* cube = new Rubik(rubik_root_node);
 	switch (key)
 	{
-
 		//navigation
 	case 'a':
 	{
@@ -89,7 +88,6 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	case 'g':
 		cube->RotateFace(Rubik::D_FACE, false);
 		break;
-
 	}
 	BEengine::GetInstance()->set_node_selected(rubik_root_node->get_name());
 }
