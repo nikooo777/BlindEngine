@@ -48,28 +48,21 @@ void LIB_API BElist::RenderCameras()
 /************************************************************************/
 void LIB_API BElist::AddMesh(BEmesh*mesh)
 {
-	//std::cout << "Try to add -> " << mesh->get_name() << std::endl;
-
 	mesh_ordered_references_.push_back(mesh);
 	meshes_.insert(std::pair<BEmesh*, glm::mat4>(mesh, glm::mat4(1)));
-
-	if (meshes_by_name_.find(mesh->get_name()) == meshes_by_name_.end())
-		meshes_by_name_.insert(std::pair<std::string, BEmesh*>(mesh->get_name(), mesh));
-	//else
-		//std::cout << mesh->get_name() << " already exists!" << std::endl;
 }
 
 void LIB_API BElist::AddMesh(BEmesh*mesh, glm::mat4 f)
 {
-	std::cout << "Try to add -> " << mesh->get_name() << std::endl;
-
 	mesh_ordered_references_.push_back(mesh);
 	meshes_.insert(std::pair<BEmesh*, glm::mat4>(mesh, f));
+}
 
+void LIB_API BElist::AddMeshToMap(BEmesh*mesh)
+{
 	if (meshes_by_name_.find(mesh->get_name()) == meshes_by_name_.end())
 		meshes_by_name_.insert(std::pair<std::string, BEmesh*>(mesh->get_name(), mesh));
-	//else
-		//std::cout << mesh->get_name() << " already exists!" << std::endl;
+
 }
 
 void LIB_API BElist::UpdateMesh(BEmesh*mesh, glm::mat4 f)

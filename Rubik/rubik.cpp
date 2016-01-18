@@ -140,7 +140,6 @@ void Rubik::RotateFace(Face face, bool inverse)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				//x123 -> y123 /^
 				std::cout << "index: " << index << ": " << cube_faces_[i][2][j]->get_name() << std::endl;
 				faces_to_swap[index++] = cube_faces_[i][2][j];
 			}
@@ -149,8 +148,6 @@ void Rubik::RotateFace(Face face, bool inverse)
 		faces_to_swap[4]->AddChild(rotation_helper);
 
 		PushBackFace(faces_to_swap, rotation_helper);
-
-
 		RelinkCubes(faces_to_swap, rotation_helper);
 
 		//apply the rotation to the center cube (here could come the animation)
@@ -186,7 +183,6 @@ void Rubik::RotateFace(Face face, bool inverse)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				//x123 -> y123 /^
 				std::cout << "index: " << index << ": " << cube_faces_[2][i][j]->get_name() << std::endl;
 				faces_to_swap[index++] = cube_faces_[2][i][j];
 			}
@@ -195,8 +191,6 @@ void Rubik::RotateFace(Face face, bool inverse)
 		faces_to_swap[4]->AddChild(rotation_helper);
 
 		PushBackFace(faces_to_swap, rotation_helper);
-
-
 		RelinkCubes(faces_to_swap, rotation_helper);
 
 		//apply the rotation to the center cube (here could come the animation)
@@ -240,8 +234,6 @@ void Rubik::RotateFace(Face face, bool inverse)
 		faces_to_swap[4]->AddChild(rotation_helper);
 
 		PushBackFace(faces_to_swap, rotation_helper);
-
-
 		RelinkCubes(faces_to_swap, rotation_helper);
 
 		//apply the rotation to the center cube (here could come the animation)
@@ -277,7 +269,6 @@ void Rubik::RotateFace(Face face, bool inverse)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				//x123 -> y123 /^
 				std::cout << "index: " << index << ": " << cube_faces_[0][i][j]->get_name() << std::endl;
 				faces_to_swap[index++] = cube_faces_[0][i][j];
 			}
@@ -286,8 +277,6 @@ void Rubik::RotateFace(Face face, bool inverse)
 		faces_to_swap[4]->AddChild(rotation_helper);
 
 		PushBackFace(faces_to_swap, rotation_helper);
-
-
 		RelinkCubes(faces_to_swap, rotation_helper);
 
 		//apply the rotation to the center cube (here could come the animation)
@@ -323,7 +312,6 @@ void Rubik::RotateFace(Face face, bool inverse)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				//x123 -> y123 /^
 				std::cout << "index: " << index << ": " << cube_faces_[i][j][0]->get_name() << std::endl;
 				faces_to_swap[index++] = cube_faces_[i][j][0];
 			}
@@ -332,8 +320,6 @@ void Rubik::RotateFace(Face face, bool inverse)
 		faces_to_swap[4]->AddChild(rotation_helper);
 
 		PushBackFace(faces_to_swap, rotation_helper);
-
-
 		RelinkCubes(faces_to_swap, rotation_helper);
 
 		//apply the rotation to the center cube (here could come the animation)
@@ -369,7 +355,6 @@ void Rubik::RotateFace(Face face, bool inverse)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				//x123 -> y123 /^
 				std::cout << "index: " << index << ": " << cube_faces_[i][j][2]->get_name() << std::endl;
 				faces_to_swap[index++] = cube_faces_[i][j][2];
 			}
@@ -378,13 +363,11 @@ void Rubik::RotateFace(Face face, bool inverse)
 		faces_to_swap[4]->AddChild(rotation_helper);
 
 		PushBackFace(faces_to_swap, rotation_helper);
-
-
 		RelinkCubes(faces_to_swap, rotation_helper);
 
 		//apply the rotation to the center cube (here could come the animation)
 		f = faces_to_swap[4]->GetTransformation();
-		rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, 0, -1))*f;
+		rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, -1, 0))*f;
 
 		faces_to_swap[4]->SetTransformation(rotation);
 

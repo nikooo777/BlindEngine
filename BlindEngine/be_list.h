@@ -26,6 +26,7 @@ public:
 	// Mesh
 	void AddMesh(BEmesh*mesh);
 	void AddMesh(BEmesh*mesh, glm::mat4 f);
+	void AddMeshToMap(BEmesh*mesh);
 	void UpdateMesh(BEmesh*mesh, glm::mat4 f);
 	BEmesh* GetMesh(unsigned int index){ return mesh_ordered_references_[index]; }
 	glm::mat4 GetMeshTransformation(BEmesh* mesh){ return meshes_.at(mesh); }
@@ -47,7 +48,7 @@ private:
 	std::map<BEmesh*, glm::mat4> meshes_;
 	std::map<BElight*, glm::mat4> lights_;
 	std::map<BEcamera*, glm::mat4> cameras_;
-	
+
 	// Utility
 	std::vector<BEmaterial*> material_ordered_list_;
 	std::vector<BEmesh*> mesh_ordered_references_;

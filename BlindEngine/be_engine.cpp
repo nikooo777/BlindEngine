@@ -22,11 +22,13 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 	{
 		///////////////////////////		
 	case DLL_PROCESS_ATTACH: //		                     
+
 		break;
 
 
 		///////////////////////////
 	case DLL_PROCESS_DETACH: //                 
+
 		break;
 	}
 
@@ -39,7 +41,7 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 /////////////
 // GLOBALS //
 /////////////
-///////////// 
+
 BEnode *root;
 
 // Rotation angles:
@@ -127,6 +129,7 @@ void displayCallback()
 	// Set model matrix as current OpenGL matrix:
 	glLoadMatrixf(glm::value_ptr(f));
 	BEnode::GetSuperRoot()->CalcTransformation(f);
+
 	BEengine::lists_->RenderAll();
 
 	//////
@@ -139,17 +142,9 @@ void displayCallback()
 
 	PrintTextInfo();
 
-
 	// Swap this context's buffer:
 	glutSwapBuffers();
 
-	// Update coords:
-	if (automatic)
-	{
-		angleX += 0.1f;
-		angleY += 0.2f;
-
-	}
 	// Force rendering refresh:
 	glutPostWindowRedisplay(BEengine::GetInstance()->get_window_id());
 
@@ -192,6 +187,7 @@ void BEengine::SetKeyBoardCallBack(void(*callback)(unsigned char key, int mouseX
 }
 
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
 * This callback is invoked each time a special keyboard key is pressed.
@@ -201,12 +197,6 @@ void BEengine::SetKeyBoardCallBack(void(*callback)(unsigned char key, int mouseX
 */
 void specialCallback(int key, int mouseX, int mouseY)
 {
-	// std::cout << "[key pressed]" << std::endl;
-
-	// Automatic-mode, not needed:
-	//if (automatic)
-	//	return;
-
 	// Change box rotation:
 	const float speed = 1.5f;
 	switch (key)
@@ -235,9 +225,6 @@ void specialCallback(int key, int mouseX, int mouseY)
 		distance -= BEengine::GetInstance()->GetDeltaZoom();
 		break;
 	}
-
-	// Force rendering refresh:
-	glutPostWindowRedisplay(BEengine::GetInstance()->get_window_id());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -265,7 +252,8 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 	// FreeGLUT can parse command-line params, in case:
 	glutInit(&argc, argv);
 
-	FreeImage_Initialise();
+	//FreeImage_Initialise();
+
 
 	// Set some optional flags:
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
@@ -315,7 +303,9 @@ int LIB_API BEengine::Start()
 	if (BEengine::initialized_)
 	{
 		node_selected_ = std::string("none or default");
+
 		// Enter the main FreeGLUT processing loop:     
+
 		glutMainLoop();
 
 		//application exited
@@ -350,6 +340,7 @@ LIB_API BEnode* BEengine::LoadScene(char *fileName)
 
 	BEsceneLoader scene_loader;
 	root = scene_loader.LoadScene(fileName);
+
 	return root;
 }
 
@@ -401,15 +392,16 @@ void PrintTextInfo()
 
 	// Write some text:
 	char text[64];
-	sprintf_s(text, sizeof text, "FPS: %.1f", fps);
+
+	snprintf(text, sizeof text, "FPS: %.1f", fps);
 	glRasterPos2f(1.0f, go_up);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
 
-	sprintf_s(text, sizeof text, "Selected: %s", BEengine::GetInstance()->get_node_selected().c_str());
+	snprintf(text, sizeof text, "Selected: %s", BEengine::GetInstance()->get_node_selected().c_str());
 	glRasterPos2f(1.0f, go_up += delta);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
 
-	sprintf_s(text, sizeof text, "Speed Padding: %.2f", BEengine::GetInstance()->GetDeltaPadding());
+	snprintf(text, sizeof text, "Speed Padding: %.2f", BEengine::GetInstance()->GetDeltaPadding());
 	glRasterPos2f(1.0f, go_up += delta);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
 

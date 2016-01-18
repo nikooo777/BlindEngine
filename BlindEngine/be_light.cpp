@@ -90,7 +90,7 @@ void BElight::Render(glm::mat4 cumulated_transformation_matrix)
 		glLightfv(light_number_, GL_SPOT_CUTOFF, &cutoff_);
 	}
 
-	for each (BEnode* n in BEnode::children_)
+	for(BEnode* n : BEnode::children_)
 	{
 		n->Render(tmp_f);
 	}
@@ -129,7 +129,7 @@ void BElight::CalcTransformation(glm::mat4 cumulated_transformation_matrix)
 	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
 	BEengine::lists_->UpdateLight(this, tmpF);
 
-	for each (BEnode* n in BEnode::children_){
+	for(BEnode* n : BEnode::children_){
 		n->CalcTransformation(tmpF);
 	}
 }
@@ -202,7 +202,7 @@ BEnode* BElight::Find(std::string name)
 
 	//seek the node in the children
 	BEnode *found_node = nullptr;
-	for each (BEnode* n in children_)
+	for(BEnode* n : children_)
 	{
 		if ((found_node = n->Find(name)) != nullptr)
 			return found_node;
@@ -221,7 +221,7 @@ BEnode* BElight::Find(long id)
 
 	//seek the node in the children
 	BEnode *found_node = nullptr;
-	for each (BEnode* n in children_)
+	for(BEnode* n : children_)
 	{
 		if ((found_node = n->Find(id)) != nullptr)
 			return found_node;

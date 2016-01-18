@@ -24,13 +24,3 @@ void BEobject::GenerateId()
 	static long int id = 0;
 	id_ = id++;
 }
-
-std::string BEobject::get_name()
-{
-	return name_;
-}
-
-long BEobject::get_id()
-{
-	return id_;
-}
