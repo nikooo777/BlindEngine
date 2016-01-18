@@ -69,10 +69,23 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		node_selected->SetTransformation(new_translation);
 		break;
 	}
-	case 'l':
+	case 'f':
 	{
 		static Rubik* cube = new Rubik(BEnode::GetSuperRoot()->Find("Rubik_Downloaded"));
 		cube->RotateFace(Rubik::F_FACE, false);
+		break;
+	}
+
+	case 'b':
+	{
+		static Rubik* cube = new Rubik(BEnode::GetSuperRoot()->Find("Rubik_Downloaded"));
+		cube->RotateFace(Rubik::B_FACE, false);
+		break;
+	}
+	case 'l':
+	{
+		static Rubik* cube = new Rubik(BEnode::GetSuperRoot()->Find("Rubik_Downloaded"));
+		cube->RotateFace(Rubik::L_FACE, false);
 		break;
 	}
 
@@ -104,6 +117,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	}
 	BEengine::GetInstance()->set_node_selected(node_selected->get_name());
 }
+
 int main(int argc, char *argv[])
 {
 	

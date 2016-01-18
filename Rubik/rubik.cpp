@@ -125,6 +125,10 @@ void Rubik::TranslateSingleCube(unsigned short element_x, unsigned short element
 
 void Rubik::RotateFace(Face face, bool inverse)
 {
+	BEnode* faces_to_swap[9];
+	int index = 0;
+	BEnode* rotation_helper = new BEnode("rotation_helper", BEnode::ROOT);
+	glm::mat4 f, rotation;
 	std::cout << "Rotating" << std::endl;
 	switch (face)
 	{
@@ -139,12 +143,41 @@ void Rubik::RotateFace(Face face, bool inverse)
 		break;
 	case Rubik::L_FACE:
 		//x doesn't change
+		//gather the cubes to rotate
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				//x123 -> y123 /^
+				std::cout << "index: " << index << ": " << cube_faces_[0][i][j]->get_name() << std::endl;
+				faces_to_swap[index++] = cube_faces_[0][i][j];
+			}
+		}
+		//the node helper has the central block as parent
+		faces_to_swap[4]->AddChild(rotation_helper);
+		//the helper node must translate back 1 block thowards the center of the cube
+		rotation_helper->SetTransformation(glm::inverse(faces_to_swap[4]->GetTransformation()));
+
+		RelinkCubes(faces_to_swap, rotation_helper);
+
+
+		//apply the rotation to the center cube (here could come the animation)
+		f = faces_to_swap[4]->GetTransformation();
+		rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(1, 0, 0))*f;
+		faces_to_swap[4]->SetTransformation(rotation);
+
+		//update the cube matrix
+		index = 0;
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				cube_faces_[0][i][j] = faces_to_swap[index++];
+			}
+		}
 		break;
 	case Rubik::F_FACE:
 		//z doesn't change
-	{
-		BEnode* faces_to_swap[9];
-		int index = 0;
 		//gather the cubes to rotate
 		for (int i = 0; i < 3; i++)
 		{
@@ -155,40 +188,17 @@ void Rubik::RotateFace(Face face, bool inverse)
 				faces_to_swap[index++] = cube_faces_[i][j][0];
 			}
 		}
-		std::cout << "grabbed nodes" << std::endl;
-
-		BEnode* rotation_helper = new BEnode("rotation_helper", BEnode::ROOT);
+		//the node helper has the central block as parent
 		faces_to_swap[4]->AddChild(rotation_helper);
+		//the helper node must translate back 1 block thowards the center of the cube
 		rotation_helper->SetTransformation(glm::inverse(faces_to_swap[4]->GetTransformation()));
-		for (int i = 0; i < 9; i++)
-		{
-			if (i != 4)
-			{
-				std::cout << "index: " << i << ": " << faces_to_swap[i]->get_name()<< std::endl;
-				faces_to_swap[i]->GetParent()->RemoveChild(faces_to_swap[i]);
-				std::cout << "child removed" << std::endl;
-				rotation_helper->AddChild(faces_to_swap[i]);
-				std::cout << "Parent set and child added" << std::endl;
-			}
-		}
-		glm::mat4 f = faces_to_swap[4]->GetTransformation();
-		glm::mat4 rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, 1, 0))*f;
+
+		RelinkCubes(faces_to_swap, rotation_helper);
+
+		//apply the rotation to the center cube (here could come the animation)
+		f = faces_to_swap[4]->GetTransformation();
+		rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, 1, 0))*f;
 		faces_to_swap[4]->SetTransformation(rotation);
-
-		for (int i = 0; i < 9; i++)
-		{
-			if (i != 4)
-			{
-				faces_to_swap[i]->SetTransformation(faces_to_swap[i]->GetParent()->CalcTransformation())
-				std::cout << "child removed" << std::endl;
-				rotation_helper->AddChild(faces_to_swap[i]);
-				std::cout << "Parent set and child added" << std::endl;
-			}
-		}
-		//glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(value_x, 0.0f, 0.0f));
-		//glm::mat4 new_translation = translation * f;
-		//cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
-
 
 		//update the cube matrix
 		index = 0;
@@ -196,16 +206,66 @@ void Rubik::RotateFace(Face face, bool inverse)
 		{
 			for (int j = 0; j < 3; j++)
 			{
+				faces_to_swap[index]->SetTransformation(rotation_helper->GetTransformation()*faces_to_swap[4]->GetTransformation()*faces_to_swap[index]->GetTransformation());
+				rotation_helper->RemoveChild(faces_to_swap[index]);
+				faces_to_swap[4]->GetParent()->AddChild(faces_to_swap[index]);
+
 				cube_faces_[i][j][0] = faces_to_swap[index++];
 			}
 		}
-	}
 
 		break;
 	case Rubik::B_FACE:
 		//z doesn't change
+		//gather the cubes to rotate
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				//x123 -> y123 /^
+				std::cout << "index: " << index << ": " << cube_faces_[i][j][2]->get_name() << std::endl;
+				faces_to_swap[index++] = cube_faces_[i][j][2];
+			}
+		}
+		//the node helper has the central block as parent
+		faces_to_swap[4]->AddChild(rotation_helper);
+		//the helper node must translate back 1 block thowards the center of the cube
+		rotation_helper->SetTransformation(glm::inverse(faces_to_swap[4]->GetTransformation()));
+
+		RelinkCubes(faces_to_swap, rotation_helper);
+
+		//apply the rotation to the center cube (here could come the animation)
+		f = faces_to_swap[4]->GetTransformation();
+		rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, -1, 0))*f;
+		faces_to_swap[4]->SetTransformation(rotation);
+
+		//update the cube matrix
+		index = 0;
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				cube_faces_[i][j][2] = faces_to_swap[index++];
+			}
+		}
 		break;
 	default:
 		break;
+	}
+}
+
+void Rubik::RelinkCubes(BEnode** faces_to_swap, BEnode* rotation_helper)
+{
+	//add all the nodes that we must swap as children
+	for (int i = 0; i < 9; i++)
+	{
+		if (i != 4)
+		{
+			std::cout << "index: " << i << ": " << faces_to_swap[i]->get_name() << std::endl;
+			faces_to_swap[i]->GetParent()->RemoveChild(faces_to_swap[i]);
+			std::cout << "child removed" << std::endl;
+			rotation_helper->AddChild(faces_to_swap[i]);
+			std::cout << "Parent set and child added" << std::endl;
+		}
 	}
 }
