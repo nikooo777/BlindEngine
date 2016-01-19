@@ -42,12 +42,20 @@ public:
 	void AddCamera(BEcamera* camera);
 	void AddCamera(BEcamera* camera, glm::mat4 f);
 	void UpdateCamera(BEcamera* camera, glm::mat4 f);
-
+	void DeepSort();
 private:
+	typedef struct Mesh
+	{
+		BEmesh* mesh_;
+		glm::mat4 world_coords_;
+	}Mesh;
+
 	// Transformation
 	std::map<BEmesh*, glm::mat4> meshes_;
 	std::map<BElight*, glm::mat4> lights_;
 	std::map<BEcamera*, glm::mat4> cameras_;
+
+	std::vector<Mesh*> meshes_v_;
 
 	// Utility
 	std::vector<BEmaterial*> material_ordered_list_;

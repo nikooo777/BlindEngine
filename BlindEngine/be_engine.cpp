@@ -129,7 +129,7 @@ void displayCallback()
 	// Set model matrix as current OpenGL matrix:
 	glLoadMatrixf(glm::value_ptr(f));
 	BEnode::GetSuperRoot()->CalcTransformation(f);
-
+	BEengine::lists_->DeepSort();
 	BEengine::lists_->RenderAll();
 
 	//////

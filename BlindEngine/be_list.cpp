@@ -79,6 +79,18 @@ LIB_API BEmesh* BElist::GetMeshByName(std::string name)
 		return nullptr;
 }
 
+//bool mysort(BEmesh* a, BEmesh* b)
+//{
+//	return a->GetTransformation()[3].z > b->GetTransformation()[3].z;
+//}
+LIB_API void BElist::DeepSort()
+{
+	std::sort(meshes_v_.begin(), meshes_v_.end(), [](Mesh* a, Mesh* b)
+	{
+		return a->mesh_->GetTransformation()[3].z > b->mesh_->GetTransformation()[3].z;
+	});
+}
+
 /************************************************************************/
 /* Light
 /************************************************************************/
