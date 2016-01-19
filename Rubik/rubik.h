@@ -1,6 +1,7 @@
 #pragma once
 #include "be_engine.h"
 #include <glm/gtx/constants.hpp>
+
 class Rubik
 {
 public:
@@ -14,12 +15,13 @@ public:
 		L_FACE,
 		F_FACE,
 		B_FACE,
+		N_FACE
 	}Face;
 
-	void TranslateSingleCubeX(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x);
+	/*void TranslateSingleCubeX(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x);
 	void TranslateSingleCubeY(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_y);
 	void TranslateSingleCubeZ(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_z);
-	void TranslateSingleCube(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x, float value_y, float value_z);
+	void TranslateSingleCube(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x, float value_y, float value_z);*/
 	void RotateFace(Face face, bool inverse);
 
 	void PushBackFace(BEnode** faces_to_swap, BEnode* rotation_helper);

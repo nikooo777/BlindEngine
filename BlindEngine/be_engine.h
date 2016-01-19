@@ -32,6 +32,7 @@ public:
 	void SetDeltaPadding(float delta_padding){ delta_padding_ = delta_padding; }
 	float GetDeltaPadding(){ return delta_padding_; }
 	void SetDeltaZoom(float delta_zoom){ delta_zoom_ = delta_zoom; }
+	void AddTimerCallBack(void(*timer_callback)(int value), int loop_time);
 	void SetKeyBoardCallBack(void(*callback)(unsigned char key, int mouseX, int mouseY));
 	float GetDeltaZoom(){ return delta_zoom_; }
 	std::string get_node_selected();
