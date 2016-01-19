@@ -57,45 +57,6 @@ BElight* BElight::CreateSpotLight(const std::string name, glm::vec3 ambient, glm
 	return new BElight(SPOTLIGHT, name, glm::vec4(ambient, 1.0f), glm::vec4(diffuse, 1.0f), glm::vec4(specular, 1.0f), position, direction, cutoff);
 }
 
-void BElight::Render(glm::mat4 cumulated_transformation_matrix)
-{
-	//std::cout << "Rendering a Light: " << get_name() << "number: " << light_number_ << std::endl;
-	//glm::mat4 tmp_f = cumulated_transformation_matrix*transformation_;
-
-	//glLoadMatrixf(glm::value_ptr(tmp_f));
-
-	//BEengine::lists_->UpdateLight(this, tmp_f);
-
-
-	////Common color property
-	//glLightfv(light_number_, GL_AMBIENT, glm::value_ptr(ambient_));
-	//glLightfv(light_number_, GL_DIFFUSE, glm::value_ptr(diffuse_));
-	//glLightfv(light_number_, GL_SPECULAR, glm::value_ptr(specular_));
-
-	////if the current light is a directional light, then direction is passed instead
-	//glLightfv(light_number_, GL_POSITION, glm::value_ptr(position_));
-
-	////light number goes from GL_LIGHT0 to GL_LIGHT7
-	//if (type_ == SPOTLIGHT)
-	//{
-	//	std::cout << "cutoff value: " << cutoff_ << std::endl;
-	//	glLightfv(light_number_, GL_SPOT_CUTOFF, &cutoff_);
-	//	glLightfv(light_number_, GL_SPOT_DIRECTION, glm::value_ptr(direction_));
-	//	glLightfv(light_number_, GL_QUADRATIC_ATTENUATION, &attenuation_quadratic_);
-	//	glLightfv(light_number_, GL_CONSTANT_ATTENUATION, &attenuation_constant_);
-	//	glLightfv(light_number_, GL_LINEAR_ATTENUATION, &attenuation_linear_);
-	//}
-	//if (type_ == OMNIDIRECTIONAL)
-	//{
-	//	glLightfv(light_number_, GL_SPOT_CUTOFF, &cutoff_);
-	//}
-
-	//for(BEnode* n : BEnode::children_)
-	//{
-	//	n->Render(tmp_f);
-	//}
-}
-
 void BElight::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 {
 	glLoadMatrixf(glm::value_ptr(cumulated_transformation_matrix));

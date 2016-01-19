@@ -14,7 +14,7 @@ public:
 	//BEmesh(glm::vec3*, long, glm::vec3*, glm::vec2*, BEmaterial*);
 	~BEmesh();
 
-	virtual void Render(glm::mat4 cumulated_transformation_matrix) override;
+	//virtual void Render(glm::mat4 cumulated_transformation_matrix) override;
 	virtual void RenderSingle(glm::mat4 cumulated_transformation_matrix) override;
 	virtual void CalcTransformation(glm::mat4 cumulated_transformation_matrix) override;
 

@@ -12,7 +12,7 @@ public:
 	BEmaterial(std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, float transparency, float shininess, float shininess_strength,  BEtexture* texture);
 	~BEmaterial();
 
-	virtual void Render(glm::mat4) override;
+	//virtual void Render(glm::mat4) override;
 	virtual void RenderSingle(glm::mat4 cumulated_transformation_matrix) override;
 	bool IsTransparent();
 	void SetTransparency(float alpha);

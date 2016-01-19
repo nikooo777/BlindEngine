@@ -39,44 +39,7 @@ BEmesh::~BEmesh()
 	delete[] material_;
 }
 
-void BEmesh::Render(glm::mat4 cumulated_transformation_matrix)
-{
-	////std::cout << "Rendering Mesh: " << BEobject::get_name() << std::endl;
 
-	//glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
-	//glLoadMatrixf(glm::value_ptr(tmpF));
-	////BEengine::lists_->UpdateMesh(this, tmpF);
-
-	//if (material_)
-	//{
-	//	//std::cout << "The mesh contains a material"<< std::endl;
-	//	material_->Render(tmpF);
-	//}
-
-	//glVertexPointer(3, GL_FLOAT, 0, vertices_);
-	//glNormalPointer(GL_FLOAT, 0, normals_);
-	//glTexCoordPointer(2, GL_FLOAT, 0, texture_coords_);
-	//glDrawArrays(GL_TRIANGLES, 0, vertices_count_);
-	////glBegin(GL_TRIANGLES);
-	////for (unsigned int i = 0; i < vertices_count_; i++)
-	////{
-	////	glNormal3fv(glm::value_ptr(normals_[i]));
-	////	glTexCoord2fv(glm::value_ptr(texture_coords_[i]));
-	////	glVertex3fv(glm::value_ptr(vertices_[i]));
-	////}
-	////glEnd();
-
-	//for (unsigned int i = 0; i < sub_meshes_count_; i++)
-	//{
-	//	BEmesh* tmp_mesh = BEengine::lists_->GetMesh(sub_meshes_[i]);
-	//	if (tmp_mesh != this)
-	//		tmp_mesh->Render(tmpF);
-	//}
-
-	//for (BEnode* n : BEnode::children_){
-	//	n->Render(tmpF);
-	//}
-}
 void BEmesh::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 {
 	//std::cout << "Rendering Mesh: " << BEobject::get_name() << std::endl;

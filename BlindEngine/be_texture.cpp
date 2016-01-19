@@ -12,22 +12,6 @@ BEtexture::~BEtexture()
 	FreeImage_Unload(texture_image_);
 }
 
-void BEtexture::Render(glm::mat4 cumulated_transformation_matrix)
-{
-	////std::cout << "Rendering texture: " << get_name() << std::endl;
-
-	////glEnable(GL_TEXTURE_2D);
-
-	//// Update texture content
-	//glBindTexture(GL_TEXTURE_2D, texture_id_);
-	//// Set circular coordinates:
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
-
-	//// Set min/mag filters:
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-}
 
 void BEtexture::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 {

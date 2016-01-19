@@ -40,7 +40,7 @@ public:
 	virtual BEnode* Find(std::string);
 	virtual BEnode* Find(long);
 	//empty overridden render method
-	virtual void Render(glm::mat4 cumulated_transformation_matrix) override;
+	//virtual void Render(glm::mat4 cumulated_transformation_matrix) override;
 	virtual void RenderSingle(glm::mat4 cumulated_transformation_matrix) override;
 	virtual void CalcTransformation(glm::mat4 cumulated_transformation_matrix);
 

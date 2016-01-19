@@ -57,7 +57,7 @@ public:
 	~BElight();
 
 	//inherited render method
-	virtual void Render(glm::mat4) override;
+	//virtual void Render(glm::mat4) override;
 	virtual void RenderSingle(glm::mat4 cumulated_transformation_matrix) override;
 	virtual void CalcTransformation(glm::mat4 cumulated_transformation_matrix) override;
 

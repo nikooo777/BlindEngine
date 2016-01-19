@@ -10,14 +10,6 @@ BEcamera::~BEcamera()
 {
 }
 
-void BEcamera::Render(glm::mat4 cumulated_transformation_matrix)
-{
-	/*std::cout << "Rendering a camera" << std::endl;
-	for(BEnode* n : BEnode::children_){
-	n->Render(cumulated_transformation_matrix*transformation_);
-	}*/
-}
-
 void BEcamera::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 {
 	std::cout << "Rendering a camera" << std::endl;
