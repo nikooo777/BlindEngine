@@ -180,6 +180,13 @@ void printGlmMat4(glm::mat4& gMat){
 	std::cout << std::endl;
 }
 
+
+void BEengine::AddTimerCallBack(void(*timer_callback)(int value), int loop_time)
+{
+	glutTimerFunc(loop_time, timer_callback, 0);
+}
+
+
 void BEengine::SetKeyBoardCallBack(void(*callback)(unsigned char key, int mouseX, int mouseY))
 {
 	keyboard_callback_ = callback;

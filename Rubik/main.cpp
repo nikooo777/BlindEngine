@@ -88,6 +88,9 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	case 'g':
 		cube->RotateFace(Rubik::D_FACE, false);
 		break;
+	case 'n':
+		cube->RotateFace(Rubik::N_FACE, false);
+		break;
 	}
 	BEengine::GetInstance()->set_node_selected(rubik_root_node->get_name());
 }
@@ -110,7 +113,6 @@ int main(int argc, char *argv[])
 	/************************************************************************/
 	//BEnode* cube_root = engine->LoadScene("Rubik_No_Light.DAE");
 	engine->LoadScene("Rubik_Downloaded.DAE");
-	//engine->LoadScene("modellosore.DAE");
 	//engine->LoadScene("scene_texture.DAE");
 
 

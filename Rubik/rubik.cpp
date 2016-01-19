@@ -1,5 +1,26 @@
 #include "rubik.h"
 
+//////////////////////////////////////////////////////////////////////////
+// Animations
+#define DURATION_ANIMATION 1000
+#define LOOP_TIMER_ANIMATION 50
+BEnode* animation_root = nullptr;
+glm::mat4 animation_transformation = glm::mat4(1);
+unsigned int animation_count_left = 0;
+
+void Animation(int value)
+{
+	animation_root->UpdateTransformationRecursive(animation_transformation);
+
+	animation_count_left -- ;
+	if (animation_count_left)
+		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
+	else
+		delete animation_root;
+	
+}
+//////////////////////////////////////////////////////////////////////////
+
 
 Rubik::Rubik(BEnode* cube_root)
 {
@@ -64,14 +85,14 @@ Rubik::~Rubik()
 * @param	unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x
 * @return	void
 ************************************/
-void Rubik::TranslateSingleCubeX(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x)
-{
-	glm::mat4 f = cube_faces_[element_x][element_y][element_z]->GetTransformation();
-
-	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(value_x, 0.0f, 0.0f));
-	glm::mat4 new_translation = translation * f;
-	cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
-}
+//void Rubik::TranslateSingleCubeX(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x)
+//{
+//	glm::mat4 f = cube_faces_[element_x][element_y][element_z]->GetTransformation();
+//
+//	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(value_x, 0.0f, 0.0f));
+//	glm::mat4 new_translation = translation * f;
+//	cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
+//}
 
 
 /************************************
@@ -81,14 +102,14 @@ void Rubik::TranslateSingleCubeX(unsigned short element_x, unsigned short elemen
 * @param	unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_y
 * @return	void
 ************************************/
-void Rubik::TranslateSingleCubeY(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_y)
-{
-	glm::mat4 f = cube_faces_[element_x][element_y][element_z]->GetTransformation();
-
-	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, value_y, 0.0f));
-	glm::mat4 new_translation = translation * f;
-	cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
-}
+//void Rubik::TranslateSingleCubeY(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_y)
+//{
+//	glm::mat4 f = cube_faces_[element_x][element_y][element_z]->GetTransformation();
+//
+//	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, value_y, 0.0f));
+//	glm::mat4 new_translation = translation * f;
+//	cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
+//}
 
 /************************************
 * Method:	TranslateSingleCubeZ
@@ -97,14 +118,14 @@ void Rubik::TranslateSingleCubeY(unsigned short element_x, unsigned short elemen
 * @param	unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_z
 * @return	void
 ************************************/
-void Rubik::TranslateSingleCubeZ(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_z)
-{
-	glm::mat4 f = cube_faces_[element_x][element_y][element_z]->GetTransformation();
-
-	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, value_z));
-	glm::mat4 new_translation = translation * f;
-	cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
-}
+//void Rubik::TranslateSingleCubeZ(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_z)
+//{
+//	glm::mat4 f = cube_faces_[element_x][element_y][element_z]->GetTransformation();
+//
+//	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, value_z));
+//	glm::mat4 new_translation = translation * f;
+//	cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
+//}
 
 
 /************************************
@@ -114,24 +135,29 @@ void Rubik::TranslateSingleCubeZ(unsigned short element_x, unsigned short elemen
 * @param	unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x, float value_y, float value_z
 * @return	void
 ************************************/
-void Rubik::TranslateSingleCube(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x, float value_y, float value_z)
-{
-	glm::mat4 f = cube_faces_[element_x][element_y][element_z]->GetTransformation();
+//void Rubik::TranslateSingleCube(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x, float value_y, float value_z)
+//{
+//	glm::mat4 f = cube_faces_[element_x][element_y][element_z]->GetTransformation();
+//
+//	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(value_x, value_y, value_z));
+//	glm::mat4 new_translation = translation * f;
+//	cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
+//}
+//} 
 
-	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(value_x, value_y, value_z));
-	glm::mat4 new_translation = translation * f;
-	cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
-}
 
 void Rubik::RotateFace(Face face, bool inverse)
 {
+	if (animation_count_left > 0){
+		std::cout << "Animation in progress... input not allowed" << std::endl;
+		return;
+	}
+
 	BEnode* faces_to_swap[9];
 	int index = 0;
-	BEnode* rotation_helper = new BEnode("rotation_helper", BEnode::ROOT);
+	animation_root = new BEnode("animation_root", BEnode::ROOT);
 	BEnode* tmp_parent;
 
-	glm::mat4 f, rotation;
-	std::cout << std::endl << "Rotating" << std::endl;
 	switch (face)
 	{
 	case Rubik::U_FACE:
@@ -141,23 +167,27 @@ void Rubik::RotateFace(Face face, bool inverse)
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
 				faces_to_swap[index++] = cube_faces_[i][2][j];
-			
+
 		tmp_parent = faces_to_swap[4]->GetParent();
 
-		BuildSceneGraph(rotation_helper, faces_to_swap);
+		BuildSceneGraph(animation_root, faces_to_swap);
 
-		rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, 0, 1));
-		rotation_helper->UpdateTransformationRecursive(rotation);
+		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(0, 0, 1));
+		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
+		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
+
+		//rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, 0, 1));
+		//animation_root->UpdateTransformationRecursive(rotation);
 
 		BuildSceneGraph(tmp_parent, faces_to_swap);
 
 		index = 0;
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
-			cube_faces_[2-j][2][i] = faces_to_swap[index++]; // fixed
-		
+				cube_faces_[2 - j][2][i] = faces_to_swap[index++]; // fixed
+
 	}
-		break;
+	break;
 	case Rubik::R_FACE:
 		//y doesn't change
 	{
@@ -165,23 +195,27 @@ void Rubik::RotateFace(Face face, bool inverse)
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
 				faces_to_swap[index++] = cube_faces_[2][i][j];
-			
+
 
 		tmp_parent = faces_to_swap[4]->GetParent();
 
-		BuildSceneGraph(rotation_helper, faces_to_swap);
+		BuildSceneGraph(animation_root, faces_to_swap);
 
-		rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(-1, 0, 0));
-		rotation_helper->UpdateTransformationRecursive(rotation);
+		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(-1, 0, 0));
+		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
+		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
+
+		//rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(-1, 0, 0));
+		//animation_root->UpdateTransformationRecursive(rotation);
 
 		BuildSceneGraph(tmp_parent, faces_to_swap);
 
 		index = 0;
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
-				cube_faces_[2][2-j][i] = faces_to_swap[index++]; // fixed
+				cube_faces_[2][2 - j][i] = faces_to_swap[index++]; // fixed
 	}
-		break;
+	break;
 	case Rubik::D_FACE:
 		//y doesn't change
 	{
@@ -193,19 +227,23 @@ void Rubik::RotateFace(Face face, bool inverse)
 
 		tmp_parent = faces_to_swap[4]->GetParent();
 
-		BuildSceneGraph(rotation_helper, faces_to_swap);
+		BuildSceneGraph(animation_root, faces_to_swap);
 
-		rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, 0, 1));
-		rotation_helper->UpdateTransformationRecursive(rotation);
+		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(0, 0, 1));
+		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
+		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
+
+		//rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, 0, 1));
+		//animation_root->UpdateTransformationRecursive(rotation);
 
 		BuildSceneGraph(tmp_parent, faces_to_swap);
 
 		index = 0;
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
-				cube_faces_[2-j][0][i] = faces_to_swap[index++]; // fixed
+				cube_faces_[2 - j][0][i] = faces_to_swap[index++]; // fixed
 	}
-		break;
+	break;
 	case Rubik::L_FACE:
 		//x doesn't change
 	{
@@ -216,19 +254,23 @@ void Rubik::RotateFace(Face face, bool inverse)
 
 		tmp_parent = faces_to_swap[4]->GetParent();
 
-		BuildSceneGraph(rotation_helper, faces_to_swap);
+		BuildSceneGraph(animation_root, faces_to_swap);
 
-		rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(1, 0, 0));
-		rotation_helper->UpdateTransformationRecursive(rotation);
+		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(1, 0, 0));
+		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
+		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
+
+		//rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(1, 0, 0));
+		//animation_root->UpdateTransformationRecursive(rotation);
 
 		BuildSceneGraph(tmp_parent, faces_to_swap);
 
 		index = 0;
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
-				cube_faces_[0][j][2-i] = faces_to_swap[index++]; // Fixed
+				cube_faces_[0][j][2 - i] = faces_to_swap[index++]; // Fixed
 	}
-		break;
+	break;
 	case Rubik::F_FACE:
 		//z doesn't change
 	{
@@ -239,19 +281,23 @@ void Rubik::RotateFace(Face face, bool inverse)
 
 		tmp_parent = faces_to_swap[4]->GetParent();
 
-		BuildSceneGraph(rotation_helper, faces_to_swap);
+		BuildSceneGraph(animation_root, faces_to_swap);
 
-		rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, 1, 0));
-		rotation_helper->UpdateTransformationRecursive(rotation);
+		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(0, 1, 0));
+		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
+		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
+
+		//rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, 1, 0));
+		//animation_root->UpdateTransformationRecursive(rotation);
 
 		BuildSceneGraph(tmp_parent, faces_to_swap);
 
 		index = 0;
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
-				cube_faces_[j][2-i][0] = faces_to_swap[index++]; // Fixed
+				cube_faces_[j][2 - i][0] = faces_to_swap[index++]; // Fixed
 	}
-		break;
+	break;
 	case Rubik::B_FACE:
 		//z doesn't change
 	{
@@ -262,27 +308,56 @@ void Rubik::RotateFace(Face face, bool inverse)
 
 		tmp_parent = faces_to_swap[4]->GetParent();
 
-		BuildSceneGraph(rotation_helper, faces_to_swap);
+		BuildSceneGraph(animation_root, faces_to_swap);
 
-		rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, -1, 0));
-		rotation_helper->UpdateTransformationRecursive(rotation);
+		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(0, -1, 0));
+		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
+		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
+
+		//rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(0, -1, 0));
+		//animation_root->UpdateTransformationRecursive(rotation);
 
 		BuildSceneGraph(tmp_parent, faces_to_swap);
 
 		index = 0;
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
-				cube_faces_[2-j][i][2] = faces_to_swap[index++];
+				cube_faces_[2 - j][i][2] = faces_to_swap[index++]; // Fixed
 	}
-		break;
+	break;
+	case Rubik::N_FACE:
+		//z doesn't change
+	{
+		//gather the cubes to rotate
+		for (int i = 0; i < 3; i++)
+			for (int j = 0; j < 3; j++)
+				faces_to_swap[index++] = cube_faces_[1][i][j];
+
+		tmp_parent = faces_to_swap[4]->GetParent();
+
+		BuildSceneGraph(animation_root, faces_to_swap);
+
+		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(-1, 0, 0));
+		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
+		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
+
+		//rotation = glm::rotate(glm::mat4(1), glm::half_pi<float>(), glm::vec3(-1, 0, 0));
+		//animation_root->UpdateTransformationRecursive(rotation);
+
+		BuildSceneGraph(tmp_parent, faces_to_swap);
+
+		index = 0;
+		for (int i = 0; i < 3; i++)
+			for (int j = 0; j < 3; j++)
+				cube_faces_[1][2 - j][i] = faces_to_swap[index++]; // Fixed
+	}
+	break;
 	default:
 		break;
 	}
-
-	delete rotation_helper;
 }
 
-void Rubik::RelinkCubes(BEnode** faces_to_swap, BEnode* rotation_helper)
+void Rubik::RelinkCubes(BEnode** faces_to_swap, BEnode* animation_root)
 {
 	//add all the nodes that we must swap as children
 	for (int i = 0; i < 9; i++)
@@ -291,23 +366,23 @@ void Rubik::RelinkCubes(BEnode** faces_to_swap, BEnode* rotation_helper)
 		{
 			std::cout << "index: " << i << ": " << faces_to_swap[i]->get_name() << std::endl;
 			faces_to_swap[i]->GetParent()->RemoveChild(faces_to_swap[i]);
-			rotation_helper->AddChild(faces_to_swap[i]);
+			animation_root->AddChild(faces_to_swap[i]);
 		}
 	}
 }
 
-void Rubik::PushBackFace(BEnode** faces_to_swap, BEnode* rotation_helper)
+void Rubik::PushBackFace(BEnode** faces_to_swap, BEnode* animation_root)
 {
 	//the helper node must translate back 1 block thowards the center of the cube
 	glm::vec4 translation_vector = glm::inverse(faces_to_swap[4]->GetTransformation())[3];
 	glm::mat4 translationmat = glm::translate(glm::mat4(), glm::vec3(translation_vector));
 
-	rotation_helper->SetTransformation(translationmat);
+	animation_root->SetTransformation(translationmat);
 }
 
-void Rubik::BuildSceneGraph(BEnode* rotation_helper, BEnode** faces_to_swap)
+void Rubik::BuildSceneGraph(BEnode* parent, BEnode** faces_to_swap)
 {
-	for (int i = 0; i < 9;i++)
-		rotation_helper->AddChild(faces_to_swap[i]);
+	for (int i = 0; i < 9; i++)
+		parent->AddChild(faces_to_swap[i]);
 }
 
