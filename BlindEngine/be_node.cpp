@@ -55,7 +55,7 @@ BEnode* BEnode::Find(std::string name)
 
 	//seek the node in the children
 	BEnode *found_node = nullptr;
-	for(BEnode* n : children_)
+	for (BEnode* n : children_)
 	{
 		if ((found_node = n->Find(name)) != nullptr)
 			return found_node;
@@ -74,7 +74,7 @@ BEnode* BEnode::Find(long id)
 
 	//seek the node in the children
 	BEnode *found_node = nullptr;
-	for(BEnode* n : children_)
+	for (BEnode* n : children_)
 	{
 		if ((found_node = n->Find(id)) != nullptr)
 			return found_node;
@@ -91,7 +91,7 @@ void BEnode::Render(glm::mat4 cumulated_transformation_matrix)
 	glLoadMatrixf(glm::value_ptr(tmpF));
 
 	//std::cout << "Wrong place" << std::endl;
-	for(BEnode* n : BEnode::children_){
+	for (BEnode* n : BEnode::children_){
 		n->Render(tmpF);
 	}
 }
@@ -104,7 +104,7 @@ void BEnode::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 void BEnode::CalcTransformation(glm::mat4 cumulated_transformation_matrix)
 {
 	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
-	for(BEnode* n : BEnode::children_){
+	for (BEnode* n : BEnode::children_){
 		n->CalcTransformation(tmpF);
 	}
 }
@@ -119,7 +119,7 @@ BEnode* BEnode::GetSceneRootByName(std::string node_name)
 	BEnode* super_root = BEnode::GetSuperRoot();
 
 	//seek the node in the children
-	for(BEnode* n : super_root->children_)
+	for (BEnode* n : super_root->children_)
 	{
 		std::cout << "|" << n->get_name() << "|" << std::endl;
 		if (!(n->get_name().compare(node_name)))
@@ -137,4 +137,12 @@ LIB_API BEnode* BEnode::GetSuperRoot()
 void BEnode::SetParent(BEnode *parent)
 {
 	parent_ = parent;
+}
+
+void BEnode::UpdateTransformationRecursive(glm::mat4 transformation)
+{
+	transformation_ = transformation*transformation_;
+
+	for (BEnode* n : children_)
+		n->UpdateTransformationRecursive(transformation);
 }

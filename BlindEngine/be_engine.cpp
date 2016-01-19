@@ -198,7 +198,7 @@ void BEengine::SetKeyBoardCallBack(void(*callback)(unsigned char key, int mouseX
 void specialCallback(int key, int mouseX, int mouseY)
 {
 	// Change box rotation:
-	const float speed = 1.5f;
+	const float speed = BEengine::GetInstance()->GetDeltaPadding();
 	switch (key)
 	{
 	case GLUT_KEY_UP:
@@ -252,7 +252,7 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 	// FreeGLUT can parse command-line params, in case:
 	glutInit(&argc, argv);
 
-	//FreeImage_Initialise();
+	FreeImage_Initialise();
 
 
 	// Set some optional flags:
