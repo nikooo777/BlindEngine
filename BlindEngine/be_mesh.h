@@ -30,7 +30,7 @@ public:
 	// Utility
 	virtual BEnode* Find(std::string) override;
 	virtual BEnode* Find(long) override;
-
+	BEmaterial* get_material();
 private:
 	unsigned int vertices_count_ = 0;
 	glm::vec3* vertices_;

@@ -382,6 +382,8 @@ void BEsceneLoader::ParseMaterials()
 		material_container->Get(AI_MATKEY_COLOR_SPECULAR, material_specular);
 		memcpy(&specular, &material_specular, sizeof specular);
 		//std::cout << "    Specular: " << material_specular.r << ", " << material_specular.g << ", " << material_specular.b << ", " << material_specular.a << std::endl;
+		float material_opacity;
+		material_container->Get(AI_MATKEY_OPACITY, material_opacity);
 
 		float shininess, shininess_strength;
 		material_container->Get(AI_MATKEY_SHININESS, shininess);
@@ -397,7 +399,7 @@ void BEsceneLoader::ParseMaterials()
 			texture = new BEtexture(textureName.C_Str(), "", textureName.C_Str()); //is the path included in the name?
 		}
 
-		BEmaterial *material = new BEmaterial(matName.C_Str(), ambient, diffuse, specular, shininess, shininess_strength, texture);
+		BEmaterial *material = new BEmaterial(matName.C_Str(), ambient, diffuse, specular, material_opacity, shininess, shininess_strength, texture);
 		BEengine::lists_->AddMaterial(material);
 	}
 }
