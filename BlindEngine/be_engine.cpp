@@ -281,6 +281,8 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 	//glEnable(GL_LIGHT0);
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
 	BEengine::initialized_ = true;

@@ -117,6 +117,8 @@ int main(int argc, char *argv[])
 	/************************************************************************/
 	/* Init Rubik's cube
 	/************************************************************************/
+	BEmaterial* plane = ((BEmesh*)BEnode::GetSuperRoot()->Find("Rubik_Downloaded")->Find("Plane001"))->get_material();
+	plane->SetTransparency(0.6f);
 	//Rubik* rubik_cube = new Rubik(cube_root);
 
 	// Test: Translation of a single cube

@@ -173,3 +173,8 @@ BEnode* BEmesh::Find(long id)
 	//there are no more children to look into
 	return nullptr;
 }
+
+BEmaterial* BEmesh::get_material()
+{
+	return material_;
+}
