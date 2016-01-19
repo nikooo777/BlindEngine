@@ -19,19 +19,19 @@ public:
 	void RenderCameras();
 
 	// Material
-	void AddMaterial(BEmaterial* material){ material_ordered_list_.push_back(material); }
-	BEmaterial* GetMaterial(unsigned int index){ return material_ordered_list_[index]; }
-	unsigned int GetMaterialCount(){ return material_ordered_list_.size(); }
+	void AddMaterial(BEmaterial* material);
+	BEmaterial* GetMaterial(unsigned int index);
+	unsigned int GetMaterialCount();
 
 	// Mesh
 	void AddMesh(BEmesh*mesh);
 	void AddMesh(BEmesh*mesh, glm::mat4 f);
 	void AddMeshToMap(BEmesh*mesh);
 	void UpdateMesh(BEmesh*mesh, glm::mat4 f);
-	BEmesh* GetMesh(unsigned int index){ return mesh_ordered_references_[index]; }
-	glm::mat4 GetMeshTransformation(BEmesh* mesh){ return meshes_.at(mesh); }
+	BEmesh* GetMesh(unsigned int index);
+	//glm::mat4 GetMeshTransformation(BEmesh* mesh){ return meshes_.at(mesh); }
 	BEmesh* GetMeshByName(std::string name);
-	unsigned int GetMeshCount(){ return meshes_.size(); }
+	unsigned int GetMeshCount();
 
 	// Light
 	void AddLight(BElight* light);
@@ -51,7 +51,7 @@ private:
 	}Mesh;
 
 	// Transformation
-	std::map<BEmesh*, glm::mat4> meshes_;
+	//std::map<BEmesh*, glm::mat4> meshes_;
 	std::map<BElight*, glm::mat4> lights_;
 	std::map<BEcamera*, glm::mat4> cameras_;
 

@@ -41,44 +41,41 @@ BEmesh::~BEmesh()
 
 void BEmesh::Render(glm::mat4 cumulated_transformation_matrix)
 {
-	//TODO: eventually try other methods
+	////std::cout << "Rendering Mesh: " << BEobject::get_name() << std::endl;
+
+	//glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
+	//glLoadMatrixf(glm::value_ptr(tmpF));
+	////BEengine::lists_->UpdateMesh(this, tmpF);
+
+	//if (material_)
+	//{
+	//	//std::cout << "The mesh contains a material"<< std::endl;
+	//	material_->Render(tmpF);
+	//}
+
 	//glVertexPointer(3, GL_FLOAT, 0, vertices_);
+	//glNormalPointer(GL_FLOAT, 0, normals_);
+	//glTexCoordPointer(2, GL_FLOAT, 0, texture_coords_);
 	//glDrawArrays(GL_TRIANGLES, 0, vertices_count_);
-	//glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+	////glBegin(GL_TRIANGLES);
+	////for (unsigned int i = 0; i < vertices_count_; i++)
+	////{
+	////	glNormal3fv(glm::value_ptr(normals_[i]));
+	////	glTexCoord2fv(glm::value_ptr(texture_coords_[i]));
+	////	glVertex3fv(glm::value_ptr(vertices_[i]));
+	////}
+	////glEnd();
 
-	//std::cout << "Rendering Mesh: " << BEobject::get_name() << std::endl;
-	/*
-	std::cout << "Children count: " << BEnode::GetChildren().size() << std::endl;
-	*/
-	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
-	glLoadMatrixf(glm::value_ptr(tmpF));
-	BEengine::lists_->UpdateMesh(this, tmpF);
+	//for (unsigned int i = 0; i < sub_meshes_count_; i++)
+	//{
+	//	BEmesh* tmp_mesh = BEengine::lists_->GetMesh(sub_meshes_[i]);
+	//	if (tmp_mesh != this)
+	//		tmp_mesh->Render(tmpF);
+	//}
 
-	if (material_)
-	{
-		//std::cout << "The mesh contains a material"<< std::endl;
-		material_->Render(tmpF);
-	}
-
-	glBegin(GL_TRIANGLES);
-	for (unsigned int i = 0; i < vertices_count_; i++)
-	{
-		glNormal3fv(glm::value_ptr(normals_[i]));
-		glTexCoord2fv(glm::value_ptr(texture_coords_[i]));
-		glVertex3fv(glm::value_ptr(vertices_[i]));
-	}
-	glEnd();
-
-	for (unsigned int i = 0; i < sub_meshes_count_; i++)
-	{
-		BEmesh* tmp_mesh = BEengine::lists_->GetMesh(sub_meshes_[i]);
-		if (tmp_mesh != this)
-			tmp_mesh->Render(tmpF);
-	}
-
-	for(BEnode* n : BEnode::children_){
-		n->Render(tmpF);
-	}
+	//for (BEnode* n : BEnode::children_){
+	//	n->Render(tmpF);
+	//}
 }
 void BEmesh::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 {
@@ -87,8 +84,9 @@ void BEmesh::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 
 	if (material_)
 	{
-		material_->Render(cumulated_transformation_matrix);
+		material_->RenderSingle(cumulated_transformation_matrix);
 	}
+
 
 	glBegin(GL_TRIANGLES);
 	for (unsigned int i = 0; i < vertices_count_; i++)
@@ -112,7 +110,7 @@ void BEmesh::CalcTransformation(glm::mat4 cumulated_transformation_matrix)
 	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
 	BEengine::lists_->UpdateMesh(this, tmpF);
 
-	for(BEnode* n : BEnode::children_){
+	for (BEnode* n : BEnode::children_){
 		n->CalcTransformation(tmpF);
 	}
 }
@@ -146,7 +144,7 @@ BEnode* BEmesh::Find(std::string name)
 
 	//seek the node in the children
 	BEnode *found_node = nullptr;
-	for(BEnode* n : children_)
+	for (BEnode* n : children_)
 	{
 		if ((found_node = n->Find(name)) != nullptr)
 			return found_node;
@@ -165,7 +163,7 @@ BEnode* BEmesh::Find(long id)
 
 	//seek the node in the children
 	BEnode *found_node = nullptr;
-	for(BEnode* n : children_)
+	for (BEnode* n : children_)
 	{
 		if ((found_node = n->Find(id)) != nullptr)
 			return found_node;

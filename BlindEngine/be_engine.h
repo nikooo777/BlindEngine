@@ -29,12 +29,12 @@ public:
 	void SetPerspective(glm::mat4 perspective);
 	void SetOrtho(glm::mat4 ortho);
 
-	void SetDeltaPadding(float delta_padding){ delta_padding_ = delta_padding; }
-	float GetDeltaPadding(){ return delta_padding_; }
-	void SetDeltaZoom(float delta_zoom){ delta_zoom_ = delta_zoom; }
+	inline void SetDeltaPadding(float delta_padding){ delta_padding_ = delta_padding; }
+	inline float GetDeltaPadding(){ return delta_padding_; }
+	inline void SetDeltaZoom(float delta_zoom){ delta_zoom_ = delta_zoom; }
 	void AddTimerCallBack(void(*timer_callback)(int value), int loop_time);
 	void SetKeyBoardCallBack(void(*callback)(unsigned char key, int mouseX, int mouseY));
-	float GetDeltaZoom(){ return delta_zoom_; }
+	inline float GetDeltaZoom(){ return delta_zoom_; }
 	std::string get_node_selected();
 	void set_node_selected(std::string name);
 	static BElist* lists_;

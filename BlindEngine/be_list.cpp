@@ -23,12 +23,6 @@ void LIB_API BElist::RenderAll()
 
 void LIB_API BElist::RenderMeshes()
 {
-	//for (const auto& pair : meshes_)
-	//{
-	//	if (!pair.first->get_material()->IsTransparent())
-	//		pair.first->RenderSingle(pair.second);
-	//}
-	//glEnable(GL_DEPTH_TEST);
 	for (auto m : meshes_v_)
 	{
 		if (!m->mesh_->get_material()->IsTransparent())
@@ -74,7 +68,7 @@ void LIB_API BElist::RenderCameras()
 void LIB_API BElist::AddMesh(BEmesh*mesh)
 {
 	mesh_ordered_references_.push_back(mesh);
-	meshes_.insert(std::pair<BEmesh*, glm::mat4>(mesh, glm::mat4(1)));
+	AddMesh(mesh, glm::mat4(1));
 }
 
 void LIB_API BElist::AddMesh(BEmesh*mesh, glm::mat4 f)
@@ -120,7 +114,6 @@ void LIB_API BElist::AddMeshToMap(BEmesh* mesh)
 
 void LIB_API BElist::UpdateMesh(BEmesh* mesh, glm::mat4 f)
 {
-	//meshes_.find(mesh)->second = f;
 	for (auto m : meshes_v_)
 	{
 		if (m->mesh_ == mesh)
@@ -184,4 +177,30 @@ void LIB_API BElist::AddCamera(BEcamera* camera, glm::mat4 f)
 void LIB_API BElist::UpdateCamera(BEcamera* camera, glm::mat4 f)
 {
 	cameras_.find(camera)->second = f;
+}
+
+
+BEmesh* BElist::GetMesh(unsigned int index)
+{
+	return mesh_ordered_references_[index];
+}
+
+void BElist::AddMaterial(BEmaterial* material)
+{
+	material_ordered_list_.push_back(material);
+}
+
+BEmaterial* BElist::GetMaterial(unsigned int index)
+{
+	return material_ordered_list_[index];
+}
+
+unsigned int BElist::GetMaterialCount()
+{
+	return material_ordered_list_.size();
+}
+
+unsigned int BElist::GetMeshCount()
+{
+	return meshes_v_.size();
 }

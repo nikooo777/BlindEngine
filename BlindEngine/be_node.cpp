@@ -87,13 +87,13 @@ BEnode* BEnode::Find(long id)
 
 void BEnode::Render(glm::mat4 cumulated_transformation_matrix)
 {
-	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
+	/*glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
 	glLoadMatrixf(glm::value_ptr(tmpF));
 
-	//std::cout << "Wrong place" << std::endl;
+	std::cout << "Wrong place" << std::endl;
 	for (BEnode* n : BEnode::children_){
-		n->Render(tmpF);
-	}
+	n->Render(tmpF);
+	}*/
 }
 
 void BEnode::RenderSingle(glm::mat4 cumulated_transformation_matrix)

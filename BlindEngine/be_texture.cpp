@@ -14,24 +14,26 @@ BEtexture::~BEtexture()
 
 void BEtexture::Render(glm::mat4 cumulated_transformation_matrix)
 {
-	//std::cout << "Rendering texture: " << get_name() << std::endl;
+	////std::cout << "Rendering texture: " << get_name() << std::endl;
 
-	//glEnable(GL_TEXTURE_2D);
+	////glEnable(GL_TEXTURE_2D);
 
-	// Update texture content
-	glBindTexture(GL_TEXTURE_2D, texture_id_);
-	// Set circular coordinates:
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
+	//// Update texture content
+	//glBindTexture(GL_TEXTURE_2D, texture_id_);
+	//// Set circular coordinates:
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
 
-	// Set min/mag filters:
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	//// Set min/mag filters:
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 }
 
 void BEtexture::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 {
-	glLoadMatrixf(glm::value_ptr(cumulated_transformation_matrix));
+	//WHY DID WE HAVE THIS LINE???
+	//glLoadMatrixf(glm::value_ptr(cumulated_transformation_matrix));
+
 
 	// Update texture content
 	glBindTexture(GL_TEXTURE_2D, texture_id_);
