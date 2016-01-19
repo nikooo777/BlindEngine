@@ -33,6 +33,7 @@ public:
 	BEnode* GetParent(){ return parent_; }
 	void SetTransformation(glm::mat4 transformation){ transformation_ = transformation; }
 	glm::mat4 GetTransformation(){ return transformation_; }
+	void UpdateTransformationRecursive(glm::mat4 transformation);
 	void SetAsSceneRoot();
 
 	//Utility
