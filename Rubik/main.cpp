@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
 	/* Init + Preferences
 	/************************************************************************/
 	engine->Init("BlindEngine - Rubik", 100, 100, 800, 600, nullptr, argc, argv);
-	engine->SetDeltaPadding(.5f);
+	engine->SetDeltaPadding(5.f);
 	engine->SetKeyBoardCallBack(keyboardCallback);
 
 
