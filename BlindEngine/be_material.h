@@ -25,4 +25,5 @@ public:
 private:
 	float transparency_;
 };
+
 bool FloatCompare(float f1, float f2, float precision = 0.0000001f);

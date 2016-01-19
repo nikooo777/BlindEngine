@@ -62,7 +62,7 @@ void BEmaterial::RenderSingle(glm::mat4 f)
 bool BEmaterial::IsTransparent()
 {
 	float precision = 0.00001f;
-	return FloatCompare(transparency_, 1.0f);
+	return !FloatCompare(transparency_, 1.0f);
 }
 
 void BEmaterial::SetTransparency(float alpha)
@@ -76,7 +76,6 @@ void BEmaterial::SetTransparency(float alpha)
 	diffuse_.a = alpha;
 	specular_.a = alpha;
 	transparency_ = alpha;
-	std::cout << "whatever floats your boat: "<< transparency_ << std::endl;
 }
 
 bool FloatCompare(float f1, float f2, float precision)

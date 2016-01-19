@@ -37,7 +37,7 @@ public:
 	float GetDeltaZoom(){ return delta_zoom_; }
 	std::string get_node_selected();
 	void set_node_selected(std::string name);
-	static BElist *lists_;
+	static BElist* lists_;
 private:
 	std::string node_selected_;
 	static BEengine* instance_;

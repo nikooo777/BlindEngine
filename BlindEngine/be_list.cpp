@@ -1,6 +1,7 @@
 #include "be_list.h"
 
 
+
 BElist::BElist()
 {
 }
@@ -22,11 +23,35 @@ void LIB_API BElist::RenderAll()
 
 void LIB_API BElist::RenderMeshes()
 {
-	for (const auto& pair : meshes_)
+	//for (const auto& pair : meshes_)
+	//{
+	//	if (!pair.first->get_material()->IsTransparent())
+	//		pair.first->RenderSingle(pair.second);
+	//}
+	//glEnable(GL_DEPTH_TEST);
+	for (auto m : meshes_v_)
 	{
-		pair.first->RenderSingle(pair.second);
+		if (!m->mesh_->get_material()->IsTransparent())
+		{
+			m->mesh_->RenderSingle(m->world_coords_);
+		}
 	}
+ 	glDepthMask(GL_FALSE);
+	this->DeepSort();
+	for (auto m : meshes_v_)
+	{
+		if (m->mesh_->get_material()->IsTransparent())
+		{
+			glCullFace(GL_FRONT);
+			m->mesh_->RenderSingle(m->world_coords_);
+			glCullFace(GL_BACK);
+			m->mesh_->RenderSingle(m->world_coords_);
+		}
+	}
+	//glCullFace(GL_FRONT);
+	glDepthMask(GL_TRUE);
 }
+
 void LIB_API BElist::RenderLights()
 {
 	for (const auto& pair : lights_)
@@ -54,20 +79,56 @@ void LIB_API BElist::AddMesh(BEmesh*mesh)
 
 void LIB_API BElist::AddMesh(BEmesh*mesh, glm::mat4 f)
 {
-	mesh_ordered_references_.push_back(mesh);
-	meshes_.insert(std::pair<BEmesh*, glm::mat4>(mesh, f));
+	Mesh* mesh_to_add = new Mesh;
+	mesh_to_add->mesh_ = mesh;
+	mesh_to_add->world_coords_ = f;
+	meshes_v_.push_back(mesh_to_add);
+	//meshes_.insert(std::pair<BEmesh*, glm::mat4>(mesh, f));
 }
 
-void LIB_API BElist::AddMeshToMap(BEmesh*mesh)
+void LIB_API BElist::AddMeshToMap(BEmesh* mesh)
 {
-	if (meshes_by_name_.find(mesh->get_name()) == meshes_by_name_.end())
-		meshes_by_name_.insert(std::pair<std::string, BEmesh*>(mesh->get_name(), mesh));
-
+	/*if (meshes_by_name_.find(mesh->get_name()) == meshes_by_name_.end())
+	meshes_by_name_.insert(std::pair<std::string, BEmesh*>(mesh->get_name(), mesh));*/
+	if (meshes_v_.size() == 0)
+	{
+		Mesh* mesh_to_add = new Mesh;
+		mesh_to_add->mesh_ = mesh;
+		mesh_to_add->world_coords_ = glm::mat4();
+		meshes_v_.push_back(mesh_to_add);
+		std::cout << "adding mesh to list" << std::endl;
+		return;
+	}
+	for (auto m : meshes_v_)
+	{
+		if (m->mesh_ == mesh)
+		{
+			std::cout << "adding mesh to list" << std::endl;
+			break;
+		}
+		else if (m == *(meshes_v_.end()-1))
+		{
+			Mesh* mesh_to_add = new Mesh;
+			mesh_to_add->mesh_ = mesh;
+			mesh_to_add->world_coords_ = glm::mat4();
+			meshes_v_.push_back(mesh_to_add);
+			std::cout << "adding mesh to list" << std::endl;
+			break;
+		}
+	}
 }
 
-void LIB_API BElist::UpdateMesh(BEmesh*mesh, glm::mat4 f)
+void LIB_API BElist::UpdateMesh(BEmesh* mesh, glm::mat4 f)
 {
-	meshes_.find(mesh)->second = f;
+	//meshes_.find(mesh)->second = f;
+	for (auto m : meshes_v_)
+	{
+		if (m->mesh_ == mesh)
+		{
+			m->world_coords_ = f;
+		}
+	}
+
 }
 
 LIB_API BEmesh* BElist::GetMeshByName(std::string name)
@@ -79,17 +140,15 @@ LIB_API BEmesh* BElist::GetMeshByName(std::string name)
 		return nullptr;
 }
 
-//bool mysort(BEmesh* a, BEmesh* b)
-//{
-//	return a->GetTransformation()[3].z > b->GetTransformation()[3].z;
-//}
+
 LIB_API void BElist::DeepSort()
 {
 	std::sort(meshes_v_.begin(), meshes_v_.end(), [](Mesh* a, Mesh* b)
 	{
-		return a->mesh_->GetTransformation()[3].z > b->mesh_->GetTransformation()[3].z;
+		return a->world_coords_[3].z > b->world_coords_[3].z;
 	});
 }
+
 
 /************************************************************************/
 /* Light
