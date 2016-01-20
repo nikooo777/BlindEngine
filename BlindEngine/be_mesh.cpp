@@ -64,7 +64,7 @@ void BEmesh::CalcTransformation(glm::mat4 world_matrix)
 
 	if (to_mirror_)
 	{
-		glm::mat4 scaled = world_matrix*transformation_ * glm::scale(glm::mat4(1), glm::vec3(1,-1,1));
+		glm::mat4 scaled = glm::scale(glm::mat4(1), glm::vec3(1, -1, 1))* world_matrix*transformation_; // Jorge is happy
 		BEengine::lists_->PassMirrored(this, scaled);
 	}
 
