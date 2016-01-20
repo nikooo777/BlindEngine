@@ -105,7 +105,7 @@ void LIB_API BEengine::CalcTransformation()
 void displayCallback()
 {
 	// Clear the screen:
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//////
 	// 3D:
@@ -149,7 +149,7 @@ void reshapeCallback(int width, int height)
 	glViewport(0, 0, width, height);
 
 	// Update matrices:
-	BEengine::GetInstance()->SetPerspective(glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 500.0f));
+	BEengine::GetInstance()->SetPerspective(glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 2000.0f));
 	BEengine::GetInstance()->SetOrtho(glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f));
 }
 
@@ -201,7 +201,7 @@ void timerCallback(int value)
 void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, int width, int heigth, void(*keyCallback)(int, int, int), int argc, char *argv[])
 {
 	// Init context:
-	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL);
+	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowPosition(x_position, y_position);
 	glutInitWindowSize(width, heigth);
 
@@ -224,14 +224,13 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 
 	// Global OpenGL settings:
 	//glClearColor(1.0f, 0.6f, 0.1f, 1.0f);
-	glClearColor(.0f, .0f, .0f, 1.0f);
+	glClearColor(.2f, .2f, .2f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glEnable(GL_ALPHA_TEST);
-	glEnable(GL_STENCIL_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	BEengine::initialized_ = true;
