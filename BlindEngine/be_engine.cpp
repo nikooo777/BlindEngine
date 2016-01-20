@@ -105,7 +105,7 @@ void LIB_API BEengine::CalcTransformation()
 void displayCallback()
 {
 	// Clear the screen:
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	//////
 	// 3D:
@@ -201,7 +201,7 @@ void timerCallback(int value)
 void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, int width, int heigth, void(*keyCallback)(int, int, int), int argc, char *argv[])
 {
 	// Init context:
-	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL);
 	glutInitWindowPosition(x_position, y_position);
 	glutInitWindowSize(width, heigth);
 
@@ -231,6 +231,7 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glEnable(GL_ALPHA_TEST);
+	glEnable(GL_STENCIL_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	BEengine::initialized_ = true;
