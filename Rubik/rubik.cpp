@@ -12,12 +12,12 @@ void Animation(int value)
 {
 	animation_root->UpdateTransformationRecursive(animation_transformation);
 
-	animation_count_left -- ;
+	animation_count_left--;
 	if (animation_count_left)
 		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
 	else
 		delete animation_root;
-	
+
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -63,87 +63,12 @@ Rubik::Rubik(BEnode* cube_root)
 	cube_faces_[0][2][2] = cube_root->Find("Block72");
 	cube_faces_[1][2][2] = cube_root->Find("Block70");
 	cube_faces_[2][2][2] = cube_root->Find("Block69");
-
-
-	/*for each (BEnode* n in cube_faces_)
-	{
-	if (n == nullptr)
-	throw "A reference to a block is invalid";
-	}*/
 }
 
 
 Rubik::~Rubik()
 {
 }
-
-
-/************************************
-* Method:	TranslateSingleCubeX
-* Desc:	Translate a single cube in axis-x
-*
-* @param	unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x
-* @return	void
-************************************/
-//void Rubik::TranslateSingleCubeX(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x)
-//{
-//	glm::mat4 f = cube_faces_[element_x][element_y][element_z]->GetTransformation();
-//
-//	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(value_x, 0.0f, 0.0f));
-//	glm::mat4 new_translation = translation * f;
-//	cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
-//}
-
-
-/************************************
-* Method:	TranslateSingleCubeY
-* Desc:	Translate a single cube in axis-y
-*
-* @param	unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_y
-* @return	void
-************************************/
-//void Rubik::TranslateSingleCubeY(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_y)
-//{
-//	glm::mat4 f = cube_faces_[element_x][element_y][element_z]->GetTransformation();
-//
-//	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, value_y, 0.0f));
-//	glm::mat4 new_translation = translation * f;
-//	cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
-//}
-
-/************************************
-* Method:	TranslateSingleCubeZ
-* Desc:		Translate a single cube in axis-z
-*
-* @param	unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_z
-* @return	void
-************************************/
-//void Rubik::TranslateSingleCubeZ(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_z)
-//{
-//	glm::mat4 f = cube_faces_[element_x][element_y][element_z]->GetTransformation();
-//
-//	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, value_z));
-//	glm::mat4 new_translation = translation * f;
-//	cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
-//}
-
-
-/************************************
-* Method:	TranslateSingleCube
-* Desc:	Translate a single cube in all axis
-*
-* @param	unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x, float value_y, float value_z
-* @return	void
-************************************/
-//void Rubik::TranslateSingleCube(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x, float value_y, float value_z)
-//{
-//	glm::mat4 f = cube_faces_[element_x][element_y][element_z]->GetTransformation();
-//
-//	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(value_x, value_y, value_z));
-//	glm::mat4 new_translation = translation * f;
-//	cube_faces_[element_x][element_y][element_z]->SetTransformation(new_translation);
-//}
-//} 
 
 
 void Rubik::RotateFace(Face face, bool inverse)
@@ -187,7 +112,7 @@ void Rubik::RotateFace(Face face, bool inverse)
 				cube_faces_[2 - j][2][i] = faces_to_swap[index++]; // fixed
 
 	}
-	break;
+		break;
 	case Rubik::R_FACE:
 		//y doesn't change
 	{
@@ -215,7 +140,7 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				cube_faces_[2][2 - j][i] = faces_to_swap[index++]; // fixed
 	}
-	break;
+		break;
 	case Rubik::D_FACE:
 		//y doesn't change
 	{
@@ -243,7 +168,7 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				cube_faces_[2 - j][0][i] = faces_to_swap[index++]; // fixed
 	}
-	break;
+		break;
 	case Rubik::L_FACE:
 		//x doesn't change
 	{
@@ -270,7 +195,7 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				cube_faces_[0][j][2 - i] = faces_to_swap[index++]; // Fixed
 	}
-	break;
+		break;
 	case Rubik::F_FACE:
 		//z doesn't change
 	{
@@ -297,7 +222,7 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				cube_faces_[j][2 - i][0] = faces_to_swap[index++]; // Fixed
 	}
-	break;
+		break;
 	case Rubik::B_FACE:
 		//z doesn't change
 	{
@@ -324,7 +249,7 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				cube_faces_[2 - j][i][2] = faces_to_swap[index++]; // Fixed
 	}
-	break;
+		break;
 	case Rubik::N_FACE:
 		//z doesn't change
 	{
@@ -351,34 +276,34 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				cube_faces_[1][2 - j][i] = faces_to_swap[index++]; // Fixed
 	}
-	break;
+		break;
 	default:
 		break;
 	}
 }
 
-void Rubik::RelinkCubes(BEnode** faces_to_swap, BEnode* animation_root)
-{
-	//add all the nodes that we must swap as children
-	for (int i = 0; i < 9; i++)
-	{
-		if (i != 4)
-		{
-			std::cout << "index: " << i << ": " << faces_to_swap[i]->get_name() << std::endl;
-			faces_to_swap[i]->GetParent()->RemoveChild(faces_to_swap[i]);
-			animation_root->AddChild(faces_to_swap[i]);
-		}
-	}
-}
+//void Rubik::RelinkCubes(BEnode** faces_to_swap, BEnode* animation_root)
+//{
+//	//add all the nodes that we must swap as children
+//	for (int i = 0; i < 9; i++)
+//	{
+//		if (i != 4)
+//		{
+//			std::cout << "index: " << i << ": " << faces_to_swap[i]->get_name() << std::endl;
+//			faces_to_swap[i]->GetParent()->RemoveChild(faces_to_swap[i]);
+//			animation_root->AddChild(faces_to_swap[i]);
+//		}
+//	}
+//}
 
-void Rubik::PushBackFace(BEnode** faces_to_swap, BEnode* animation_root)
-{
-	//the helper node must translate back 1 block thowards the center of the cube
-	glm::vec4 translation_vector = glm::inverse(faces_to_swap[4]->GetTransformation())[3];
-	glm::mat4 translationmat = glm::translate(glm::mat4(), glm::vec3(translation_vector));
-
-	animation_root->SetTransformation(translationmat);
-}
+//void Rubik::PushBackFace(BEnode** faces_to_swap, BEnode* animation_root)
+//{
+//	//the helper node must translate back 1 block thowards the center of the cube
+//	glm::vec4 translation_vector = glm::inverse(faces_to_swap[4]->GetTransformation())[3];
+//	glm::mat4 translationmat = glm::translate(glm::mat4(), glm::vec3(translation_vector));
+//
+//	animation_root->SetTransformation(translationmat);
+//}
 
 void Rubik::BuildSceneGraph(BEnode* parent, BEnode** faces_to_swap)
 {

@@ -18,15 +18,9 @@ public:
 		N_FACE
 	}Face;
 
-	/*void TranslateSingleCubeX(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x);
-	void TranslateSingleCubeY(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_y);
-	void TranslateSingleCubeZ(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_z);
-	void TranslateSingleCube(unsigned short element_x, unsigned short element_y, unsigned short element_z, float value_x, float value_y, float value_z);*/
 	void RotateFace(Face face, bool inverse);
-
-	void PushBackFace(BEnode** faces_to_swap, BEnode* rotation_helper);
-	void RelinkCubes(BEnode** faces_to_swap, BEnode* rotation_helper);
-	
+	//void PushBackFace(BEnode** faces_to_swap, BEnode* rotation_helper);
+	//void RelinkCubes(BEnode** faces_to_swap, BEnode* rotation_helper);
 	void BuildSceneGraph(BEnode* rotation_helper, BEnode** faces_to_swap);
 
 private:
@@ -47,7 +41,7 @@ private:
 	*	 |	[0][+][0]   (y)
 	*	 |
 	*	 |
-	*	 
+	*
 	*	    ^
 	*	   /  [0][0][+]   (z)
 	*	  /
@@ -63,12 +57,5 @@ private:
 
 	BEnode* cube_faces_[3][3][3];
 	BEnode* cube_root_;
-	BEnode* get_green()	{ return cube_faces_[2][3][2]; }
-	BEnode* get_white()	{ return cube_faces_[3][2][2]; }
-	BEnode* get_red()	{ return cube_faces_[2][2][0]; }
-	BEnode* get_blue()	{ return cube_faces_[2][0][2]; }
-	BEnode* get_yellow(){ return cube_faces_[0][2][2]; }
-	BEnode* get_orange(){ return cube_faces_[2][2][3]; }
-
 };
 

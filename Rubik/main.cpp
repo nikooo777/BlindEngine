@@ -11,59 +11,59 @@
 */
 void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 {
-	//std::cout << "[std key pressed]" << std::endl;
 	static BEnode* rubik_root_node = BEnode::GetSuperRoot()->Find("Rubik_Downloaded");
 	static Rubik* cube = new Rubik(rubik_root_node);
+	BEengine* engine = BEengine::GetInstance();
 	switch (key)
 	{
 		//navigation
 	case 'a':
 	{
-		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(-BEengine::GetInstance()->GetDeltaPadding(), 0.0f, 0.0f));
+		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(-engine->GetDeltaPadding(), 0.0f, 0.0f));
 		glm::mat4 new_translation = translation * rubik_root_node->GetTransformation();
 		rubik_root_node->SetTransformation(new_translation);
 	}
 		break;
 	case 'd':
 	{
-		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(BEengine::GetInstance()->GetDeltaPadding(), 0.0f, 0.0f));
+		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(engine->GetDeltaPadding(), 0.0f, 0.0f));
 		glm::mat4 new_translation = translation * rubik_root_node->GetTransformation();
 		rubik_root_node->SetTransformation(new_translation);
 	}
 		break;
 	case 'w':
 	{
-		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, BEengine::GetInstance()->GetDeltaPadding(), 0.0f));
+		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, engine->GetDeltaPadding(), 0.0f));
 		glm::mat4 new_translation = translation * rubik_root_node->GetTransformation();
 		rubik_root_node->SetTransformation(new_translation);
 	}
 		break;
 	case 's':
 	{
-		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, -BEengine::GetInstance()->GetDeltaPadding(), 0.0f));
+		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, -engine->GetDeltaPadding(), 0.0f));
 		glm::mat4 new_translation = translation * rubik_root_node->GetTransformation();
 		rubik_root_node->SetTransformation(new_translation);
 	}
 		break;
 	case 'q':
 	{
-		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -BEengine::GetInstance()->GetDeltaPadding()));
+		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -engine->GetDeltaPadding()));
 		glm::mat4 new_translation = translation * rubik_root_node->GetTransformation();
 		rubik_root_node->SetTransformation(new_translation);
 		break;
 	}
 	case 'y':
 	{
-		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, BEengine::GetInstance()->GetDeltaPadding()));
+		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, engine->GetDeltaPadding()));
 		glm::mat4 new_translation = translation * rubik_root_node->GetTransformation();
 		rubik_root_node->SetTransformation(new_translation);
 		break;
 	}
 	case '+':
-		BEengine::GetInstance()->SetDeltaPadding(BEengine::GetInstance()->GetDeltaPadding() + 0.5f);
+		engine->SetDeltaPadding(engine->GetDeltaPadding() + 0.5f);
 		break;
 	case '-':
-		BEengine::GetInstance()->SetDeltaPadding(BEengine::GetInstance()->GetDeltaPadding() - 0.5f);
+		engine->SetDeltaPadding(engine->GetDeltaPadding() - 0.5f);
 		break;
 
 		/************************************************************************/
@@ -92,7 +92,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		cube->RotateFace(Rubik::N_FACE, false);
 		break;
 	}
-	BEengine::GetInstance()->set_node_selected(rubik_root_node->get_name());
+	engine->set_node_selected(rubik_root_node->get_name());
 }
 
 int main(int argc, char *argv[])
