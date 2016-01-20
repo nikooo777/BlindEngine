@@ -26,6 +26,8 @@ public:
 	void SetMaterial(BEmaterial *material){ material_ = material; }
 
 	void SetSubMeshes(unsigned int sub_meshes_count, unsigned int* sub_meshes, unsigned int delta);
+	void SetIsMirrored(bool should_be_mirrored){ to_mirror_ = should_be_mirrored; }
+	bool GetIsMirrored(){ return to_mirror_; }
 
 	// Utility
 	virtual BEnode* Find(std::string) override;
@@ -41,4 +43,5 @@ private:
 
 	unsigned int* sub_meshes_;
 	unsigned int sub_meshes_count_;
+	bool to_mirror_ = false;
 };

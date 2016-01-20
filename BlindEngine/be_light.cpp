@@ -59,7 +59,7 @@ BElight* BElight::CreateSpotLight(const std::string name, glm::vec3 ambient, glm
 
 void BElight::Render(glm::mat4 world_matrix)
 {
-	
+
 	if (!is_active_)
 	{
 		glDisable(light_number_);
