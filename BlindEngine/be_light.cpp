@@ -67,7 +67,7 @@ void BElight::Render(glm::mat4 world_matrix)
 	}
 
 	glEnable(light_number_);
-	glLoadMatrixf(glm::value_ptr(world_ma
+	glLoadMatrixf(glm::value_ptr(world_matrix));
 	//Common color property
 	glLightfv(light_number_, GL_AMBIENT, glm::value_ptr(ambient_));
 	glLightfv(light_number_, GL_DIFFUSE, glm::value_ptr(diffuse_));
