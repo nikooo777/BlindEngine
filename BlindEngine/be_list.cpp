@@ -16,7 +16,7 @@ void LIB_API BElist::RenderAll()
 {
 	RenderLights();
 
-	RenderMirrored();
+	/*RenderMirrored();*/
 	RenderMeshes();
 	RenderCameras();
 }
@@ -31,6 +31,14 @@ void LIB_API BElist::RenderMeshes()
 		}
 	}
 	glDepthMask(GL_FALSE);
+	//////////////////////////////////////////////////////////////////////////
+	//stencil buffer to limit the reflection
+	glEnable(GL_STENCIL_TEST);
+	glStencilFunc(GL_ALWAYS, 1, 0xFF); // Set any stencil to 1
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glStencilMask(0xFF); // Write to stencil buffer
+	glClear(GL_STENCIL_BUFFER_BIT); // Clear stencil buffer (0 by default)
+	//////////////////////////////////////////////////////////////////////////
 	this->DeepSort();
 	for (auto m : meshes_v_)
 	{
@@ -42,7 +50,12 @@ void LIB_API BElist::RenderMeshes()
 			m->mesh_->Render(m->world_coords_);
 		}
 	}
-	//glCullFace(GL_FRONT);
+	//////////////////////////////////////////////////////////////////////////
+	glStencilFunc(GL_EQUAL, 1, 0xFF); // Pass test if stencil value is 1
+	glStencilMask(0x00); // Don't write anything to stencil buffer
+	RenderMirrored();
+	glDisable(GL_STENCIL_TEST);
+	//////////////////////////////////////////////////////////////////////////
 	glDepthMask(GL_TRUE);
 }
 
