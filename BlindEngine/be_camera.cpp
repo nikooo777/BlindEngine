@@ -1,38 +1,27 @@
 #include "be_camera.h"
 
 
-BEcamera::BEcamera(std::string name) :BEnode(name,CAMERA)
+BEcamera::BEcamera(std::string name) :BEnode(name, CAMERA)
 {
 }
-
 
 BEcamera::~BEcamera()
 {
 }
 
-void BEcamera::Render(glm::mat4 cumulated_transformation_matrix)
-{
-	std::cout << "Rendering a camera" << std::endl;
-	for(BEnode* n : BEnode::children_){
-		n->Render(cumulated_transformation_matrix*transformation_);
-	}
-}
-
-void BEcamera::RenderSingle(glm::mat4 cumulated_transformation_matrix)
+void BEcamera::Render(glm::mat4 world_matrix)
 {
 	std::cout << "Rendering a camera" << std::endl;
 }
 
-void BEcamera::CalcTransformation(glm::mat4 cumulated_transformation_matrix)
+void BEcamera::CalcTransformation(glm::mat4 world_matrix)
 {
-	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
+	glm::mat4 tmpF = world_matrix*transformation_;
 
-	for(BEnode* n : BEnode::children_){
+	for (BEnode* n : BEnode::children_){
 		n->CalcTransformation(tmpF);
 	}
 }
-
-
 
 BEnode* BEcamera::Find(std::string name)
 {
@@ -44,7 +33,7 @@ BEnode* BEcamera::Find(std::string name)
 
 	//seek the node in the children
 	BEnode *found_node = nullptr;
-	for(BEnode* n : children_)
+	for (BEnode* n : children_)
 	{
 		if ((found_node = n->Find(name)) != nullptr)
 			return found_node;
@@ -63,7 +52,7 @@ BEnode* BEcamera::Find(long id)
 
 	//seek the node in the children
 	BEnode *found_node = nullptr;
-	for(BEnode* n : children_)
+	for (BEnode* n : children_)
 	{
 		if ((found_node = n->Find(id)) != nullptr)
 			return found_node;

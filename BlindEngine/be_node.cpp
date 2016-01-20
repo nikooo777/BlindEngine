@@ -84,26 +84,14 @@ BEnode* BEnode::Find(long id)
 }
 
 
-
-void BEnode::Render(glm::mat4 cumulated_transformation_matrix)
-{
-	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
-	glLoadMatrixf(glm::value_ptr(tmpF));
-
-	//std::cout << "Wrong place" << std::endl;
-	for (BEnode* n : BEnode::children_){
-		n->Render(tmpF);
-	}
-}
-
-void BEnode::RenderSingle(glm::mat4 cumulated_transformation_matrix)
+void BEnode::Render(glm::mat4 world_matrix)
 {
 	std::cout << "RenderNode: Should not be here" << std::endl;
 }
 
-void BEnode::CalcTransformation(glm::mat4 cumulated_transformation_matrix)
+void BEnode::CalcTransformation(glm::mat4 world_matrix)
 {
-	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
+	glm::mat4 tmpF = world_matrix*transformation_;
 	for (BEnode* n : BEnode::children_){
 		n->CalcTransformation(tmpF);
 	}

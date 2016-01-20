@@ -23,12 +23,11 @@ BEsceneLoader::~BEsceneLoader()
 */
 BEnode*  BEsceneLoader::LoadScene(char * scene_path)
 {
-	be_logging::log("loading scene located in:");
-	be_logging::log(scene_path);
+	std::cout << "loading scene located in:" << scene_path << std::endl;
 	scene_ = (aiScene *)importer_.ReadFile(scene_path, aiProcess_Triangulate);
 	if (scene_ == nullptr)
 	{
-		be_logging::log("ERROR: unable to load scene!");
+		std::cout << "ERROR: unable to load scene!" << std::endl;
 		return nullptr;
 	}
 
@@ -140,7 +139,7 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 		{
 			//std::cout << "A mesh was found. Extracting..." << std::endl;
 
-            tmp_mesh->set_name(this_node->mName.C_Str());
+			tmp_mesh->set_name(this_node->mName.C_Str());
 			tmp_mesh->SetSubMeshes(this_node->mNumMeshes, this_node->mMeshes, cnt_meshes_);
 			BEengine::lists_->AddMeshToMap(tmp_mesh);
 			node = tmp_mesh;
@@ -354,7 +353,7 @@ void BEsceneLoader::ParseMeshes()
 void BEsceneLoader::ParseMaterials()
 {
 	aiMaterial *material_container;
-	be_logging::log("************");
+	std::cout << "************" << std::endl;
 	std::cout << std::endl << "NumMaterial: " << scene_->mNumMaterials << std::endl;
 	for (unsigned int i = 0; i < scene_->mNumMaterials; i++)
 	{

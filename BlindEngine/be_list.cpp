@@ -23,29 +23,23 @@ void LIB_API BElist::RenderAll()
 
 void LIB_API BElist::RenderMeshes()
 {
-	//for (const auto& pair : meshes_)
-	//{
-	//	if (!pair.first->get_material()->IsTransparent())
-	//		pair.first->RenderSingle(pair.second);
-	//}
-	//glEnable(GL_DEPTH_TEST);
 	for (auto m : meshes_v_)
 	{
 		if (m->mesh_->get_material() && !m->mesh_->get_material()->IsTransparent())
 		{
-			m->mesh_->RenderSingle(m->world_coords_);
+			m->mesh_->Render(m->world_coords_);
 		}
 	}
- 	glDepthMask(GL_FALSE);
+	glDepthMask(GL_FALSE);
 	this->DeepSort();
 	for (auto m : meshes_v_)
 	{
 		if (m->mesh_->get_material() && m->mesh_->get_material()->IsTransparent())
 		{
 			glCullFace(GL_FRONT);
-			m->mesh_->RenderSingle(m->world_coords_);
+			m->mesh_->Render(m->world_coords_);
 			glCullFace(GL_BACK);
-			m->mesh_->RenderSingle(m->world_coords_);
+			m->mesh_->Render(m->world_coords_);
 		}
 	}
 	//glCullFace(GL_FRONT);
@@ -56,14 +50,14 @@ void LIB_API BElist::RenderLights()
 {
 	for (const auto& pair : lights_)
 	{
-		pair.first->RenderSingle(pair.second);
+		pair.first->Render(pair.second);
 	}
 }
 void LIB_API BElist::RenderCameras()
 {
 	for (const auto& pair : cameras_)
 	{
-		pair.first->RenderSingle(pair.second);
+		pair.first->Render(pair.second);
 	}
 }
 
@@ -74,7 +68,7 @@ void LIB_API BElist::RenderCameras()
 void LIB_API BElist::AddMesh(BEmesh*mesh)
 {
 	mesh_ordered_references_.push_back(mesh);
-	meshes_.insert(std::pair<BEmesh*, glm::mat4>(mesh, glm::mat4(1)));
+	AddMesh(mesh, glm::mat4(1));
 }
 
 void LIB_API BElist::AddMesh(BEmesh*mesh, glm::mat4 f)
@@ -83,49 +77,34 @@ void LIB_API BElist::AddMesh(BEmesh*mesh, glm::mat4 f)
 	mesh_to_add->mesh_ = mesh;
 	mesh_to_add->world_coords_ = f;
 	meshes_v_.push_back(mesh_to_add);
-	//meshes_.insert(std::pair<BEmesh*, glm::mat4>(mesh, f));
 }
 
 void LIB_API BElist::AddMeshToMap(BEmesh* mesh)
 {
-	/*if (meshes_by_name_.find(mesh->get_name()) == meshes_by_name_.end())
-	meshes_by_name_.insert(std::pair<std::string, BEmesh*>(mesh->get_name(), mesh));*/
-	if (meshes_v_.size() == 0)
-	{
-		Mesh* mesh_to_add = new Mesh;
-		mesh_to_add->mesh_ = mesh;
-		mesh_to_add->world_coords_ = glm::mat4();
-		meshes_v_.push_back(mesh_to_add);
-		return;
-	}
+	bool mesh_found = false;
 	for (auto m : meshes_v_)
 	{
 		if (m->mesh_ == mesh)
 		{
+			mesh_found = true;
 			break;
 		}
-		else if (m == *(meshes_v_.end()-1))
-		{
-			Mesh* mesh_to_add = new Mesh;
-			mesh_to_add->mesh_ = mesh;
-			mesh_to_add->world_coords_ = glm::mat4();
-			meshes_v_.push_back(mesh_to_add);
-			break;
-		}
+	}
+	if (!mesh_found)
+	{
+		PushMesh(mesh);
 	}
 }
 
-void LIB_API BElist::UpdateMesh(BEmesh* mesh, glm::mat4 f)
+void BElist::Pass(BEmesh*mesh, glm::mat4 world_coords)
 {
-	//meshes_.find(mesh)->second = f;
 	for (auto m : meshes_v_)
 	{
 		if (m->mesh_ == mesh)
 		{
-			m->world_coords_ = f;
+			m->world_coords_ = world_coords;
 		}
 	}
-
 }
 
 LIB_API BEmesh* BElist::GetMeshByName(std::string name)
@@ -159,9 +138,9 @@ void LIB_API BElist::AddLight(BElight* light, glm::mat4 f)
 {
 	lights_.insert(std::pair<BElight*, glm::mat4>(light, f));
 }
-void LIB_API BElist::UpdateLight(BElight* light, glm::mat4 f)
+void LIB_API BElist::Pass(BElight* light, glm::mat4 world_coords)
 {
-	lights_.find(light)->second = f;
+	lights_.find(light)->second = world_coords;
 }
 
 
@@ -178,7 +157,41 @@ void LIB_API BElist::AddCamera(BEcamera* camera, glm::mat4 f)
 	cameras_.insert(std::pair<BEcamera*, glm::mat4>(camera, f));
 }
 
-void LIB_API BElist::UpdateCamera(BEcamera* camera, glm::mat4 f)
+void LIB_API BElist::Pass(BEcamera* camera, glm::mat4 world_coords)
 {
-	cameras_.find(camera)->second = f;
+	cameras_.find(camera)->second = world_coords;
+}
+
+
+BEmesh* BElist::GetMesh(unsigned int index)
+{
+	return mesh_ordered_references_[index];
+}
+
+void BElist::AddMaterial(BEmaterial* material)
+{
+	material_ordered_list_.push_back(material);
+}
+
+BEmaterial* BElist::GetMaterial(unsigned int index)
+{
+	return material_ordered_list_[index];
+}
+
+unsigned int BElist::GetMaterialCount()
+{
+	return material_ordered_list_.size();
+}
+
+unsigned int BElist::GetMeshCount()
+{
+	return meshes_v_.size();
+}
+
+void BElist::PushMesh(BEmesh* mesh)
+{
+	Mesh* mesh_to_add = new Mesh;
+	mesh_to_add->mesh_ = mesh;
+	mesh_to_add->world_coords_ = glm::mat4();
+	meshes_v_.push_back(mesh_to_add);
 }

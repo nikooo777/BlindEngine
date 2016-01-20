@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
-  <asset><contributor><author></author><authoring_tool>FBX COLLADA exporter</authoring_tool><comments></comments></contributor><created>2016-01-19T19:47:46Z</created><keywords></keywords><modified>2016-01-19T19:47:46Z</modified><revision></revision><subject></subject><title></title><unit meter="0.025400" name="centimeter"></unit><up_axis>Y_UP</up_axis></asset>
+  <asset><contributor><author></author><authoring_tool>FBX COLLADA exporter</authoring_tool><comments></comments></contributor><created>2016-01-19T23:49:24Z</created><keywords></keywords><modified>2016-01-19T23:49:24Z</modified><revision></revision><subject></subject><title></title><unit meter="0.025400" name="centimeter"></unit><up_axis>Y_UP</up_axis></asset>
   <library_images>
     <image id="Map #0-image" name="Map #0"><init_from>file://N:\Users\Niko\Desktop\school\Computer Graphics\workspace\BlindEngine\Rubik\13_DIFFUSE.jpg</init_from></image>
+    <image id="Map #3-image" name="Map #3"><init_from>file://N:\Users\Niko\Desktop\school\Computer Graphics\workspace\BlindEngine\Rubik\lava.jpg</init_from></image>
   </library_images>
   <library_materials>
     <material id="Material #25" name="Material #25">
@@ -28,6 +29,9 @@
     </material>
     <material id="_01 - Default" name="_01 - Default">
       <instance_effect url="#_01 - Default-fx"/>
+    </material>
+    <material id="_02 - Default" name="_02 - Default">
+      <instance_effect url="#_02 - Default-fx"/>
     </material>
   </library_materials>
   <library_effects>
@@ -314,6 +318,49 @@
             </transparent>
             <transparency>
               <float sid="transparency">0.600000</float>
+            </transparency>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="_02 - Default-fx" name="_02 - Default">
+      <profile_COMMON>
+        <technique sid="standard">
+          <phong>
+            <emission>
+              <color sid="emission">0.000000  0.000000 0.000000 1.000000</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0.588235  0.588235 0.588235 1.000000</color>
+            </ambient>
+            <diffuse>
+              <texture texture="Map #3-image" texcoord="CHANNEL0">
+                <extra>
+                  <technique profile="MAYA">
+                    <wrapU sid="wrapU0">TRUE</wrapU>
+                    <wrapV sid="wrapV0">TRUE</wrapV>
+                    <blend_mode>ADD</blend_mode>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.000000  0.000000 0.000000 1.000000</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">2.000000</float>
+            </shininess>
+            <reflective>
+              <color sid="reflective">0.000000  0.000000 0.000000 1.000000</color>
+            </reflective>
+            <reflectivity>
+              <float sid="reflectivity">1.000000</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color sid="transparent">1.000000  1.000000 1.000000 1.000000</color>
+            </transparent>
+            <transparency>
+              <float sid="transparency">0.000000</float>
             </transparency>
           </phong>
         </technique>
@@ -20713,46 +20760,347 @@
         <triangles count="32" material="_01 - Default"><input semantic="VERTEX" offset="0" source="#Plane001-VERTEX"/><input semantic="NORMAL" offset="1" source="#Plane001-Normal0"/><input semantic="TEXCOORD" offset="2" set="0" source="#Plane001-UV0"/><p> 5 0 15 0 1 10 6 2 16 1 3 11 6 4 16 0 5 10 6 6 16 1 7 11 7 8 17 2 9 12 7 10 17 1 11 11 7 12 17 2 13 12 8 14 18 3 15 13 8 16 18 2 17 12 8 18 18 3 19 13 9 20 19 4 21 14 9 22 19 3 23 13 10 24 20 5 25 15 11 26 21 6 27 16 11 28 21 5 29 15 11 30 21 6 31 16 12 32 22 7 33 17 12 34 22 6 35 16 12 36 22 7 37 17 13 38 23 8 39 18 13 40 23 7 41 17 13 42 23 8 43 18 14 44 24 9 45 19 14 46 24 8 47 18 15 48 25 10 49 20 16 50 26 11 51 21 16 52 26 10 53 20 16 54 26 11 55 21 17 56 27 12 57 22 17 58 27 11 59 21 17 60 27 12 61 22 18 62 28 13 63 23 18 64 28 12 65 22 18 66 28 13 67 23 19 68 29 14 69 24 19 70 29 13 71 23 20 72 30 15 73 25 21 74 31 16 75 26 21 76 31 15 77 25 21 78 31 16 79 26 22 80 32 17 81 27 22 82 32 16 83 26 22 84 32 17 85 27 23 86 33 18 87 28 23 88 33 17 89 27 23 90 33 18 91 28 24 92 34 19 93 29 24 94 34 18 95 28</p></triangles>
       </mesh>
     </geometry>
-    <geometry id="Plane002-lib" name="Plane002Mesh">
+    <geometry id="Cylinder001-lib" name="Cylinder001Mesh">
       <mesh>
-        <source id="Plane002-POSITION">
-          <float_array id="Plane002-POSITION-array" count="75">
--12.300720 -3.080383 0.000000
--6.150360 -3.080383 0.000000
-0.000000 -3.080383 0.000000
-6.150360 -3.080383 0.000000
-12.300720 -3.080383 0.000000
--12.300720 -1.540192 0.000000
--6.150360 -1.540192 0.000000
-0.000000 -1.540192 0.000000
-6.150360 -1.540192 0.000000
-12.300720 -1.540192 0.000000
--12.300720 0.000000 0.000000
--6.150360 0.000000 0.000000
+        <source id="Cylinder001-POSITION">
+          <float_array id="Cylinder001-POSITION-array" count="186">
+289.301666 0.000000 0.000000
+234.049973 170.047256 0.000000
+89.399124 275.142242 0.000000
+-89.399139 275.142212 0.000000
+-234.049988 170.047226 0.000000
+-289.301666 -0.000025 0.000000
+-234.049942 -170.047287 0.000000
+-89.399162 -275.142212 0.000000
+89.399170 -275.142212 0.000000
+234.050034 -170.047165 0.000000
+289.301666 0.000000 13.666519
+234.049973 170.047256 13.666519
+89.399124 275.142242 13.666519
+-89.399139 275.142212 13.666519
+-234.049988 170.047226 13.666519
+-289.301666 -0.000025 13.666519
+-234.049942 -170.047287 13.666519
+-89.399162 -275.142212 13.666519
+89.399170 -275.142212 13.666519
+234.050034 -170.047165 13.666519
+192.867783 0.000000 0.000000
+156.033310 113.364838 0.000000
+59.599419 183.428162 0.000000
+-59.599430 183.428162 0.000000
+-156.033325 113.364822 0.000000
+-192.867783 -0.000017 0.000000
+-156.033310 -113.364861 0.000000
+-59.599442 -183.428162 0.000000
+59.599445 -183.428162 0.000000
+156.033356 -113.364777 0.000000
+96.433891 0.000000 0.000000
+78.016655 56.682419 0.000000
+29.799709 91.714081 0.000000
+-29.799715 91.714081 0.000000
+-78.016663 56.682411 0.000000
+-96.433891 -0.000008 0.000000
+-78.016655 -56.682430 0.000000
+-29.799721 -91.714081 0.000000
+29.799723 -91.714081 0.000000
+78.016678 -56.682388 0.000000
 0.000000 0.000000 0.000000
-6.150360 0.000000 0.000000
-12.300720 0.000000 0.000000
--12.300720 1.540192 0.000000
--6.150360 1.540192 0.000000
-0.000000 1.540192 0.000000
-6.150360 1.540192 0.000000
-12.300720 1.540192 0.000000
--12.300720 3.080383 0.000000
--6.150360 3.080383 0.000000
-0.000000 3.080383 0.000000
-6.150360 3.080383 0.000000
-12.300720 3.080383 0.000000
+192.867783 0.000000 13.666519
+156.033310 113.364838 13.666519
+59.599419 183.428162 13.666519
+-59.599430 183.428162 13.666519
+-156.033325 113.364822 13.666519
+-192.867783 -0.000017 13.666519
+-156.033310 -113.364861 13.666519
+-59.599442 -183.428162 13.666519
+59.599445 -183.428162 13.666519
+156.033356 -113.364777 13.666519
+96.433891 0.000000 13.666519
+78.016655 56.682419 13.666519
+29.799709 91.714081 13.666519
+-29.799715 91.714081 13.666519
+-78.016663 56.682411 13.666519
+-96.433891 -0.000008 13.666519
+-78.016655 -56.682430 13.666519
+-29.799721 -91.714081 13.666519
+29.799723 -91.714081 13.666519
+78.016678 -56.682388 13.666519
+0.000000 0.000000 13.666519
 </float_array>
           <technique_common>
-            <accessor source="#Plane002-POSITION-array" count="25" stride="3">
+            <accessor source="#Cylinder001-POSITION-array" count="62" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <source id="Plane002-Normal0">
-          <float_array id="Plane002-Normal0-array" count="288">
+        <source id="Cylinder001-Normal0">
+          <float_array id="Cylinder001-Normal0-array" count="1080">
+0.809017 0.587785 0.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+0.809017 0.587785 0.000000
+1.000000 0.000000 0.000000
+0.809017 0.587785 0.000000
+0.309017 0.951056 0.000000
+0.809017 0.587785 0.000000
+0.809017 0.587785 0.000000
+0.309017 0.951056 0.000000
+0.809017 0.587785 0.000000
+0.309017 0.951056 0.000000
+-0.309017 0.951056 0.000000
+0.309017 0.951056 0.000000
+0.309017 0.951056 0.000000
+-0.309017 0.951056 0.000000
+0.309017 0.951056 0.000000
+-0.309017 0.951056 0.000000
+-0.809017 0.587785 0.000000
+-0.309017 0.951056 0.000000
+-0.309017 0.951056 0.000000
+-0.809017 0.587785 0.000000
+-0.309017 0.951056 0.000000
+-0.809017 0.587785 0.000000
+-1.000000 -0.000000 0.000000
+-0.809017 0.587785 0.000000
+-0.809017 0.587785 0.000000
+-1.000000 -0.000000 0.000000
+-0.809017 0.587785 0.000000
+-1.000000 -0.000000 0.000000
+-0.809017 -0.587785 0.000000
+-1.000000 -0.000000 0.000000
+-1.000000 -0.000000 0.000000
+-0.809017 -0.587785 0.000000
+-1.000000 -0.000000 0.000000
+-0.809017 -0.587785 0.000000
+-0.309017 -0.951056 0.000000
+-0.809017 -0.587785 0.000000
+-0.809017 -0.587785 0.000000
+-0.309017 -0.951056 0.000000
+-0.809017 -0.587785 0.000000
+-0.309017 -0.951056 0.000000
+0.309017 -0.951057 0.000000
+-0.309017 -0.951056 0.000000
+-0.309017 -0.951056 0.000000
+0.309017 -0.951057 0.000000
+-0.309017 -0.951056 0.000000
+0.309017 -0.951057 0.000000
+0.809017 -0.587785 0.000000
+0.309017 -0.951057 0.000000
+0.309017 -0.951057 0.000000
+0.809017 -0.587785 0.000000
+0.309017 -0.951057 0.000000
+0.809017 -0.587785 0.000000
+1.000000 0.000000 0.000000
+0.809017 -0.587785 0.000000
+0.809017 -0.587785 0.000000
+1.000000 0.000000 0.000000
+0.809017 -0.587785 0.000000
+1.000000 0.000000 0.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
 0.000000 0.000000 1.000000
 0.000000 0.000000 1.000000
 0.000000 0.000000 1.000000
@@ -20851,67 +21199,136 @@
 0.000000 0.000000 1.000000
 </float_array>
           <technique_common>
-            <accessor source="#Plane002-Normal0-array" count="96" stride="3">
+            <accessor source="#Cylinder001-Normal0-array" count="360" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <source id="Plane002-UV0">
-          <float_array id="Plane002-UV0-array" count="70">
-0.000000 0.000000
-0.250000 0.000000
-0.500000 0.000000
+        <source id="Cylinder001-UV0">
+          <float_array id="Cylinder001-UV0-array" count="208">
 0.750000 0.000000
-1.000000 0.000000
-0.000000 0.000000
+0.850000 0.000000
+0.950000 0.000000
+0.050000 0.000000
+0.150000 0.000000
 0.250000 0.000000
-0.500000 0.000000
-0.750000 0.000000
-1.000000 0.000000
-0.000000 0.000000
-0.250000 0.000000
-0.500000 0.000000
-0.750000 0.000000
-1.000000 0.000000
-0.000000 0.250000
-0.250000 0.250000
-0.500000 0.250000
-0.750000 0.250000
-1.000000 0.250000
-0.000000 0.500000
-0.250000 0.500000
-0.500000 0.500000
-0.750000 0.500000
-1.000000 0.500000
-0.000000 0.750000
-0.250000 0.750000
-0.500000 0.750000
-0.750000 0.750000
-1.000000 0.750000
-0.000000 1.000000
-0.250000 1.000000
-0.500000 1.000000
+0.350000 0.000000
+0.450000 0.000000
+0.550000 0.000000
+0.650000 0.000000
 0.750000 1.000000
-1.000000 1.000000
+0.850000 1.000000
+0.950000 1.000000
+0.050000 1.000000
+0.150000 1.000000
+0.250000 1.000000
+0.350000 1.000000
+0.450000 1.000000
+0.550000 1.000000
+0.650000 1.000000
+0.500000 0.833333
+0.304072 0.769672
+0.182981 0.603006
+0.182981 0.396994
+0.304072 0.230328
+0.500000 0.166667
+0.695928 0.230328
+0.817019 0.396994
+0.817019 0.603006
+0.695928 0.769672
+0.500000 0.666667
+0.402036 0.634836
+0.341491 0.551503
+0.341491 0.448497
+0.402036 0.365164
+0.500000 0.333333
+0.597964 0.365164
+0.658509 0.448497
+0.658509 0.551503
+0.597964 0.634836
+0.500000 0.500000
+0.500000 0.833333
+0.304072 0.769672
+0.182981 0.603006
+0.182981 0.396994
+0.304072 0.230328
+0.500000 0.166667
+0.695928 0.230328
+0.817019 0.396994
+0.817019 0.603006
+0.695928 0.769672
+0.500000 0.666667
+0.402036 0.634836
+0.341491 0.551503
+0.341491 0.448497
+0.402036 0.365164
+0.500000 0.333333
+0.597964 0.365164
+0.658509 0.448497
+0.658509 0.551503
+0.597964 0.634836
+0.500000 0.500000
+1.050000 0.000000
+1.050000 1.000000
+0.206107 0.904508
+0.500000 1.000000
+0.024472 0.654508
+0.206107 0.904508
+0.024472 0.345491
+0.024472 0.654508
+0.206107 0.095491
+0.024472 0.345491
+0.500000 0.000000
+0.206107 0.095491
+0.793893 0.095492
+0.500000 0.000000
+0.975528 0.345491
+0.793893 0.095492
+0.975528 0.654509
+0.975528 0.345491
+0.793892 0.904509
+0.975528 0.654509
+0.500000 1.000000
+0.793892 0.904509
+0.500000 1.000000
+0.206107 0.904508
+0.206107 0.904508
+0.024472 0.654508
+0.024472 0.654508
+0.024472 0.345491
+0.024472 0.345491
+0.206107 0.095491
+0.206107 0.095491
+0.500000 0.000000
+0.500000 0.000000
+0.793893 0.095492
+0.793893 0.095492
+0.975528 0.345491
+0.975528 0.345491
+0.975528 0.654509
+0.975528 0.654509
+0.793892 0.904509
+0.793892 0.904509
+0.500000 1.000000
 </float_array>
           <technique_common>
-            <accessor source="#Plane002-UV0-array" count="35" stride="2">
+            <accessor source="#Cylinder001-UV0-array" count="104" stride="2">
               <param name="S" type="float"/>
               <param name="T" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <vertices id="Plane002-VERTEX">
-          <input semantic="POSITION" source="#Plane002-POSITION"/>
+        <vertices id="Cylinder001-VERTEX">
+          <input semantic="POSITION" source="#Cylinder001-POSITION"/>
         </vertices>
-        <triangles count="32"><input semantic="VERTEX" offset="0" source="#Plane002-VERTEX"/><input semantic="NORMAL" offset="1" source="#Plane002-Normal0"/><input semantic="TEXCOORD" offset="2" set="0" source="#Plane002-UV0"/><p> 5 0 15 0 1 10 6 2 16 1 3 11 6 4 16 0 5 10 6 6 16 1 7 11 7 8 17 2 9 12 7 10 17 1 11 11 7 12 17 2 13 12 8 14 18 3 15 13 8 16 18 2 17 12 8 18 18 3 19 13 9 20 19 4 21 14 9 22 19 3 23 13 10 24 20 5 25 15 11 26 21 6 27 16 11 28 21 5 29 15 11 30 21 6 31 16 12 32 22 7 33 17 12 34 22 6 35 16 12 36 22 7 37 17 13 38 23 8 39 18 13 40 23 7 41 17 13 42 23 8 43 18 14 44 24 9 45 19 14 46 24 8 47 18 15 48 25 10 49 20 16 50 26 11 51 21 16 52 26 10 53 20 16 54 26 11 55 21 17 56 27 12 57 22 17 58 27 11 59 21 17 60 27 12 61 22 18 62 28 13 63 23 18 64 28 12 65 22 18 66 28 13 67 23 19 68 29 14 69 24 19 70 29 13 71 23 20 72 30 15 73 25 21 74 31 16 75 26 21 76 31 15 77 25 21 78 31 16 79 26 22 80 32 17 81 27 22 82 32 16 83 26 22 84 32 17 85 27 23 86 33 18 87 28 23 88 33 17 89 27 23 90 33 18 91 28 24 92 34 19 93 29 24 94 34 18 95 28</p></triangles>
+        <triangles count="120" material="_02 - Default"><input semantic="VERTEX" offset="0" source="#Cylinder001-VERTEX"/><input semantic="NORMAL" offset="1" source="#Cylinder001-Normal0"/><input semantic="TEXCOORD" offset="2" set="0" source="#Cylinder001-UV0"/><p> 11 0 11 10 1 10 0 2 0 11 3 11 0 4 0 1 5 1 12 6 12 11 7 11 1 8 1 12 9 12 1 10 1 2 11 2 13 12 63 12 13 12 2 14 2 13 15 63 2 16 2 3 17 62 14 18 14 13 19 13 3 20 3 14 21 14 3 22 3 4 23 4 15 24 15 14 25 14 4 26 4 15 27 15 4 28 4 5 29 5 16 30 16 15 31 15 5 32 5 16 33 16 5 34 5 6 35 6 17 36 17 16 37 16 6 38 6 17 39 17 6 40 6 7 41 7 18 42 18 17 43 17 7 44 7 18 45 18 7 46 7 8 47 8 19 48 19 18 49 18 8 50 8 19 51 19 8 52 8 9 53 9 10 54 10 19 55 19 9 56 9 10 57 10 9 58 9 0 59 0 20 60 20 1 61 64 0 62 65 1 63 64 20 64 20 21 65 21 22 66 22 2 67 66 21 68 21 2 69 66 1 70 67 21 71 21 3 72 68 2 73 69 22 74 22 3 75 68 22 76 22 23 77 23 3 78 71 24 79 24 4 80 70 24 81 24 3 82 71 23 83 23 4 84 73 25 85 25 5 86 72 25 87 25 4 88 73 24 89 24 26 90 26 5 91 75 25 92 25 5 93 75 26 94 26 6 95 74 7 96 76 26 97 26 27 98 27 26 99 26 7 100 76 6 101 77 7 102 79 28 103 28 8 104 78 28 105 28 7 106 79 27 107 27 29 108 29 8 109 81 28 110 28 8 111 81 29 112 29 9 113 80 0 114 82 29 115 29 20 116 20 29 117 29 0 118 82 9 119 83 30 120 30 21 121 21 20 122 20 21 123 21 30 124 30 31 125 31 32 126 32 21 127 21 31 128 31 21 129 21 32 130 32 22 131 22 22 132 22 33 133 33 23 134 23 33 135 33 22 136 22 32 137 32 33 138 33 24 139 24 23 140 23 24 141 24 33 142 33 34 143 34 24 144 24 35 145 35 25 146 25 35 147 35 24 148 24 34 149 34 36 150 36 25 151 25 35 152 35 25 153 25 36 154 36 26 155 26 27 156 27 36 157 36 37 158 37 36 159 36 27 160 27 26 161 26 27 162 27 38 163 38 28 164 28 38 165 38 27 166 27 37 167 37 39 168 39 29 169 29 38 170 38 29 171 29 28 172 28 38 173 38 30 174 30 29 175 29 39 176 39 29 177 29 30 178 30 20 179 20 31 180 31 30 181 30 40 182 40 32 183 32 31 184 31 40 185 40 33 186 33 32 187 32 40 188 40 34 189 34 33 190 33 40 191 40 35 192 35 34 193 34 40 194 40 36 195 36 35 196 35 40 197 40 37 198 37 36 199 36 40 200 40 38 201 38 37 202 37 40 203 40 39 204 39 38 205 38 40 206 40 30 207 30 39 208 39 40 209 40 41 210 41 11 211 85 42 212 42 11 213 85 41 214 41 10 215 84 42 216 42 12 217 87 43 218 43 12 219 87 42 220 42 11 221 86 13 222 89 43 223 43 12 224 88 43 225 43 13 226 89 44 227 44 13 228 90 45 229 45 44 230 44 45 231 45 13 232 90 14 233 91 46 234 46 45 235 45 14 236 92 14 237 92 15 238 93 46 239 46 15 240 94 16 241 95 47 242 47 15 243 94 47 244 47 46 245 46 17 246 97 47 247 47 16 248 96 47 249 47 17 250 97 48 251 48 17 252 98 18 253 99 49 254 49 17 255 98 49 256 49 48 257 48 49 258 49 18 259 100 50 260 50 18 261 100 19 262 101 50 263 50 10 264 103 50 265 50 19 266 102 50 267 50 10 268 103 41 269 41 51 270 51 42 271 42 52 272 52 42 273 42 51 274 51 41 275 41 52 276 52 42 277 42 53 278 53 42 279 42 43 280 43 53 281 53 44 282 44 54 283 54 43 284 43 43 285 43 54 286 54 53 287 53 54 288 54 45 289 45 55 290 55 45 291 45 54 292 54 44 293 44 56 294 56 55 295 55 45 296 45 45 297 45 46 298 46 56 299 56 47 300 47 57 301 57 46 302 46 46 303 46 57 304 57 56 305 56 48 306 48 57 307 57 47 308 47 57 309 57 48 310 48 58 311 58 48 312 48 49 313 49 59 314 59 48 315 48 59 316 59 58 317 58 59 318 59 50 319 50 60 320 60 50 321 50 59 322 59 49 323 49 51 324 51 50 325 50 41 326 41 50 327 50 51 328 51 60 329 60 51 330 51 52 331 52 61 332 61 52 333 52 53 334 53 61 335 61 53 336 53 54 337 54 61 338 61 54 339 54 55 340 55 61 341 61 55 342 55 56 343 56 61 344 61 56 345 56 57 346 57 61 347 61 57 348 57 58 349 58 61 350 61 58 351 58 59 352 59 61 353 61 59 354 59 60 355 60 61 356 61 60 357 60 51 358 51 61 359 61</p></triangles>
       </mesh>
     </geometry>
   </library_geometries>
   <library_lights>
-    <light id="_ncl1_30" name="_ncl1_30">
+    <light id="_ncl1_29" name="_ncl1_29">
       <technique_common>
         <directional>
           <color sid="color">1.000000 1.000000 1.000000</color>
@@ -20921,7 +21338,7 @@
         <intensity sid="intensity">1.388690</intensity>
       </technique>
     </light>
-    <light id="_ncl1_31" name="_ncl1_31">
+    <light id="_ncl1_30" name="_ncl1_30">
       <technique_common>
         <directional>
           <color sid="color">1.000000 1.000000 1.000000</color>
@@ -20936,11 +21353,11 @@
     <visual_scene id="Rubik_Downloaded" name="Rubik_Downloaded">
       <node name="Rubik's Cu" id="Rubik's Cu" sid="Rubik's Cu"><matrix sid="matrix">1.000000 0.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 0.000000 -1.000000 0.000000 0.000000 0.000000 0.000000 0.000000 1.000000</matrix><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra><node name="Block46" id="Block46" sid="Block46"><matrix sid="matrix">1.000000 0.000000 0.000000 -35.559998 0.000000 1.000000 0.000000 35.560001 0.000000 0.000000 1.000000 -35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block46-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #30" target="#Material #30"/><instance_material symbol="Material #29" target="#Material #29"/><instance_material symbol="Material #31" target="#Material #31"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block47" id="Block47" sid="Block47"><matrix sid="matrix">1.000000 0.000000 0.000000 -35.559998 0.000000 1.000000 0.000000 -35.559998 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block47-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #30" target="#Material #30"/><instance_material symbol="Material #27" target="#Material #27"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block48" id="Block48" sid="Block48"><matrix sid="matrix">1.000000 0.000000 0.000000 -35.559998 0.000000 1.000000 0.000000 0.000003 0.000000 0.000000 1.000000 -35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block48-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #30" target="#Material #30"/><instance_material symbol="Material #31" target="#Material #31"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block49" id="Block49" sid="Block49"><matrix sid="matrix">1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 -35.559998 0.000000 0.000000 1.000000 -35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block49-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #27" target="#Material #27"/><instance_material symbol="Material #31" target="#Material #31"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block50" id="Block50" sid="Block50"><matrix sid="matrix">1.000000 0.000000 0.000000 35.559998 0.000000 1.000000 0.000000 -35.559998 0.000000 0.000000 1.000000 -35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block50-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #27" target="#Material #27"/><instance_material symbol="Material #28" target="#Material #28"/><instance_material symbol="Material #31" target="#Material #31"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block51" id="Block51" sid="Block51"><matrix sid="matrix">1.000000 0.000000 0.000000 35.559998 0.000000 1.000000 0.000000 0.000003 0.000000 0.000000 1.000000 -35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block51-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #28" target="#Material #28"/><instance_material symbol="Material #31" target="#Material #31"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block52" id="Block52" sid="Block52"><matrix sid="matrix">1.000000 0.000000 0.000000 35.559998 0.000000 1.000000 0.000000 35.560001 0.000000 0.000000 1.000000 -35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block52-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #28" target="#Material #28"/><instance_material symbol="Material #29" target="#Material #29"/><instance_material symbol="Material #31" target="#Material #31"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block53" id="Block53" sid="Block53"><matrix sid="matrix">1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 35.560001 0.000000 0.000000 1.000000 -35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block53-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #29" target="#Material #29"/><instance_material symbol="Material #31" target="#Material #31"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block54" id="Block54" sid="Block54"><matrix sid="matrix">1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 0.000003 0.000000 0.000000 1.000000 -35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block54-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #31" target="#Material #31"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block55" id="Block55" sid="Block55"><matrix sid="matrix">1.000000 0.000000 0.000000 35.559998 0.000000 1.000000 0.000000 0.000002 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block55-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #28" target="#Material #28"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block56" id="Block56" sid="Block56"><matrix sid="matrix">1.000000 0.000000 0.000000 -35.559998 0.000000 1.000000 0.000000 0.000002 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block56-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #30" target="#Material #30"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block57" id="Block57" sid="Block57"><matrix sid="matrix">1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 -35.559998 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block57-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #27" target="#Material #27"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block58" id="Block58" sid="Block58"><matrix sid="matrix">1.000000 0.000000 0.000000 35.559998 0.000000 1.000000 0.000000 -35.559998 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block58-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #27" target="#Material #27"/><instance_material symbol="Material #28" target="#Material #28"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block59" id="Block59" sid="Block59"><matrix sid="matrix">1.000000 0.000000 0.000000 -35.559998 0.000000 1.000000 0.000000 -35.559998 0.000000 0.000000 1.000000 -35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block59-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #30" target="#Material #30"/><instance_material symbol="Material #27" target="#Material #27"/><instance_material symbol="Material #31" target="#Material #31"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block60" id="Block60" sid="Block60"><matrix sid="matrix">1.000000 0.000000 0.000000 35.559998 0.000000 1.000000 0.000000 35.559998 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block60-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #28" target="#Material #28"/><instance_material symbol="Material #29" target="#Material #29"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block61" id="Block61" sid="Block61"><matrix sid="matrix">1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 35.559998 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block61-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #29" target="#Material #29"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block62" id="Block62" sid="Block62"><matrix sid="matrix">1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 0.000002 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block62-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block63" id="Block63" sid="Block63"><matrix sid="matrix">1.000000 0.000000 0.000000 -35.559998 0.000000 1.000000 0.000000 35.559998 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block63-lib"><bind_material><technique_common><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #30" target="#Material #30"/><instance_material symbol="Material #29" target="#Material #29"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block64" id="Block64" sid="Block64"><matrix sid="matrix">1.000000 0.000000 0.000000 35.559998 0.000000 1.000000 0.000000 -0.000002 0.000000 0.000000 1.000000 35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block64-lib"><bind_material><technique_common><instance_material symbol="Material #26" target="#Material #26"/><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #28" target="#Material #28"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block65" id="Block65" sid="Block65"><matrix sid="matrix">1.000000 0.000000 0.000000 -35.559998 0.000000 1.000000 0.000000 -0.000002 0.000000 0.000000 1.000000 35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block65-lib"><bind_material><technique_common><instance_material symbol="Material #26" target="#Material #26"/><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #30" target="#Material #30"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block66" id="Block66" sid="Block66"><matrix sid="matrix">1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 -35.560001 0.000000 0.000000 1.000000 35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block66-lib"><bind_material><technique_common><instance_material symbol="Material #26" target="#Material #26"/><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #27" target="#Material #27"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block67" id="Block67" sid="Block67"><matrix sid="matrix">1.000000 0.000000 0.000000 35.559998 0.000000 1.000000 0.000000 -35.560001 0.000000 0.000000 1.000000 35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block67-lib"><bind_material><technique_common><instance_material symbol="Material #26" target="#Material #26"/><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #27" target="#Material #27"/><instance_material symbol="Material #28" target="#Material #28"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block68" id="Block68" sid="Block68"><matrix sid="matrix">1.000000 0.000000 0.000000 -35.559998 0.000000 1.000000 0.000000 -35.560001 0.000000 0.000000 1.000000 35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block68-lib"><bind_material><technique_common><instance_material symbol="Material #26" target="#Material #26"/><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #30" target="#Material #30"/><instance_material symbol="Material #27" target="#Material #27"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block69" id="Block69" sid="Block69"><matrix sid="matrix">1.000000 0.000000 0.000000 35.559998 0.000000 1.000000 0.000000 35.559998 0.000000 0.000000 1.000000 35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block69-lib"><bind_material><technique_common><instance_material symbol="Material #26" target="#Material #26"/><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #28" target="#Material #28"/><instance_material symbol="Material #29" target="#Material #29"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block70" id="Block70" sid="Block70"><matrix sid="matrix">1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 35.559998 0.000000 0.000000 1.000000 35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block70-lib"><bind_material><technique_common><instance_material symbol="Material #26" target="#Material #26"/><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #29" target="#Material #29"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block71" id="Block71" sid="Block71"><matrix sid="matrix">1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 -0.000002 0.000000 0.000000 1.000000 35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block71-lib"><bind_material><technique_common><instance_material symbol="Material #26" target="#Material #26"/><instance_material symbol="Material #25" target="#Material #25"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="Block72" id="Block72" sid="Block72"><matrix sid="matrix">1.000000 0.000000 0.000000 -35.559998 0.000000 1.000000 0.000000 35.559998 0.000000 0.000000 1.000000 35.559998 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Block72-lib"><bind_material><technique_common><instance_material symbol="Material #26" target="#Material #26"/><instance_material symbol="Material #25" target="#Material #25"/><instance_material symbol="Material #30" target="#Material #30"/><instance_material symbol="Material #29" target="#Material #29"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node></node>
       <node name="Plane001" id="Plane001" sid="Plane001"><matrix sid="matrix">1.000000 0.000000 0.000000 1.219421 0.000000 1.000000 -0.000000 0.491261 0.000000 0.000000 1.000000 70.024521 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Plane001-lib"><bind_material><technique_common><instance_material symbol="_01 - Default" target="#_01 - Default"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node>
-      <node name="Plane002" id="Plane002" sid="Plane002"><matrix sid="matrix">1.000000 0.000000 0.000000 46.976196 0.000000 0.000000 1.000000 0.000000 0.000000 -1.000000 0.000000 -38.585144 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Plane002-lib"/><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node>
-      <node name="Direct001" id="Direct001" sid="Direct001"><matrix sid="matrix">0.712144 -0.254092 0.654437 177.965256 -0.000000 0.932203 0.361937 98.429001 -0.702033 -0.257751 0.663863 180.553299 0.000000 0.000000 0.000000 1.000000</matrix><instance_light url="#_ncl1_30"/><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique><technique profile="FBX"><target>#Direct001.Target</target></technique></extra></node>
+      <node name="Direct001" id="Direct001" sid="Direct001"><matrix sid="matrix">0.712144 -0.254092 0.654437 177.965256 -0.000000 0.932203 0.361937 98.429001 -0.702033 -0.257751 0.663863 180.553299 0.000000 0.000000 0.000000 1.000000</matrix><instance_light url="#_ncl1_29"/><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique><technique profile="FBX"><target>#Direct001.Target</target></technique></extra></node>
       <node name="Direct001.Target" id="Direct001.Target" sid="Direct001.Target"><matrix sid="matrix">1.000000 0.000000 0.000000 -0.009377 0.000000 0.000000 1.000000 0.000000 0.000000 -1.000000 0.000000 0.015457 0.000000 0.000000 0.000000 1.000000</matrix><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node>
-      <node name="Direct002" id="Direct002" sid="Direct002"><matrix sid="matrix">-0.697491 -0.264465 -0.666006 -209.267319 -0.000000 0.929406 -0.369059 -115.964294 0.716593 -0.257415 -0.648253 -203.686539 0.000000 0.000000 0.000000 1.000000</matrix><instance_light url="#_ncl1_31"/><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique><technique profile="FBX"><target>#Direct002.Target</target></technique></extra></node>
+      <node name="Direct002" id="Direct002" sid="Direct002"><matrix sid="matrix">-0.697491 -0.264465 -0.666006 -209.267319 -0.000000 0.929406 -0.369059 -115.964294 0.716593 -0.257415 -0.648253 -203.686539 0.000000 0.000000 0.000000 1.000000</matrix><instance_light url="#_ncl1_30"/><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique><technique profile="FBX"><target>#Direct002.Target</target></technique></extra></node>
       <node name="Direct002.Target" id="Direct002.Target" sid="Direct002.Target"><matrix sid="matrix">1.000000 0.000000 0.000000 0.002823 0.000000 0.000000 1.000000 0.000000 0.000000 -1.000000 0.000000 0.005157 0.000000 0.000000 0.000000 1.000000</matrix><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node>
+      <node name="Cylinder001" id="Cylinder001" sid="Cylinder001"><matrix sid="matrix">1.000000 0.000000 0.000000 0.000000 0.000000 0.000000 1.000000 -93.029984 0.000000 -1.000000 0.000000 0.000000 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#Cylinder001-lib"><bind_material><technique_common><instance_material symbol="_02 - Default" target="#_02 - Default"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node>
       <extra><technique profile="MAX3D"><frame_rate>30.000000</frame_rate></technique><technique profile="FCOLLADA"><start_time>0.000000</start_time><end_time>3.333333</end_time></technique></extra>
     </visual_scene>
   </library_visual_scenes>
