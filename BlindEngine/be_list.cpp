@@ -21,24 +21,30 @@ void LIB_API BElist::RenderAll()
 
 void LIB_API BElist::RenderMeshes()
 {
-	RenderReflectedMeshes();
-	//toggle stencil off
-	glDisable(GL_STENCIL_TEST);
-	RenderOpaqueMeshes();
-
-	//set buffer access to read only
-	glDepthMask(GL_FALSE);
-
 	SetupStencil();
 
+	// we need to render them first in order to prepare the stencil buffer
 	RenderTransparentMeshes();
 
+	// after this call, anything drawn outside the stencil buffer area is discarded
 	EnableStencilFiltering();
 
-	//glCullFace(GL_BACK);
-	
-	//restore buffer access to read/write
-	glDepthMask(GL_TRUE);
+	// Clear the transparent meshes from the buffer
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	// Rendering only reflected meshes
+	RenderReflectedMeshes();
+
+	// toggle stencil off
+	glDisable(GL_STENCIL_TEST);
+
+	// Rendering "normal" meshes
+	RenderOpaqueMeshes();
+
+	// Rendering transparents objects
+	RenderTransparentMeshes();
+
+	glCullFace(GL_BACK);
 }
 
 void LIB_API BElist::RenderLights()
@@ -151,6 +157,8 @@ LIB_API void BElist::DeepSort()
 
 void BElist::RenderOpaqueMeshes()
 {
+	// restore buffer access to read/write
+	glDepthMask(GL_TRUE);
 	for (auto m : meshes_v_)
 	{
 		if (m->mesh_->get_material() && !m->mesh_->get_material()->IsTransparent())
@@ -162,6 +170,8 @@ void BElist::RenderOpaqueMeshes()
 
 void BElist::RenderTransparentMeshes()
 {
+	//set buffer access to read only
+	glDepthMask(GL_FALSE);
 	for (auto m : meshes_v_)
 	{
 		if (m->mesh_->get_material() && m->mesh_->get_material()->IsTransparent())
@@ -172,12 +182,14 @@ void BElist::RenderTransparentMeshes()
 			m->mesh_->Render(m->world_coords_);
 		}
 	}
+	//restore buffer access to read/write
+	glDepthMask(GL_TRUE);
 }
 
 
 void BElist::RenderReflectedMeshes()
 {
-	glDepthMask(GL_TRUE);
+	glDepthMask(GL_TRUE); //make sure the buffer is accessible
 	glCullFace(GL_FRONT);
 	for (auto m : mirrored_v_)
 	{
@@ -195,13 +207,11 @@ void BElist::SetupStencil()
 	glClear(GL_STENCIL_BUFFER_BIT); // Clear stencil buffer (0 by default)
 }
 
-
 void BElist::EnableStencilFiltering()
 {
 	glStencilFunc(GL_EQUAL, 1, 0xFF); // Pass test if stencil value is 1
 	glStencilMask(0x00); // Don't write anything to stencil buffer
 	glDepthMask(GL_TRUE);
-	glCullFace(GL_FRONT);
 }
 
 /************************************************************************/

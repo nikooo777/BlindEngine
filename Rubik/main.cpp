@@ -170,8 +170,9 @@ int main(int argc, char *argv[])
 	/* Load scenes
 	/************************************************************************/
 	//BEnode* cube_root = engine->LoadScene("Rubik_No_Light.DAE");
-	//engine->LoadScene("Rubik_Downloaded.DAE");
-	engine->LoadScene("scene_final.DAE");
+	engine->LoadScene("no_grass.DAE");
+	//engine->LoadScene("scene_final.DAE");
+
 
 
 	/************************************************************************/
@@ -189,6 +190,9 @@ int main(int argc, char *argv[])
 		mesh->SetIsMirrored(true);
 	}
 	BEengine::GetInstance()->CalcTransformation();
+
+
+
 	
 
 	/************************************************************************/
