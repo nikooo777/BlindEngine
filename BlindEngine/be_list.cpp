@@ -22,7 +22,8 @@ void LIB_API BElist::RenderAll()
 void LIB_API BElist::RenderMeshes()
 {
 	RenderReflectedMeshes();
-
+	//toggle stencil off
+	glDisable(GL_STENCIL_TEST);
 	RenderOpaqueMeshes();
 
 	//set buffer access to read only
@@ -30,17 +31,11 @@ void LIB_API BElist::RenderMeshes()
 
 	SetupStencil();
 
-	// DeepSort(); Already in beengine --> CalcTransformation
-
 	RenderTransparentMeshes();
 
 	EnableStencilFiltering();
 
-
-	glCullFace(GL_BACK);
-
-	//toggle stencil off
-	glDisable(GL_STENCIL_TEST);
+	//glCullFace(GL_BACK);
 	
 	//restore buffer access to read/write
 	glDepthMask(GL_TRUE);
