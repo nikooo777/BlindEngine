@@ -15,6 +15,17 @@ public:
 	~BElist();
 	void RenderAll();
 	void RenderMeshes();
+
+	void RenderReflectedMeshes();
+
+	void EnableStencilFiltering();
+
+	void RenderTransparentMeshes();
+
+	void SetupStencil();
+
+	void RenderOpaqueMeshes();
+
 	void RenderLights();
 	void RenderCameras();
 	void RenderMirrored();

@@ -16,46 +16,35 @@ void LIB_API BElist::RenderAll()
 {
 	RenderLights();
 
-	/*RenderMirrored();*/
+	//RenderMirrored(); //non renderizzarle qui. il render delle mirrored viene chiamato dal render delle mesh
 	RenderMeshes();
 	RenderCameras();
 }
 
 void LIB_API BElist::RenderMeshes()
 {
-	for (auto m : meshes_v_)
-	{
-		if (m->mesh_->get_material() && !m->mesh_->get_material()->IsTransparent())
-		{
-			m->mesh_->Render(m->world_coords_);
-		}
-	}
+
+	RenderOpaqueMeshes();
+
+	//set buffer access to read only
 	glDepthMask(GL_FALSE);
-	//////////////////////////////////////////////////////////////////////////
-	//stencil buffer to limit the reflection
-	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_ALWAYS, 1, 0xFF); // Set any stencil to 1
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	glStencilMask(0xFF); // Write to stencil buffer
-	glClear(GL_STENCIL_BUFFER_BIT); // Clear stencil buffer (0 by default)
-	//////////////////////////////////////////////////////////////////////////
-	this->DeepSort();
-	for (auto m : meshes_v_)
-	{
-		if (m->mesh_->get_material() && m->mesh_->get_material()->IsTransparent())
-		{
-			glCullFace(GL_FRONT);
-			m->mesh_->Render(m->world_coords_);
-			glCullFace(GL_BACK);
-			m->mesh_->Render(m->world_coords_);
-		}
-	}
-	//////////////////////////////////////////////////////////////////////////
-	glStencilFunc(GL_EQUAL, 1, 0xFF); // Pass test if stencil value is 1
-	glStencilMask(0x00); // Don't write anything to stencil buffer
-	RenderMirrored();
+
+	SetupStencil();
+
+	DeepSort();
+
+	RenderTransparentMeshes();
+
+	EnableStencilFiltering();
+
+	RenderReflectedMeshes();
+
+	glCullFace(GL_BACK);
+
+	//toggle stencil off
 	glDisable(GL_STENCIL_TEST);
-	//////////////////////////////////////////////////////////////////////////
+	
+	//restore buffer access to read/write
 	glDepthMask(GL_TRUE);
 }
 
@@ -74,6 +63,7 @@ void LIB_API BElist::RenderCameras()
 	}
 }
 
+//in teoria questa funzione dovresti eliminarla completamente e ciò che hai qui dentro deve andare in RenderReflectedMeshes()
 LIB_API void BElist::RenderMirrored()
 {
 	glDepthMask(GL_TRUE);
@@ -106,7 +96,6 @@ void LIB_API BElist::AddMirrored(BEmesh*mesh)
 	Mesh* mesh_to_add = new Mesh;
 	mesh_to_add->mesh_ = mesh;
 	mesh_to_add->world_coords_ = glm::mat4(1);
-
 	mirrored_v_.push_back(mesh_to_add);
 }
 
@@ -176,6 +165,55 @@ LIB_API void BElist::DeepSort()
 	{
 		return a->world_coords_[3].z > b->world_coords_[3].z;
 	});
+}
+
+void BElist::RenderOpaqueMeshes()
+{
+	for (auto m : meshes_v_)
+	{
+		if (m->mesh_->get_material() && !m->mesh_->get_material()->IsTransparent())
+		{
+			m->mesh_->Render(m->world_coords_);
+		}
+	}
+}
+
+void BElist::RenderTransparentMeshes()
+{
+	for (auto m : meshes_v_)
+	{
+		if (m->mesh_->get_material() && m->mesh_->get_material()->IsTransparent())
+		{
+			glCullFace(GL_FRONT);
+			m->mesh_->Render(m->world_coords_);
+			glCullFace(GL_BACK);
+			m->mesh_->Render(m->world_coords_);
+		}
+	}
+}
+
+
+void BElist::RenderReflectedMeshes()
+{
+	//metti il tuo codice che chiama il render dalla lista che necessiti tu
+}
+
+void BElist::SetupStencil()
+{
+	glEnable(GL_STENCIL_TEST);
+	glStencilFunc(GL_ALWAYS, 1, 0xFF); // Set any stencil to 1
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glStencilMask(0xFF); // Write to stencil buffer
+	glClear(GL_STENCIL_BUFFER_BIT); // Clear stencil buffer (0 by default)
+}
+
+
+void BElist::EnableStencilFiltering()
+{
+	glStencilFunc(GL_EQUAL, 1, 0xFF); // Pass test if stencil value is 1
+	glStencilMask(0x00); // Don't write anything to stencil buffer
+	glDepthMask(GL_TRUE);
+	glCullFace(GL_FRONT);
 }
 
 /************************************************************************/
