@@ -22,15 +22,6 @@ BEmesh::BEmesh(std::string name, glm::vec3* vertices, long vertices_count, glm::
 		sub_meshes_ = nullptr;
 }
 
-//BEmesh::BEmesh(glm::vec3* vertices, long vertices_count, glm::vec3* normals, glm::vec2* texture_coords, BEmaterial* material) : BEnode()
-//{
-//	vertices_ = vertices;
-//	normals_ = normals;
-//	texture_coords_ = texture_coords;
-//	material_ = material;
-//	vertices_count_ = vertices_count;
-//}
-
 BEmesh::~BEmesh()
 {
 	delete[] vertices_;
@@ -39,17 +30,15 @@ BEmesh::~BEmesh()
 	delete[] material_;
 }
 
-
-void BEmesh::RenderSingle(glm::mat4 cumulated_transformation_matrix)
+void BEmesh::Render(glm::mat4 world_matrix)
 {
 	//std::cout << "Rendering Mesh: " << BEobject::get_name() << std::endl;
-	glLoadMatrixf(glm::value_ptr(cumulated_transformation_matrix));
+	glLoadMatrixf(glm::value_ptr(world_matrix));
 
 	if (material_)
 	{
-		material_->RenderSingle(cumulated_transformation_matrix);
+		material_->Render(world_matrix);
 	}
-
 
 	glBegin(GL_TRIANGLES);
 	for (unsigned int i = 0; i < vertices_count_; i++)
@@ -64,14 +53,14 @@ void BEmesh::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 	{
 		BEmesh* tmp_mesh = BEengine::lists_->GetMesh(sub_meshes_[i]);
 		if (tmp_mesh != this)
-			tmp_mesh->RenderSingle(cumulated_transformation_matrix);
+			tmp_mesh->Render(world_matrix);
 	}
 }
 
-void BEmesh::CalcTransformation(glm::mat4 cumulated_transformation_matrix)
+void BEmesh::CalcTransformation(glm::mat4 world_matrix)
 {
-	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
-	BEengine::lists_->UpdateMesh(this, tmpF);
+	glm::mat4 tmpF = world_matrix*transformation_;
+	BEengine::lists_->Pass(this, tmpF);
 
 	for (BEnode* n : BEnode::children_){
 		n->CalcTransformation(tmpF);

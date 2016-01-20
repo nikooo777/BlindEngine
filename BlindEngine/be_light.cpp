@@ -57,9 +57,9 @@ BElight* BElight::CreateSpotLight(const std::string name, glm::vec3 ambient, glm
 	return new BElight(SPOTLIGHT, name, glm::vec4(ambient, 1.0f), glm::vec4(diffuse, 1.0f), glm::vec4(specular, 1.0f), position, direction, cutoff);
 }
 
-void BElight::RenderSingle(glm::mat4 cumulated_transformation_matrix)
+void BElight::Render(glm::mat4 world_matrix)
 {
-	glLoadMatrixf(glm::value_ptr(cumulated_transformation_matrix));
+	glLoadMatrixf(glm::value_ptr(world_matrix));
 
 	//Common color property
 	glLightfv(light_number_, GL_AMBIENT, glm::value_ptr(ambient_));
@@ -85,12 +85,12 @@ void BElight::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 	}
 }
 
-void BElight::CalcTransformation(glm::mat4 cumulated_transformation_matrix)
+void BElight::CalcTransformation(glm::mat4 world_matrix)
 {
-	glm::mat4 tmpF = cumulated_transformation_matrix*transformation_;
-	BEengine::lists_->UpdateLight(this, tmpF);
+	glm::mat4 tmpF = world_matrix*transformation_;
+	BEengine::lists_->Pass(this, tmpF);
 
-	for(BEnode* n : BEnode::children_){
+	for (BEnode* n : BEnode::children_){
 		n->CalcTransformation(tmpF);
 	}
 }
@@ -163,7 +163,7 @@ BEnode* BElight::Find(std::string name)
 
 	//seek the node in the children
 	BEnode *found_node = nullptr;
-	for(BEnode* n : children_)
+	for (BEnode* n : children_)
 	{
 		if ((found_node = n->Find(name)) != nullptr)
 			return found_node;
@@ -182,7 +182,7 @@ BEnode* BElight::Find(long id)
 
 	//seek the node in the children
 	BEnode *found_node = nullptr;
-	for(BEnode* n : children_)
+	for (BEnode* n : children_)
 	{
 		if ((found_node = n->Find(id)) != nullptr)
 			return found_node;

@@ -19,13 +19,13 @@ BEmaterial::~BEmaterial()
 
 }
 
-void BEmaterial::RenderSingle(glm::mat4 f)
+void BEmaterial::Render(glm::mat4 f)
 {
 	if (texture_ != nullptr)
 	{
 		//std::cout << "A texture was found" << std::endl;
 		glEnable(GL_TEXTURE_2D);
-		texture_->RenderSingle(glm::mat4());
+		texture_->Render(glm::mat4());
 	}
 	else
 		glDisable(GL_TEXTURE_2D);

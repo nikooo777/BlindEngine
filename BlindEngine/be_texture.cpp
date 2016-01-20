@@ -13,12 +13,8 @@ BEtexture::~BEtexture()
 }
 
 
-void BEtexture::RenderSingle(glm::mat4 cumulated_transformation_matrix)
+void BEtexture::Render(glm::mat4 world_matrix)
 {
-	//WHY DID WE HAVE THIS LINE???
-	//glLoadMatrixf(glm::value_ptr(cumulated_transformation_matrix));
-
-
 	// Update texture content
 	glBindTexture(GL_TEXTURE_2D, texture_id_);
 	// Set circular coordinates:
@@ -42,7 +38,7 @@ void BEtexture::LoadTexture(std::string path, std::string name)
 	FIBITMAP *bitmap_image = FreeImage_Load(FreeImage_GetFileType(full_path.c_str(), 0), full_path.c_str());
 	if (!bitmap_image)
 	{
-		std::cout << "Failed to load texture: "  << full_path<< std::endl;
+		std::cout << "Failed to load texture: " << full_path << std::endl;
 	}
 
 	texture_image_ = FreeImage_ConvertTo32Bits(bitmap_image);

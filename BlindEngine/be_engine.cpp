@@ -22,13 +22,10 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 	{
 		///////////////////////////		
 	case DLL_PROCESS_ATTACH: //		                     
-
 		break;
-
 
 		///////////////////////////
 	case DLL_PROCESS_DETACH: //                 
-
 		break;
 	}
 
@@ -128,6 +125,7 @@ void displayCallback()
 
 	// Set model matrix as current OpenGL matrix:
 	glLoadMatrixf(glm::value_ptr(f));
+
 	BEnode::GetSuperRoot()->CalcTransformation(f);
 	BEengine::lists_->DeepSort();
 	BEengine::lists_->RenderAll();
@@ -314,7 +312,6 @@ int LIB_API BEengine::Start()
 		node_selected_ = std::string("none or default");
 
 		// Enter the main FreeGLUT processing loop:     
-
 		glutMainLoop();
 
 		//application exited

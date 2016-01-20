@@ -27,7 +27,10 @@ public:
 	void AddMesh(BEmesh*mesh);
 	void AddMesh(BEmesh*mesh, glm::mat4 f);
 	void AddMeshToMap(BEmesh*mesh);
-	void UpdateMesh(BEmesh*mesh, glm::mat4 f);
+
+	void PushMesh(BEmesh* mesh);
+
+	void Pass(BEmesh*mesh, glm::mat4 world_coords);
 	BEmesh* GetMesh(unsigned int index);
 	//glm::mat4 GetMeshTransformation(BEmesh* mesh){ return meshes_.at(mesh); }
 	BEmesh* GetMeshByName(std::string name);
@@ -36,12 +39,12 @@ public:
 	// Light
 	void AddLight(BElight* light);
 	void AddLight(BElight* light, glm::mat4 f);
-	void UpdateLight(BElight* light, glm::mat4 f);
+	void Pass(BElight* light, glm::mat4 world_coords);
 
 	// Camera
 	void AddCamera(BEcamera* camera);
 	void AddCamera(BEcamera* camera, glm::mat4 f);
-	void UpdateCamera(BEcamera* camera, glm::mat4 f);
+	void Pass(BEcamera* camera, glm::mat4 world_coords);
 	void DeepSort();
 private:
 	typedef struct Mesh

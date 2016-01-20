@@ -10,8 +10,8 @@ class LIB_API BEtexture : public BEobject
 public:
 	BEtexture(std::string name, std::string texture_path, std::string texture_name);
 	~BEtexture();
-	//void Render(glm::mat4 cumulated_transformation_matrix) override;
-	virtual void RenderSingle(glm::mat4 cumulated_transformation_matrix) override;
+	//void Render(glm::mat4 world_matrix) override;
+	virtual void Render(glm::mat4 world_matrix) override;
 
 	unsigned int texture_id_;
 	FIBITMAP * texture_image_;
