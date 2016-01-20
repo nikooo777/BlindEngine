@@ -21,10 +21,7 @@ void LIB_API BElist::RenderAll()
 
 void LIB_API BElist::RenderMeshes()
 {
-	RenderReflectedMeshes();
-
-	RenderOpaqueMeshes();
-
+	
 	//set buffer access to read only
 	glDepthMask(GL_FALSE);
 
@@ -36,14 +33,25 @@ void LIB_API BElist::RenderMeshes()
 
 	EnableStencilFiltering();
 
+	// Clear the transparent meshes from the buffer
+	glClear(GL_COLOR_BUFFER_BIT);
 
-	glCullFace(GL_BACK);
+	// Rendering only reflected meshes
+	RenderReflectedMeshes();
 
 	//toggle stencil off
 	glDisable(GL_STENCIL_TEST);
-	
+
+	// Rendering transparents objects
+	RenderTransparentMeshes();
+
 	//restore buffer access to read/write
 	glDepthMask(GL_TRUE);
+
+	// Rendering "normal" meshes
+	RenderOpaqueMeshes();
+
+	glCullFace(GL_BACK);
 }
 
 void LIB_API BElist::RenderLights()
