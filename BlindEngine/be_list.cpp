@@ -21,6 +21,7 @@ void LIB_API BElist::RenderAll()
 
 void LIB_API BElist::RenderMeshes()
 {
+	RenderReflectedMeshes();
 
 	RenderOpaqueMeshes();
 
@@ -29,13 +30,12 @@ void LIB_API BElist::RenderMeshes()
 
 	SetupStencil();
 
-	DeepSort();
+	// DeepSort(); Already in beengine --> CalcTransformation
 
 	RenderTransparentMeshes();
 
 	EnableStencilFiltering();
 
-	RenderReflectedMeshes();
 
 	glCullFace(GL_BACK);
 
