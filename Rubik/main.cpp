@@ -4,6 +4,48 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
+* This callback is invoked each time a special keyboard key is pressed.
+* @param key key pressed id
+* @param mouseX mouse X coordinate
+* @param mouseY mouse Y coordinate
+*/
+void specialCallback(int key, int mouseX, int mouseY)
+{
+	BEengine* engine = BEengine::GetInstance();
+	// Change box rotation:
+	const float speed = engine->GetDeltaPadding();
+	switch (key)
+	{
+	case GLUT_KEY_UP:
+		(*engine->get_angles()).x -= speed;
+		break;
+
+	case GLUT_KEY_DOWN:
+		(*engine->get_angles()).x += speed;
+		break;
+
+	case GLUT_KEY_LEFT:
+		(*engine->get_angles()).y -= speed;
+		break;
+
+	case GLUT_KEY_RIGHT:
+		(*engine->get_angles()).y += speed;
+		break;
+
+	case GLUT_KEY_PAGE_DOWN:
+		*engine->get_distance() += engine->GetDeltaZoom();
+		break;
+
+	case GLUT_KEY_PAGE_UP:
+		*engine->get_distance() -= engine->GetDeltaZoom();
+		break;
+	}
+
+	BEengine::GetInstance()->CalcTransformation();
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
 * This callback is invoked each time a standard keyboard key is pressed.
 * @param key key pressed id
 * @param mouseX mouse X coordinate
@@ -93,7 +135,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		break;
 	case '1':
 	{
-		BElight* light = (BElight*) BEnode::GetSuperRoot()->Find("Spot001");
+		BElight* light = (BElight*)BEnode::GetSuperRoot()->Find("Spot001");
 		if (light)
 			light->ToggleLight();
 	}
@@ -104,7 +146,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		if (light)
 			light->ToggleLight();
 	}
-	break;
+		break;
 	}
 	engine->set_node_selected(rubik_root_node->get_name());
 	BEengine::GetInstance()->CalcTransformation();
@@ -120,7 +162,8 @@ int main(int argc, char *argv[])
 	/************************************************************************/
 	engine->Init("BlindEngine - Rubik", 100, 100, 1024, 768, nullptr, argc, argv);
 	engine->SetDeltaPadding(5.f);
-	engine->SetKeyBoardCallBack(keyboardCallback);
+	engine->SetKeyboardCallBack(keyboardCallback);
+	engine->SetSpecialCallBack(specialCallback);
 
 
 	/************************************************************************/

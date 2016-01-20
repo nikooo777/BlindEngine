@@ -18,7 +18,6 @@ void Animation(int value)
 		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
 	else
 		delete animation_root;
-
 }
 //////////////////////////////////////////////////////////////////////////
 
