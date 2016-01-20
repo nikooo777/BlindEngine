@@ -11,13 +11,13 @@ unsigned int animation_count_left = 0;
 void Animation(int value)
 {
 	animation_root->UpdateTransformationRecursive(animation_transformation);
+	BEengine::GetInstance()->CalcTransformation();
 
 	animation_count_left--;
 	if (animation_count_left)
 		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
 	else
 		delete animation_root;
-
 }
 //////////////////////////////////////////////////////////////////////////
 

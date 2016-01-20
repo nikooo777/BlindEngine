@@ -1,7 +1,5 @@
 #include "be_list.h"
 
-
-
 BElist::BElist()
 {
 }
@@ -61,7 +59,6 @@ void LIB_API BElist::RenderCameras()
 	}
 }
 
-
 /************************************************************************/
 /* Mesh
 /************************************************************************/
@@ -116,7 +113,6 @@ LIB_API BEmesh* BElist::GetMeshByName(std::string name)
 		return nullptr;
 }
 
-
 LIB_API void BElist::DeepSort()
 {
 	std::sort(meshes_v_.begin(), meshes_v_.end(), [](Mesh* a, Mesh* b)
@@ -124,7 +120,6 @@ LIB_API void BElist::DeepSort()
 		return a->world_coords_[3].z > b->world_coords_[3].z;
 	});
 }
-
 
 /************************************************************************/
 /* Light
@@ -143,7 +138,6 @@ void LIB_API BElist::Pass(BElight* light, glm::mat4 world_coords)
 	lights_.find(light)->second = world_coords;
 }
 
-
 /************************************************************************/
 /* Camera
 /************************************************************************/
@@ -161,7 +155,6 @@ void LIB_API BElist::Pass(BEcamera* camera, glm::mat4 world_coords)
 {
 	cameras_.find(camera)->second = world_coords;
 }
-
 
 BEmesh* BElist::GetMesh(unsigned int index)
 {

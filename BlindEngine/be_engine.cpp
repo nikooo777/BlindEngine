@@ -1,13 +1,12 @@
 #include "be_engine.h"
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////
 // DLL MAIN //
 //////////////
-
 #ifdef WIN32
 #include <Windows.h>
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
 * DLL entry point. Avoid to rely on it for easier code portability (Linux doesn't use this method).
 * @param instDLL handle
@@ -20,49 +19,29 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 	// Check use:
 	switch (reason)
 	{
-		///////////////////////////		
-	case DLL_PROCESS_ATTACH: //		                     
+	case DLL_PROCESS_ATTACH:
 		break;
-
-		///////////////////////////
-	case DLL_PROCESS_DETACH: //                 
+	case DLL_PROCESS_DETACH:
 		break;
 	}
-
-	// Done:
 	return true;
 }
 #endif
-#include "be_node.h"
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////
 // GLOBALS //
 /////////////
-
 BEnode *root;
 
-// Rotation angles:
-float angleX = 15.0f, angleY = 0.0f;
-float distance = -15.0f;
-float globalX = .0f;
-float globalY = -3.0f;
-
-bool alreadyRendered = false;
-
-// Matrices:
-
 // Texture:
-unsigned char *bitmap = NULL;
-unsigned int texId = 0;
-float tiling = 1.0f;
-bool forceNewTexture = true;
+//unsigned char *bitmap = NULL;
+//unsigned int texId = 0;
+//float tiling = 1.0f;
+//bool forceNewTexture = true;
 
 // Auto/manual flag:
-bool automatic = false;
-
-// Frame counter:
-int frames = 0;
-float fps = 0.0f;
+//bool automatic = false;
 
 //these declarations are needed for the linker
 BEengine* BEengine::instance_ = nullptr;
@@ -84,23 +63,28 @@ LIB_API BEengine* BEengine::GetInstance()
 
 BEengine::BEengine()
 {
+	angles_ = new Angles{ 15.f, 0.f };
+	distance_ = -15.f;
 	lists_ = new BElist();
+	fps_ = 0;
+	frames_ = 0;
 }
 
 BEengine::~BEengine()
 {
 	delete instance_;
 	delete lists_;
+	delete angles_;
 }
 
 void LIB_API BEengine::CalcTransformation()
 {
 	// Set a matrix to move our triangle:
-	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(globalX, globalY, distance));
+	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.f, 0.f, distance_));
 
 	//the following 2 lines will be obsolete when the special callback and/or the camera will be removed
-	glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(angleX), glm::vec3(1.0f, 0.0f, 0.0f));
-	rotation = glm::rotate(rotation, glm::radians(angleY), glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(angles_->x), glm::vec3(1.0f, 0.0f, 0.0f));
+	rotation = glm::rotate(rotation, glm::radians(angles_->y), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	glm::mat4 f = translation *rotation;
 
@@ -140,16 +124,16 @@ void displayCallback()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(glm::value_ptr(glm::mat4(1.0)));
 
-	PrintTextInfo();
+	BEengine::GetInstance()->PrintTextInfo();
 
 	// Swap this context's buffer:
 	glutSwapBuffers();
 
+	// Inc. frames:
+	(*BEengine::GetInstance()->get_frames())++;
+
 	// Force rendering refresh:
 	glutPostWindowRedisplay(BEengine::GetInstance()->get_window_id());
-
-	// Inc. frames:
-	frames++;
 }
 
 
@@ -187,53 +171,16 @@ void BEengine::AddTimerCallBack(void(*timer_callback)(int value), int loop_time)
 }
 
 
-void BEengine::SetKeyBoardCallBack(void(*callback)(unsigned char key, int mouseX, int mouseY))
+void BEengine::SetKeyboardCallBack(void(*callback)(unsigned char key, int mouseX, int mouseY))
 {
 	keyboard_callback_ = callback;
 	glutKeyboardFunc(keyboard_callback_);
 }
 
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
-* This callback is invoked each time a special keyboard key is pressed.
-* @param key key pressed id
-* @param mouseX mouse X coordinate
-* @param mouseY mouse Y coordinate
-*/
-void specialCallback(int key, int mouseX, int mouseY)
+void BEengine::SetSpecialCallBack(void(*callback)(int key, int mouseX, int mouseY))
 {
-	// Change box rotation:
-	const float speed = BEengine::GetInstance()->GetDeltaPadding();
-	switch (key)
-	{
-	case GLUT_KEY_UP:
-		angleX -= speed;
-		break;
-
-	case GLUT_KEY_DOWN:
-		angleX += speed;
-		break;
-
-	case GLUT_KEY_LEFT:
-		angleY -= speed;
-		break;
-
-	case GLUT_KEY_RIGHT:
-		angleY += speed;
-		break;
-
-	case GLUT_KEY_PAGE_DOWN:
-		distance += BEengine::GetInstance()->GetDeltaZoom();
-		break;
-
-	case GLUT_KEY_PAGE_UP:
-		distance -= BEengine::GetInstance()->GetDeltaZoom();
-		break;
-	}
-
-	BEengine::GetInstance()->CalcTransformation();
+	special_callback_ = callback;
+	glutSpecialFunc(special_callback_);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -243,8 +190,8 @@ void specialCallback(int key, int mouseX, int mouseY)
 */
 void timerCallback(int value)
 {
-	fps = frames / 1.0f;
-	frames = 0;
+	(*BEengine::GetInstance()->get_fps()) = *BEengine::GetInstance()->get_frames() / 1.0f;
+	(*BEengine::GetInstance()->get_frames()) = 0;
 
 	// Register the next update:
 	glutTimerFunc(1000, timerCallback, 0);
@@ -273,14 +220,6 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 	// Set callback functions:
 	glutDisplayFunc(displayCallback);
 	glutReshapeFunc(reshapeCallback);
-
-	//THIS MUST BE MOVED AWAY FROM HERE 
-	//==============================================
-	//the contained line is under arrest!
-	//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-	glutSpecialFunc(specialCallback);
-	//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 	glutTimerFunc(1000, timerCallback, 0);
 
 	// Global OpenGL settings:
@@ -288,12 +227,11 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 	glClearColor(.0f, .0f, .0f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
-	//glEnable(GL_LIGHT0);
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_ALPHA_TEST);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	BEengine::initialized_ = true;
 }
@@ -382,39 +320,52 @@ void BEengine::set_node_selected(std::string name)
 	node_selected_ = name;
 }
 
-// Return the index of the light
-int AddLight(BElight *light){
-
-	return -1; //TODO
+//rendering distance pointer (modifiable)
+float * BEengine::get_distance()
+{
+	return &distance_;
 }
 
-// Return true on successful remove
-bool RemoveLight(int indexLight){
-
-	return false; //TODO
+//getter method for the angles used to render the scene
+//angles have x and y fields
+BEengine::Angles* BEengine::get_angles()
+{
+	return angles_;
 }
 
-void PrintTextInfo()
+//FPS count pointer (modifiable)
+float* BEengine::get_fps()
+{
+	return &fps_;
+}
+
+//frames count pointer (modifiable)
+int* BEengine::get_frames()
+{
+	return &frames_;
+}
+
+void BEengine::PrintTextInfo()
 {
 	// Disable lighting before rendering 2D text:
 	glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
 
 	float go_up = 10.0f;
-	float delta = 20.0f;
+	static float delta = 20.0f;
 
 	// Write some text:
 	char text[64];
 
-	snprintf(text, sizeof text, "FPS: %.1f", fps);
+	snprintf(text, sizeof text, "FPS: %.1f", fps_);
 	glRasterPos2f(1.0f, go_up);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
 
-	snprintf(text, sizeof text, "Selected: %s", BEengine::GetInstance()->get_node_selected().c_str());
+	snprintf(text, sizeof text, "Selected: %s", node_selected_.c_str());
 	glRasterPos2f(1.0f, go_up += delta);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
 
-	snprintf(text, sizeof text, "Speed Padding: %.2f", BEengine::GetInstance()->GetDeltaPadding());
+	snprintf(text, sizeof text, "Speed Padding: %.2f", delta_padding_);
 	glRasterPos2f(1.0f, go_up += delta);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
 

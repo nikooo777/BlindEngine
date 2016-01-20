@@ -9,6 +9,7 @@
 #include "be_light.h"
 #include "be_list.h"
 #include "be_scene_loader.h"
+#include "be_node.h"
 
 /*
 SINGLETON class
@@ -16,6 +17,10 @@ SINGLETON class
 class LIB_API BEengine
 {
 public:
+	typedef struct Angles{
+		float x;
+		float y;
+	}Angles;
 	static BEengine* GetInstance();
 	void Init(char* window_name, int x_position, int y_position, int width, int heigth, void(*keyCallback)(int, int, int), int argc, char *argv[]);
 	int Start();
@@ -34,11 +39,17 @@ public:
 	inline float GetDeltaPadding(){ return delta_padding_; }
 	inline void SetDeltaZoom(float delta_zoom){ delta_zoom_ = delta_zoom; }
 	void AddTimerCallBack(void(*timer_callback)(int value), int loop_time);
-	void SetKeyBoardCallBack(void(*callback)(unsigned char key, int mouseX, int mouseY));
+	void SetKeyboardCallBack(void(*callback)(unsigned char key, int mouseX, int mouseY));
+	void SetSpecialCallBack(void(*callback)(int key, int mouseX, int mouseY));
 	inline float GetDeltaZoom(){ return delta_zoom_; }
 	std::string get_node_selected();
 	void set_node_selected(std::string name);
 	static BElist* lists_;
+	float* get_fps();
+	float * get_distance();
+	int * get_frames();
+	Angles* get_angles();
+	void PrintTextInfo();
 private:
 	std::string node_selected_;
 	static BEengine* instance_;
@@ -46,9 +57,14 @@ private:
 	bool initialized_ = false;
 	float delta_padding_ = 1.f, delta_zoom_ = 1.f;
 	void(*keyboard_callback_)(unsigned char key, int mouseX, int mouseY);
+	void(*special_callback_)(int key, int mouseX, int mouseY);
 	// Matrices:
 	glm::mat4 perspective_;
 	glm::mat4 ortho_;
+	float distance_;
+	Angles* angles_;
+	int frames_;
+	float fps_;
 	BEengine();
 	~BEengine();
 };
