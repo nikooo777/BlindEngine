@@ -98,6 +98,13 @@ void BElight::Render(glm::mat4 cumulated_transformation_matrix)
 
 void BElight::RenderSingle(glm::mat4 cumulated_transformation_matrix)
 {
+	if (!is_active_)
+	{
+		glDisable(light_number_);
+		return;
+	}
+
+	glEnable(light_number_);
 	glLoadMatrixf(glm::value_ptr(cumulated_transformation_matrix));
 
 	//Common color property

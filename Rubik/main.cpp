@@ -91,6 +91,20 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	case 'n':
 		cube->RotateFace(Rubik::N_FACE, false);
 		break;
+	case '1':
+	{
+		BElight* light = (BElight*) BEnode::GetSuperRoot()->Find("Spot001");
+		if (light)
+			light->ToggleLight();
+	}
+		break;
+	case '2':
+	{
+		BElight* light = (BElight*)BEnode::GetSuperRoot()->Find("Spot002");
+		if (light)
+			light->ToggleLight();
+	}
+	break;
 	}
 	BEengine::GetInstance()->set_node_selected(rubik_root_node->get_name());
 }
@@ -112,14 +126,14 @@ int main(int argc, char *argv[])
 	/* Load scenes
 	/************************************************************************/
 	//BEnode* cube_root = engine->LoadScene("Rubik_No_Light.DAE");
-	engine->LoadScene("Rubik_Downloaded.DAE");
-	//engine->LoadScene("scene_texture.DAE");
+	//engine->LoadScene("Rubik_Downloaded.DAE");
+	engine->LoadScene("scene_final.DAE");
 
 
 	/************************************************************************/
 	/* Init Rubik's cube
 	/************************************************************************/
-	BEmaterial* plane = ((BEmesh*)BEnode::GetSuperRoot()->Find("Rubik_Downloaded")->Find("Plane001"))->get_material();
+	BEmaterial* plane = ((BEmesh*)BEnode::GetSuperRoot()->Find("MarmSurface"))->get_material();
 	plane->SetTransparency(0.6f);
 	//Rubik* rubik_cube = new Rubik(cube_root);
 

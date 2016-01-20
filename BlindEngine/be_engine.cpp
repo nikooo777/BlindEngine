@@ -45,10 +45,10 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 BEnode *root;
 
 // Rotation angles:
-float angleX = 0.0f, angleY = 0.0f;
-float distance = -10.0f;
+float angleX = 15.0f, angleY = 0.0f;
+float distance = -15.0f;
 float globalX = .0f;
-float globalY = .0f;
+float globalY = -3.0f;
 
 bool alreadyRendered = false;
 
@@ -282,7 +282,8 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 	glutTimerFunc(1000, timerCallback, 0);
 
 	// Global OpenGL settings:
-	glClearColor(1.0f, 0.6f, 0.1f, 1.0f);
+	//glClearColor(1.0f, 0.6f, 0.1f, 1.0f);
+	glClearColor(.0f, .0f, .0f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 	//glEnable(GL_LIGHT0);
@@ -395,6 +396,7 @@ void PrintTextInfo()
 {
 	// Disable lighting before rendering 2D text:
 	glDisable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
 
 	float go_up = 10.0f;
 	float delta = 20.0f;

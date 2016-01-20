@@ -34,6 +34,7 @@ private:
 	glm::vec4 ambient_, diffuse_, specular_, position_;
 	glm::vec3 direction_;
 	float cutoff_, angle_inner_cone_, angle_outer_cone_, attenuation_constant_, attenuation_linear_, attenuation_quadratic_;
+	bool is_active_ = true;
 public:
 	//factory methods used to create lights
 	static BElight* CreateOmnidirectionalLight(const std::string name, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position);
@@ -52,6 +53,8 @@ public:
 	void SetSpecular(glm::vec3);
 	void SetDirection(glm::vec3);
 	void SetPosition(glm::vec4);
+
+	void ToggleLight(){ is_active_ = !is_active_; }
 
 	//destructor
 	~BElight();

@@ -37,7 +37,7 @@ void BEmaterial::Render(glm::mat4 f)
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(ambient_));
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glm::value_ptr(diffuse_));
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, glm::value_ptr(specular_));
-	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, powf(2.0f, shininess_));
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininess_);
 
 }
 
@@ -56,7 +56,7 @@ void BEmaterial::RenderSingle(glm::mat4 f)
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(ambient_));
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glm::value_ptr(diffuse_));
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, glm::value_ptr(specular_));
-	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, powf(2.0f, shininess_));
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininess_);
 }
 
 bool BEmaterial::IsTransparent()

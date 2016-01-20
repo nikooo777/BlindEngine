@@ -31,7 +31,7 @@ void LIB_API BElist::RenderMeshes()
 	//glEnable(GL_DEPTH_TEST);
 	for (auto m : meshes_v_)
 	{
-		if (!m->mesh_->get_material()->IsTransparent())
+		if (m->mesh_->get_material() && !m->mesh_->get_material()->IsTransparent())
 		{
 			m->mesh_->RenderSingle(m->world_coords_);
 		}
@@ -40,7 +40,7 @@ void LIB_API BElist::RenderMeshes()
 	this->DeepSort();
 	for (auto m : meshes_v_)
 	{
-		if (m->mesh_->get_material()->IsTransparent())
+		if (m->mesh_->get_material() && m->mesh_->get_material()->IsTransparent())
 		{
 			glCullFace(GL_FRONT);
 			m->mesh_->RenderSingle(m->world_coords_);
@@ -96,14 +96,12 @@ void LIB_API BElist::AddMeshToMap(BEmesh* mesh)
 		mesh_to_add->mesh_ = mesh;
 		mesh_to_add->world_coords_ = glm::mat4();
 		meshes_v_.push_back(mesh_to_add);
-		std::cout << "adding mesh to list" << std::endl;
 		return;
 	}
 	for (auto m : meshes_v_)
 	{
 		if (m->mesh_ == mesh)
 		{
-			std::cout << "adding mesh to list" << std::endl;
 			break;
 		}
 		else if (m == *(meshes_v_.end()-1))
@@ -112,7 +110,6 @@ void LIB_API BElist::AddMeshToMap(BEmesh* mesh)
 			mesh_to_add->mesh_ = mesh;
 			mesh_to_add->world_coords_ = glm::mat4();
 			meshes_v_.push_back(mesh_to_add);
-			std::cout << "adding mesh to list" << std::endl;
 			break;
 		}
 	}
