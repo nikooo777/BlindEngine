@@ -147,9 +147,29 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 			light->ToggleLight();
 	}
 		break;
+	case '3':
+	{
+		BElight* light = (BElight*)BEnode::GetSuperRoot()->Find("Omni001");
+		if (light)
+			light->SetDiffuse(glm::vec3(0.2f,0.2f,0.2f));
+	}
+	break;
+	case '4':
+	{
+		BElight* light = (BElight*)BEnode::GetSuperRoot()->Find("Omni001");
+		if (light)
+			light->SetDiffuse(glm::vec3(.9f, .9f, .9f));
+	}
+	break;
 	}
 	engine->set_node_selected(rubik_root_node->get_name());
 	BEengine::GetInstance()->CalcTransformation();
+}
+
+void addMeshToList(BEmesh*mesh)
+{
+	BEengine::GetInstance()->lists_->AddMirrored(mesh);
+	mesh->SetIsMirrored(true);
 }
 
 int main(int argc, char *argv[])
@@ -170,8 +190,8 @@ int main(int argc, char *argv[])
 	/* Load scenes
 	/************************************************************************/
 	//BEnode* cube_root = engine->LoadScene("Rubik_No_Light.DAE");
-	engine->LoadScene("no_grass.DAE");
-	//engine->LoadScene("scene_final.DAE");
+	//engine->LoadScene("no_grass.DAE");
+	engine->LoadScene("scene_final.DAE");
 
 
 
@@ -185,14 +205,20 @@ int main(int argc, char *argv[])
 
 	for (BEnode* child : tmp_rubik->GetChildren())
 	{
-		BEmesh*mesh = (BEmesh*)child;
-		BEengine::GetInstance()->lists_->AddMirrored(mesh);
-		mesh->SetIsMirrored(true);
+		addMeshToList((BEmesh*)child);
 	}
-	BEengine::GetInstance()->CalcTransformation();
 
 
-
+	// Lamp001
+	addMeshToList((BEmesh*)BEnode::GetSuperRoot()->Find("Cylinder001"));
+	addMeshToList((BEmesh*)BEnode::GetSuperRoot()->Find("C_clamp405"));
+	addMeshToList((BEmesh*)BEnode::GetSuperRoot()->Find("C_lamp_white"));
+	addMeshToList((BEmesh*)BEnode::GetSuperRoot()->Find("Sphere001"));
+	// Lamp002
+	addMeshToList((BEmesh*)BEnode::GetSuperRoot()->Find("Cylinder002"));
+	addMeshToList((BEmesh*)BEnode::GetSuperRoot()->Find("C_clamp406"));
+	addMeshToList((BEmesh*)BEnode::GetSuperRoot()->Find("C_Clamp"));
+	addMeshToList((BEmesh*)BEnode::GetSuperRoot()->Find("Sphere002"));
 	
 
 	/************************************************************************/

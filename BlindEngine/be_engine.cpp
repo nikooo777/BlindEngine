@@ -253,6 +253,7 @@ int LIB_API BEengine::Start()
 	if (BEengine::initialized_)
 	{
 		node_selected_ = std::string("none or default");
+		BEengine::GetInstance()->CalcTransformation();
 
 		// Enter the main FreeGLUT processing loop:     
 		glutMainLoop();
