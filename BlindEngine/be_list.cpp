@@ -15,8 +15,6 @@ BElist::~BElist()
 void LIB_API BElist::RenderAll()
 {
 	RenderLights();
-
-	//RenderMirrored(); //non renderizzarle qui. il render delle mirrored viene chiamato dal render delle mesh
 	RenderMeshes();
 	RenderCameras();
 }
@@ -63,17 +61,6 @@ void LIB_API BElist::RenderCameras()
 	}
 }
 
-//in teoria questa funzione dovresti eliminarla completamente e ciò che hai qui dentro deve andare in RenderReflectedMeshes()
-LIB_API void BElist::RenderMirrored()
-{
-	glDepthMask(GL_TRUE);
-	glCullFace(GL_FRONT);
-	for (auto m : mirrored_v_)
-	{
-		m->mesh_->Render(m->world_coords_);
-	}
-	glCullFace(GL_BACK);
-}
 
 /************************************************************************/
 // Mirrored
@@ -195,7 +182,13 @@ void BElist::RenderTransparentMeshes()
 
 void BElist::RenderReflectedMeshes()
 {
-	//metti il tuo codice che chiama il render dalla lista che necessiti tu
+	glDepthMask(GL_TRUE);
+	glCullFace(GL_FRONT);
+	for (auto m : mirrored_v_)
+	{
+		m->mesh_->Render(m->world_coords_);
+	}
+	glCullFace(GL_BACK);
 }
 
 void BElist::SetupStencil()
