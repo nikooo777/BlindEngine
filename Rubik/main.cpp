@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
 	/************************************************************************/
 	/* Init + Preferences
 	/************************************************************************/
-	engine->Init("BlindEngine - Rubik", 100, 100, 800, 600, nullptr, argc, argv);
+	engine->Init("BlindEngine - Rubik", 100, 100, 1024, 768, nullptr, argc, argv);
 	engine->SetDeltaPadding(5.f);
 	engine->SetKeyBoardCallBack(keyboardCallback);
 
@@ -136,15 +136,17 @@ int main(int argc, char *argv[])
 	/************************************************************************/
 	BEmaterial* plane = ((BEmesh*)BEnode::GetSuperRoot()->Find("MarmSurface"))->get_material();
 	plane->SetTransparency(0.6f);
-	//Rubik* rubik_cube = new Rubik(cube_root);
 
-	// Test: Translation of a single cube
+	BEnode* tmp_rubik = BEnode::GetSuperRoot()->Find("Rubik_Downloaded");
 
-	//rubik_cube->TranslateSingleCubeY(0, 0, 0, 20.0f);
-	//rubik_cube->TranslateSingleCube(0, 0, 0, -20.0f, 0.0f, -10.0f);
-
-	//engine->lists_->GetMeshByName("Block46");
-
+	for (BEnode* child : tmp_rubik->GetChildren())
+	{
+		BEmesh*mesh = (BEmesh*)child;
+		BEengine::GetInstance()->lists_->AddMirrored(mesh);
+		mesh->SetIsMirrored(true);
+	}
+	BEengine::GetInstance()->CalcTransformation();
+	
 
 	/************************************************************************/
 	/* Start BlindEngine

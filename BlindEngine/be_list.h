@@ -17,6 +17,11 @@ public:
 	void RenderMeshes();
 	void RenderLights();
 	void RenderCameras();
+	void RenderMirrored();
+
+	// Mirrored
+	void PassMirrored(BEmesh*mesh, glm::mat4 world_coords);
+	void AddMirrored(BEmesh*mesh);
 
 	// Material
 	void AddMaterial(BEmaterial* material);
@@ -46,6 +51,7 @@ public:
 	void AddCamera(BEcamera* camera, glm::mat4 f);
 	void Pass(BEcamera* camera, glm::mat4 world_coords);
 	void DeepSort();
+
 private:
 	typedef struct Mesh
 	{
@@ -59,6 +65,7 @@ private:
 	std::map<BEcamera*, glm::mat4> cameras_;
 
 	std::vector<Mesh*> meshes_v_;
+	std::vector<Mesh*> mirrored_v_;
 
 	// Utility
 	std::vector<BEmaterial*> material_ordered_list_;

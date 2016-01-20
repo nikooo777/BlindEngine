@@ -62,6 +62,12 @@ void BEmesh::CalcTransformation(glm::mat4 world_matrix)
 	glm::mat4 tmpF = world_matrix*transformation_;
 	BEengine::lists_->Pass(this, tmpF);
 
+	if (to_mirror_)
+	{
+		glm::mat4 scaled = world_matrix*transformation_ * glm::scale(glm::mat4(1), glm::vec3(1,-1,1));
+		BEengine::lists_->PassMirrored(this, scaled);
+	}
+
 	for (BEnode* n : BEnode::children_){
 		n->CalcTransformation(tmpF);
 	}

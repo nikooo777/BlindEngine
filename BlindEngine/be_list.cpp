@@ -17,6 +17,8 @@ BElist::~BElist()
 void LIB_API BElist::RenderAll()
 {
 	RenderLights();
+
+	RenderMirrored();
 	RenderMeshes();
 	RenderCameras();
 }
@@ -61,6 +63,42 @@ void LIB_API BElist::RenderCameras()
 	}
 }
 
+LIB_API void BElist::RenderMirrored()
+{
+	glDepthMask(GL_TRUE);
+	glCullFace(GL_FRONT);
+	for (auto m : mirrored_v_)
+	{
+		m->mesh_->Render(m->world_coords_);
+	}
+	glCullFace(GL_BACK);
+}
+
+/************************************************************************/
+// Mirrored
+/************************************************************************/
+void BElist::PassMirrored(BEmesh*mesh, glm::mat4 world_coords)
+{
+	for (auto m : mirrored_v_)
+	{
+		if (m->mesh_ == mesh)
+		{
+			m->world_coords_ = world_coords;
+			return;
+		}
+	}
+}
+
+
+void LIB_API BElist::AddMirrored(BEmesh*mesh)
+{
+	Mesh* mesh_to_add = new Mesh;
+	mesh_to_add->mesh_ = mesh;
+	mesh_to_add->world_coords_ = glm::mat4(1);
+
+	mirrored_v_.push_back(mesh_to_add);
+}
+
 
 /************************************************************************/
 /* Mesh
@@ -103,6 +141,7 @@ void BElist::Pass(BEmesh*mesh, glm::mat4 world_coords)
 		if (m->mesh_ == mesh)
 		{
 			m->world_coords_ = world_coords;
+			return;
 		}
 	}
 }
@@ -120,6 +159,11 @@ LIB_API BEmesh* BElist::GetMeshByName(std::string name)
 LIB_API void BElist::DeepSort()
 {
 	std::sort(meshes_v_.begin(), meshes_v_.end(), [](Mesh* a, Mesh* b)
+	{
+		return a->world_coords_[3].z > b->world_coords_[3].z;
+	});
+
+	std::sort(mirrored_v_.begin(), mirrored_v_.end(), [](Mesh* a, Mesh* b)
 	{
 		return a->world_coords_[3].z > b->world_coords_[3].z;
 	});

@@ -165,7 +165,7 @@ void reshapeCallback(int width, int height)
 	glViewport(0, 0, width, height);
 
 	// Update matrices:
-	BEengine::GetInstance()->SetPerspective(glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 100.0f));
+	BEengine::GetInstance()->SetPerspective(glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 500.0f));
 	BEengine::GetInstance()->SetOrtho(glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f));
 }
 
