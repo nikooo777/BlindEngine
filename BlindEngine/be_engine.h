@@ -28,6 +28,7 @@ public:
 	glm::mat4 get_ortho() const { return ortho_; }
 	void SetPerspective(glm::mat4 perspective);
 	void SetOrtho(glm::mat4 ortho);
+	void CalcTransformation();
 
 	inline void SetDeltaPadding(float delta_padding){ delta_padding_ = delta_padding; }
 	inline float GetDeltaPadding(){ return delta_padding_; }

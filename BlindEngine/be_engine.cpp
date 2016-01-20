@@ -93,6 +93,22 @@ BEengine::~BEengine()
 	delete lists_;
 }
 
+void LIB_API BEengine::CalcTransformation()
+{
+	// Set a matrix to move our triangle:
+	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(globalX, globalY, distance));
+
+	//the following 2 lines will be obsolete when the special callback and/or the camera will be removed
+	glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(angleX), glm::vec3(1.0f, 0.0f, 0.0f));
+	rotation = glm::rotate(rotation, glm::radians(angleY), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	glm::mat4 f = translation *rotation;
+
+	BEnode::GetSuperRoot()->CalcTransformation(f);
+	BEengine::lists_->DeepSort();
+}
+
+
 
 ///////////////
 // CALLBACKS //
@@ -114,20 +130,6 @@ void displayCallback()
 	glLoadMatrixf(glm::value_ptr(BEengine::GetInstance()->get_perspective()));
 	glMatrixMode(GL_MODELVIEW);
 
-	// Set a matrix to move our triangle:
-	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(globalX, globalY, distance));
-
-	//the following 2 lines will be obsolete when the special callback and/or the camera will be removed
-	glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(angleX), glm::vec3(1.0f, 0.0f, 0.0f));
-	rotation = glm::rotate(rotation, glm::radians(angleY), glm::vec3(0.0f, 1.0f, 0.0f));
-
-	glm::mat4 f = translation *rotation;
-
-	// Set model matrix as current OpenGL matrix:
-	glLoadMatrixf(glm::value_ptr(f));
-
-	BEnode::GetSuperRoot()->CalcTransformation(f);
-	BEengine::lists_->DeepSort();
 	BEengine::lists_->RenderAll();
 
 	//////
@@ -230,6 +232,8 @@ void specialCallback(int key, int mouseX, int mouseY)
 		distance -= BEengine::GetInstance()->GetDeltaZoom();
 		break;
 	}
+
+	BEengine::GetInstance()->CalcTransformation();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -347,6 +351,7 @@ LIB_API BEnode* BEengine::LoadScene(char *fileName)
 
 	BEsceneLoader scene_loader;
 	root = scene_loader.LoadScene(fileName);
+	CalcTransformation();
 
 	return root;
 }

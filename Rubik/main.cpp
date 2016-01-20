@@ -107,6 +107,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	break;
 	}
 	engine->set_node_selected(rubik_root_node->get_name());
+	BEengine::GetInstance()->CalcTransformation();
 }
 
 int main(int argc, char *argv[])
