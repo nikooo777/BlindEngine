@@ -9,3 +9,4 @@ Debug
 *.suo
 *.sdf
 *.opensdf
+/BlindEngine.workspace.layout
