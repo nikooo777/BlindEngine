@@ -59,8 +59,6 @@
 		<Unit filename="be_light.h" />
 		<Unit filename="be_list.cpp" />
 		<Unit filename="be_list.h" />
-		<Unit filename="be_logging.cpp" />
-		<Unit filename="be_logging.h" />
 		<Unit filename="be_material.cpp" />
 		<Unit filename="be_material.h" />
 		<Unit filename="be_mesh.cpp" />

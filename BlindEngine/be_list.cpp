@@ -299,7 +299,7 @@ void LIB_API BElist::Pass(BElight* light, glm::mat4 world_coords)
 }
 
 /************************************************************************/
-/* Camera
+// Camera
 /************************************************************************/
 void LIB_API BElist::AddCamera(BEcamera* camera)
 {

@@ -64,7 +64,13 @@ LIB_API BEengine* BEengine::GetInstance()
 BEengine::BEengine()
 {
 	angles_ = new Angles{ 15.f, 0.f };
-	distance_ = -15.f;
+	#ifdef WIN32
+    distance_ = -15.f;
+    delta_zoom_ = 1.f;
+    #else
+    distance_ = -500.f;
+    delta_zoom_ = 50.f;
+    #endif // WIN32
 	lists_ = new BElist();
 	fps_ = 0;
 	frames_ = 0;
@@ -149,7 +155,7 @@ void reshapeCallback(int width, int height)
 	glViewport(0, 0, width, height);
 
 	// Update matrices:
-	BEengine::GetInstance()->SetPerspective(glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 2000.0f));
+	BEengine::GetInstance()->SetPerspective(glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 3000.0f));
 	BEengine::GetInstance()->SetOrtho(glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f));
 }
 
@@ -214,7 +220,7 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 	// Set some optional flags:
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 
-	// Create the window with a specific title:   
+	// Create the window with a specific title:
 	window_id_ = glutCreateWindow(window_name);
 
 	// Set callback functions:
@@ -239,7 +245,7 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 //************************************
 // Method:    Start
 // FullName:  BEengine::Start
-// Access:    public 
+// Access:    public
 // Returns:   int -> EXIT_SUCCESS or EXIT_FAILURE
 // this method starts the engine by loading the main loop
 //************************************
@@ -255,7 +261,7 @@ int LIB_API BEengine::Start()
 		node_selected_ = std::string("none or default");
 		BEengine::GetInstance()->CalcTransformation();
 
-		// Enter the main FreeGLUT processing loop:     
+		// Enter the main FreeGLUT processing loop:
 		glutMainLoop();
 
 		//application exited

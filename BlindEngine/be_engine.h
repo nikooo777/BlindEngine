@@ -55,7 +55,8 @@ private:
 	static BEengine* instance_;
 	int window_id_;
 	bool initialized_ = false;
-	float delta_padding_ = 1.f, delta_zoom_ = 1.f;
+	float delta_padding_ = 1.f;
+	float delta_zoom_;
 	void(*keyboard_callback_)(unsigned char key, int mouseX, int mouseY);
 	void(*special_callback_)(int key, int mouseX, int mouseY);
 	// Matrices:
