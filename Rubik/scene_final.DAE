@@ -2,9 +2,9 @@
 <COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
   <asset><contributor><author></author><authoring_tool>FBX COLLADA exporter</authoring_tool><comments></comments></contributor><created>2016-01-21T15:30:23Z</created><keywords></keywords><modified>2016-01-21T15:30:23Z</modified><revision></revision><subject></subject><title></title><unit meter="0.025400" name="centimeter"></unit><up_axis>Y_UP</up_axis></asset>
   <library_images>
-    <image id="GrassMaterial-image" name="GrassMaterial"><init_from>file://D:\Documents\3dsMax\..\SUPSI\Graphics\Scena_Finale\grass.jpg</init_from></image>
-    <image id="MarmMaterial-image" name="MarmMaterial"><init_from>file://D:\Documents\3dsMax\..\SUPSI\Graphics\Scena_Finale\marm.jpg</init_from></image>
-    <image id="SkyMaterial-image" name="SkyMaterial"><init_from>file://D:\Documents\3dsMax\..\SUPSI\Graphics\Scena_Finale\sky.jpg</init_from></image>
+    <image id="GrassMaterial-image" name="GrassMaterial"><init_from>file://grass.jpg</init_from></image>
+    <image id="MarmMaterial-image" name="MarmMaterial"><init_from>file://marm.jpg</init_from></image>
+    <image id="SkyMaterial-image" name="SkyMaterial"><init_from>file://sky.jpg</init_from></image>
   </library_images>
   <library_materials>
     <material id="_02 - Default" name="_02 - Default">
