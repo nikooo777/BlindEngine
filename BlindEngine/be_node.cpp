@@ -11,9 +11,16 @@ BEnode::BEnode(std::string name, Type type) : BEobject(name)
 
 BEnode::~BEnode()
 {
-
+	for (auto c : children_)
+	{
+		if (c->GetParent() == this)
+			c->SetParent(BEnode::GetSuperRoot());
+	}
 }
 
+//addchild adds a child to the vector of the parent and then calls setparent on the new child.
+//This call does not call RemoveChild from the previous parent if one was present
+//Forgetting about previous parents can leave loops in the scene graph
 void BEnode::AddChild(BEnode* node)
 {
 	node->SetParent(this);
@@ -92,7 +99,7 @@ void BEnode::Render(glm::mat4 world_matrix)
 void BEnode::CalcTransformation(glm::mat4 world_matrix)
 {
 	glm::mat4 tmpF = world_matrix*transformation_;
-	for (BEnode* n : BEnode::children_){
+	for (auto n : BEnode::children_){
 		n->CalcTransformation(tmpF);
 	}
 }

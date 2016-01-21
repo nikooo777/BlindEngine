@@ -44,7 +44,7 @@ void LIB_API BElist::RenderMeshes()
 	// Rendering transparents objects
 	RenderTransparentMeshes();
 
-	glCullFace(GL_BACK);
+	RenderShadows();
 }
 
 void LIB_API BElist::RenderLights()
@@ -280,4 +280,18 @@ void BElist::PushMesh(BEmesh* mesh)
 	mesh_to_add->mesh_ = mesh;
 	mesh_to_add->world_coords_ = glm::mat4();
 	meshes_v_.push_back(mesh_to_add);
+}
+
+void BElist::RenderShadows()
+{
+	// restore buffer access to read/write
+	glDepthMask(GL_TRUE);
+	for (auto m : meshes_v_)
+	{
+		if (m->mesh_->get_material() && !m->mesh_->get_material()->IsTransparent())
+		{
+			//if (m->mesh_->get_name() == "C_clamp406")
+				m->mesh_->Render(glm::scale(glm::mat4(), glm::vec3(1, 0, 1))*m->world_coords_); //doesn't fucking work shit shit shit
+		}
+	}
 }

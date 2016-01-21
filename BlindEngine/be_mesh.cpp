@@ -64,11 +64,11 @@ void BEmesh::CalcTransformation(glm::mat4 world_matrix)
 
 	if (to_mirror_)
 	{
-		glm::mat4 scaled = world_matrix * glm::scale(glm::mat4(1), glm::vec3(1, 1, -1)) *   glm::translate(glm::mat4(), glm::vec3(.0f, .0f, -1.5*glm::inverse(GetParent()->GetTransformation())[3].z))* transformation_;
+		glm::mat4 scaled = world_matrix * glm::scale(glm::mat4(1), glm::vec3(1, 1, -1)) * glm::translate(glm::mat4(), glm::vec3(.0f, .0f, -1.5*glm::inverse(GetParent()->GetTransformation())[3].z))* transformation_;
 		BEengine::lists_->PassMirrored(this, scaled);
 	}
 
-	for (BEnode* n : BEnode::children_){
+	for (auto n : BEnode::children_){
 		n->CalcTransformation(tmpF);
 	}
 }

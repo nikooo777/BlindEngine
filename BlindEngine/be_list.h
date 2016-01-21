@@ -62,7 +62,7 @@ public:
 	void AddCamera(BEcamera* camera, glm::mat4 f);
 	void Pass(BEcamera* camera, glm::mat4 world_coords);
 	void DeepSort();
-
+	void RenderShadows();
 private:
 	typedef struct Mesh
 	{
