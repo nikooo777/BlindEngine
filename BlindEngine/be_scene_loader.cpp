@@ -141,7 +141,6 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 
 			tmp_mesh->set_name(this_node->mName.C_Str());
 			tmp_mesh->SetSubMeshes(this_node->mNumMeshes, this_node->mMeshes, cnt_meshes_);
-			BEengine::lists_->AddMeshToMap(tmp_mesh);
 			node = tmp_mesh;
 		}
 		else if ((tmp_camera = FindCamera(this_node->mName)) != nullptr)

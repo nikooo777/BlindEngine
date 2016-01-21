@@ -90,7 +90,7 @@ void BEmesh::CalcTransformation(glm::mat4 world_matrix)
 	{
 		//the translation is still needed for meshes that are centered away from the plane where they are reflected upon
 		//the translation removes the offset translation
-		glm::mat4 parent_transformation_inverse = glm::translate(glm::mat4(), glm::vec3(.0f, .0f, glm::inverse(GetParent()->GetTransformation())[3].z));
+		glm::mat4 parent_transformation_inverse =	glm::translate(glm::mat4(), glm::vec3(.0f, .0f, .1f+glm::inverse(GetParent()->GetTransformation())[3].z));
 		glm::mat4 scaled = world_matrix *parent_transformation_inverse*  glm::scale(glm::mat4(1), glm::vec3(1.1, 1.1, 0)) * transformation_;
 		BEengine::lists_->PassShadowed(this, scaled);
 	}
