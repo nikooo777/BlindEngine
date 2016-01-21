@@ -88,6 +88,50 @@ void LIB_API BElist::AddMirrored(BEmesh*mesh)
 }
 
 /************************************************************************/
+// Shadows
+/************************************************************************/
+void LIB_API BElist::AddShadowed(BEmesh*mesh)
+{
+	Mesh* mesh_to_add = new Mesh;
+	mesh_to_add->mesh_ = mesh;
+	mesh_to_add->world_coords_ = glm::mat4(1);
+	shadows_v_.push_back(mesh_to_add);
+}
+
+void BElist::PassShadowed(BEmesh*mesh, glm::mat4 world_coords)
+{
+	for (auto m : shadows_v_)
+	{
+		if (m->mesh_ == mesh)
+		{
+			m->world_coords_ = world_coords;
+			return;
+		}
+	}
+}
+
+
+void LIB_API BElist::RemoveShadowed(BEmesh*mesh)
+{
+	unsigned int i = 0;
+	bool found = false;
+
+	for (auto m : shadows_v_)
+	{
+		if (m->mesh_ == mesh)
+		{
+			found = true;
+			break;
+		}
+		i++;
+	}
+
+	if (found)
+		shadows_v_.erase(shadows_v_.begin() + i);
+}
+
+
+/************************************************************************/
 /* Mesh
 /************************************************************************/
 void LIB_API BElist::AddMesh(BEmesh*mesh)
@@ -102,6 +146,9 @@ void LIB_API BElist::AddMesh(BEmesh*mesh, glm::mat4 f)
 	mesh_to_add->mesh_ = mesh;
 	mesh_to_add->world_coords_ = f;
 	meshes_v_.push_back(mesh_to_add);
+
+	if(mesh->get_material() && !mesh->get_material()->IsTransparent())
+		AddShadowed(mesh);
 }
 
 void LIB_API BElist::AddMeshToMap(BEmesh* mesh)
@@ -198,6 +245,26 @@ void BElist::RenderReflectedMeshes()
 	glCullFace(GL_BACK);
 }
 
+
+void BElist::RenderShadows()
+{
+	// restore buffer access to read/write
+	glDepthMask(GL_TRUE);
+	glDepthFunc(GL_LEQUAL);
+	//glDisable(GL_LIGHTING);
+
+	for (auto m : shadows_v_)
+	{
+		m->mesh_->SetShadowRender(true);
+		m->mesh_->Render(m->world_coords_); //doesn't fucking work shit shit shit
+		m->mesh_->SetShadowRender(false);
+	}
+
+	//glEnable(GL_LIGHTING);
+	glDepthFunc(GL_LESS);
+	//glDepthMask(GL_TRUE);
+}
+
 void BElist::SetupStencil()
 {
 	glEnable(GL_STENCIL_TEST);
@@ -280,18 +347,8 @@ void BElist::PushMesh(BEmesh* mesh)
 	mesh_to_add->mesh_ = mesh;
 	mesh_to_add->world_coords_ = glm::mat4();
 	meshes_v_.push_back(mesh_to_add);
+
+	if (mesh->get_material() && !mesh->get_material()->IsTransparent())
+		AddShadowed(mesh);
 }
 
-void BElist::RenderShadows()
-{
-	// restore buffer access to read/write
-	glDepthMask(GL_TRUE);
-	for (auto m : meshes_v_)
-	{
-		if (m->mesh_->get_material() && !m->mesh_->get_material()->IsTransparent())
-		{
-			//if (m->mesh_->get_name() == "C_clamp406")
-				m->mesh_->Render(glm::scale(glm::mat4(), glm::vec3(1, 0, 1))*m->world_coords_); //doesn't fucking work shit shit shit
-		}
-	}
-}

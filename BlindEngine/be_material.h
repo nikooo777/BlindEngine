@@ -22,6 +22,8 @@ public:
 	float shininess_;
 	float shininess_strength_;
 	BEtexture* texture_;
+
+	static BEmaterial* mat_shadow;
 private:
 	float transparency_;
 };

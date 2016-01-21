@@ -1,5 +1,6 @@
 #include "be_material.h"
 
+BEmaterial* BEmaterial::mat_shadow = new BEmaterial("shadow_mat", glm::vec4(.0f), glm::vec4(.0f), glm::vec4(.0f), .0f, .0f, .0f, nullptr);
 
 BEmaterial::BEmaterial(std::string name, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, float transparency, float shininess, float shininess_strength, BEtexture* texture) : BEobject(name)
 {
@@ -55,6 +56,7 @@ void BEmaterial::SetTransparency(float alpha)
 	specular_.a = alpha;
 	transparency_ = alpha;
 }
+
 
 bool FloatCompare(float f1, float f2, float precision)
 {

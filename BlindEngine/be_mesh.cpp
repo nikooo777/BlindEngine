@@ -20,6 +20,9 @@ BEmesh::BEmesh(std::string name, glm::vec3* vertices, long vertices_count, glm::
 	}
 	else
 		sub_meshes_ = nullptr;
+
+	if (material_ && material_->IsTransparent())
+		to_shadow_ = false;
 }
 
 BEmesh::~BEmesh()
@@ -35,7 +38,11 @@ void BEmesh::Render(glm::mat4 world_matrix)
 	//std::cout << "Rendering Mesh: " << BEobject::get_name() << std::endl;
 	glLoadMatrixf(glm::value_ptr(world_matrix));
 
-	if (material_)
+	if (shadow_render_)
+	{
+		BEmaterial::mat_shadow->Render(world_matrix);
+	}
+	else if (material_)
 	{
 		material_->Render(world_matrix);
 	}
@@ -53,7 +60,15 @@ void BEmesh::Render(glm::mat4 world_matrix)
 	{
 		BEmesh* tmp_mesh = BEengine::lists_->GetMesh(sub_meshes_[i]);
 		if (tmp_mesh != this)
+		{
+			if (shadow_render_)
+				tmp_mesh->SetShadowRender(true);
+			
 			tmp_mesh->Render(world_matrix);
+
+			if (shadow_render_)
+				tmp_mesh->SetShadowRender(false);
+		}
 	}
 }
 
@@ -64,8 +79,14 @@ void BEmesh::CalcTransformation(glm::mat4 world_matrix)
 
 	if (to_mirror_)
 	{
-		glm::mat4 scaled = world_matrix * glm::scale(glm::mat4(1), glm::vec3(1, 1, -1)) * glm::translate(glm::mat4(), glm::vec3(.0f, .0f, -1.5*glm::inverse(GetParent()->GetTransformation())[3].z))* transformation_;
+		glm::mat4 scaled = world_matrix * glm::scale(glm::mat4(1), glm::vec3(1, 1, -1)) * glm::translate(glm::mat4(), glm::vec3(.0f, .0f, -2 * glm::inverse(GetParent()->GetTransformation())[3].z))* transformation_;
 		BEengine::lists_->PassMirrored(this, scaled);
+	}
+
+	if (to_shadow_)
+	{
+		glm::mat4 scaled = world_matrix * glm::translate(glm::mat4(), glm::vec3(.0f, .0f, glm::inverse(GetParent()->GetTransformation())[3].z))*  glm::scale(glm::mat4(1), glm::vec3(1.1, 1.1, 0)) * transformation_;
+		BEengine::lists_->PassShadowed(this, scaled);
 	}
 
 	for (auto n : BEnode::children_){

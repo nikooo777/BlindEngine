@@ -13,26 +13,30 @@ class LIB_API BElist
 public:
 	BElist();
 	~BElist();
-	void RenderAll();
-	void RenderMeshes();
 
-	void RenderReflectedMeshes();
-
+	// Stencil
 	void EnableStencilFiltering();
-
 	void RenderTransparentMeshes();
-
 	void SetupStencil();
 
+	// Render
+	void RenderAll();
+	void RenderMeshes();
 	void RenderOpaqueMeshes();
-
+	void RenderReflectedMeshes();
 	void RenderLights();
 	void RenderCameras();
 	void RenderMirrored();
+	void RenderShadows();
 
 	// Mirrored
 	void PassMirrored(BEmesh*mesh, glm::mat4 world_coords);
 	void AddMirrored(BEmesh*mesh);
+
+	// Shadows
+	void AddShadowed(BEmesh*mesh);
+	void RemoveShadowed(BEmesh*mesh);
+	void PassShadowed(BEmesh*mesh, glm::mat4 world_coords);
 
 	// Material
 	void AddMaterial(BEmaterial* material);
@@ -61,8 +65,9 @@ public:
 	void AddCamera(BEcamera* camera);
 	void AddCamera(BEcamera* camera, glm::mat4 f);
 	void Pass(BEcamera* camera, glm::mat4 world_coords);
+
 	void DeepSort();
-	void RenderShadows();
+
 private:
 	typedef struct Mesh
 	{
@@ -77,6 +82,7 @@ private:
 
 	std::vector<Mesh*> meshes_v_;
 	std::vector<Mesh*> mirrored_v_;
+	std::vector<Mesh*> shadows_v_;
 
 	// Utility
 	std::vector<BEmaterial*> material_ordered_list_;

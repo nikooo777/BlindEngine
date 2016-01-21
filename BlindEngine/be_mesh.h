@@ -28,6 +28,10 @@ public:
 	void SetSubMeshes(unsigned int sub_meshes_count, unsigned int* sub_meshes, unsigned int delta);
 	void SetIsMirrored(bool should_be_mirrored){ to_mirror_ = should_be_mirrored; }
 	bool GetIsMirrored(){ return to_mirror_; }
+	void SetIsShadowed(bool should_be_shadowed){ to_shadow_ = should_be_shadowed; }
+	bool GetIsShadowed(){ return to_shadow_; }
+
+	void SetShadowRender(bool shadow_render){ shadow_render_ = shadow_render; }
 
 	// Utility
 	virtual BEnode* Find(std::string) override;
@@ -44,4 +48,6 @@ private:
 	unsigned int* sub_meshes_;
 	unsigned int sub_meshes_count_;
 	bool to_mirror_ = false;
+	bool to_shadow_ = true;
+	bool shadow_render_ = false;
 };

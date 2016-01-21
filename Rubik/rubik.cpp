@@ -2,7 +2,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 // Animations
-#define DURATION_ANIMATION 1000
+#define DURATION_ANIMATION 750
 #define LOOP_TIMER_ANIMATION 50
 BEnode* animation_root = nullptr;
 glm::mat4 animation_transformation = glm::mat4(1);
