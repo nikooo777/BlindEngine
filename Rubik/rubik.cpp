@@ -105,14 +105,14 @@ void Rubik::RotateFace(Face face, bool inverse)
 		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
 		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
 
-		BuildSceneGraph(cube_root, faces_to_swap);
+		RestoreSceneGraph(cube_root, faces_to_swap);
 
 		if (!inverse)
 		{
 			index = 0;
 			for (int i = 0; i < 3; i++)
 				for (int j = 0; j < 3; j++)
-					cube_faces_[2 - j][2][i] = faces_to_swap[index++]; // fixed
+					cube_faces_[2 - j][2][i] = faces_to_swap[index++]; 
 		}
 		else
 		{
@@ -149,12 +149,12 @@ void Rubik::RotateFace(Face face, bool inverse)
 		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
 		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
 
-		BuildSceneGraph(cube_root, faces_to_swap);
+		RestoreSceneGraph(cube_root, faces_to_swap);
 
 		index = 0;
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
-				cube_faces_[2][2 - j][i] = faces_to_swap[index++]; // fixed
+				cube_faces_[2][2 - j][i] = faces_to_swap[index++]; 
 	}
 	break;
 	case Rubik::D_FACE:
@@ -174,12 +174,12 @@ void Rubik::RotateFace(Face face, bool inverse)
 		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
 		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
 
-		BuildSceneGraph(cube_root, faces_to_swap);
+		RestoreSceneGraph(cube_root, faces_to_swap);
 
 		index = 0;
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
-				cube_faces_[2 - j][0][i] = faces_to_swap[index++]; // fixed
+				cube_faces_[2 - j][0][i] = faces_to_swap[index++]; 
 	}
 	break;
 	case Rubik::L_FACE:
@@ -198,12 +198,12 @@ void Rubik::RotateFace(Face face, bool inverse)
 		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
 		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
 
-		BuildSceneGraph(cube_root, faces_to_swap);
+		RestoreSceneGraph(cube_root, faces_to_swap);
 
 		index = 0;
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
-				cube_faces_[0][j][2 - i] = faces_to_swap[index++]; // Fixed
+				cube_faces_[0][j][2 - i] = faces_to_swap[index++]; 
 	}
 	break;
 	case Rubik::F_FACE:
@@ -222,12 +222,12 @@ void Rubik::RotateFace(Face face, bool inverse)
 		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
 		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
 
-		BuildSceneGraph(cube_root, faces_to_swap);
+		RestoreSceneGraph(cube_root, faces_to_swap);
 
 		index = 0;
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
-				cube_faces_[j][2 - i][0] = faces_to_swap[index++]; // Fixed
+				cube_faces_[j][2 - i][0] = faces_to_swap[index++]; 
 	}
 	break;
 	case Rubik::B_FACE:
@@ -246,12 +246,12 @@ void Rubik::RotateFace(Face face, bool inverse)
 		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
 		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
 
-		BuildSceneGraph(cube_root, faces_to_swap);
+		RestoreSceneGraph(cube_root, faces_to_swap);
 
 		index = 0;
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
-				cube_faces_[2 - j][i][2] = faces_to_swap[index++]; // Fixed
+				cube_faces_[2 - j][i][2] = faces_to_swap[index++]; 
 	}
 	break;
 	case Rubik::M_FACE:
@@ -270,12 +270,12 @@ void Rubik::RotateFace(Face face, bool inverse)
 		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
 		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
 
-		BuildSceneGraph(cube_root, faces_to_swap);
+		RestoreSceneGraph(cube_root, faces_to_swap);
 
 		index = 0;
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
-				cube_faces_[1][2 - j][i] = faces_to_swap[index++]; // Fixed
+				cube_faces_[1][2 - j][i] = faces_to_swap[index++]; 
 	}
 	break;
 	default:
@@ -292,6 +292,14 @@ void Rubik::BuildSceneGraph(BEnode* parent, BEnode** faces_to_swap)
 		//This call does not call RemoveChild from the previous parent if one was present
 		//Forgetting about previous parents can leave loops in the scene graph
 		parent->AddChild(faces_to_swap[i]);
+	}
+}
+
+void Rubik::RestoreSceneGraph(BEnode* parent, BEnode** faces_to_swap)
+{
+	for (int i = 0; i < 9; i++)
+	{
+		faces_to_swap[i]->SetParent(parent);
 	}
 }
 

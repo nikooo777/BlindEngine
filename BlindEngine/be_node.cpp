@@ -129,7 +129,7 @@ LIB_API BEnode* BEnode::GetSuperRoot()
 	return super_root_node;
 }
 
-void BEnode::SetParent(BEnode *parent)
+void LIB_API BEnode::SetParent(BEnode *parent)
 {
 	parent_ = parent;
 }

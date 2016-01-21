@@ -24,7 +24,7 @@ public:
 	//void PushBackFace(BEnode** faces_to_swap, BEnode* rotation_helper);
 	//void RelinkCubes(BEnode** faces_to_swap, BEnode* rotation_helper);
 	void BuildSceneGraph(BEnode* rotation_helper, BEnode** faces_to_swap);
-
+	void RestoreSceneGraph(BEnode* parent, BEnode** faces_to_swap);
 private:
 	/*
 	*	    .+------+	UP: GREEN
