@@ -166,13 +166,13 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	engine->CalcTransformation();
 }
 
-void addMeshToMirroredList(BEmesh*mesh)
+void AddReflection(BEmesh*mesh)
 {
 	BEengine::GetInstance()->lists_->AddMirrored(mesh);
 	mesh->SetIsMirrored(true);
 }
 
-void removeMeshToShadowedList(BEmesh*mesh)
+void RemoveShadow(BEmesh*mesh)
 {
 	BEengine::GetInstance()->lists_->RemoveShadowed(mesh);
 	mesh->SetIsShadowed(false);
@@ -206,34 +206,34 @@ int main(int argc, char *argv[])
 	/************************************************************************/
 	BEmaterial* plane = ((BEmesh*)BEnode::GetSuperRoot()->Find("MarmSurface"))->get_material();
 	plane->SetTransparency(0.6f);
-	removeMeshToShadowedList((BEmesh*)BEnode::GetSuperRoot()->Find("MarmSurface"));
+	RemoveShadow((BEmesh*)BEnode::GetSuperRoot()->Find("MarmSurface"));
 
 	BEnode* tmp_rubik = BEnode::GetSuperRoot()->Find("Rubik_Downloaded");
 
 	for (BEnode* child : tmp_rubik->GetChildren())
 	{
-		addMeshToMirroredList((BEmesh*)child);
+		AddReflection((BEmesh*)child);
 	}
 
 
 	// Lamp001
-	addMeshToMirroredList((BEmesh*)BEnode::GetSuperRoot()->Find("Cylinder001"));
-	addMeshToMirroredList((BEmesh*)BEnode::GetSuperRoot()->Find("C_clamp405"));
-	addMeshToMirroredList((BEmesh*)BEnode::GetSuperRoot()->Find("C_lamp_white"));
-	addMeshToMirroredList((BEmesh*)BEnode::GetSuperRoot()->Find("Sphere001"));
+	AddReflection((BEmesh*)BEnode::GetSuperRoot()->Find("Cylinder001"));
+	AddReflection((BEmesh*)BEnode::GetSuperRoot()->Find("C_clamp405"));
+	AddReflection((BEmesh*)BEnode::GetSuperRoot()->Find("C_lamp_white"));
+	AddReflection((BEmesh*)BEnode::GetSuperRoot()->Find("Sphere001"));
 	// Lamp002
-	addMeshToMirroredList((BEmesh*)BEnode::GetSuperRoot()->Find("Cylinder002"));
-	addMeshToMirroredList((BEmesh*)BEnode::GetSuperRoot()->Find("C_clamp406"));
-	addMeshToMirroredList((BEmesh*)BEnode::GetSuperRoot()->Find("C_Clamp"));
-	addMeshToMirroredList((BEmesh*)BEnode::GetSuperRoot()->Find("Sphere002"));
+	AddReflection((BEmesh*)BEnode::GetSuperRoot()->Find("Cylinder002"));
+	AddReflection((BEmesh*)BEnode::GetSuperRoot()->Find("C_clamp406"));
+	AddReflection((BEmesh*)BEnode::GetSuperRoot()->Find("C_Clamp"));
+	AddReflection((BEmesh*)BEnode::GetSuperRoot()->Find("Sphere002"));
 
 	// SkyBox
-	removeMeshToShadowedList((BEmesh*)BEnode::GetSuperRoot()->Find("SkyBox"));
+	RemoveShadow((BEmesh*)BEnode::GetSuperRoot()->Find("SkyBox"));
 	// Plane
-	removeMeshToShadowedList((BEmesh*)BEnode::GetSuperRoot()->Find("Plane001"));
+	RemoveShadow((BEmesh*)BEnode::GetSuperRoot()->Find("Plane001"));
 
-	removeMeshToShadowedList((BEmesh*)BEnode::GetSuperRoot()->Find("Cylinder001"));
-	removeMeshToShadowedList((BEmesh*)BEnode::GetSuperRoot()->Find("Cylinder002"));
+	RemoveShadow((BEmesh*)BEnode::GetSuperRoot()->Find("Cylinder001"));
+	RemoveShadow((BEmesh*)BEnode::GetSuperRoot()->Find("Cylinder002"));
 
 	/************************************************************************/
 	/* Start BlindEngine

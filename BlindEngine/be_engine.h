@@ -11,25 +11,35 @@
 #include "be_scene_loader.h"
 #include "be_node.h"
 
-/*
-SINGLETON class
-*/
+/************************************************************************/
+// Engine class header
+/************************************************************************/
 class LIB_API BEengine
 {
 public:
+	/// angles structure holding x and y components
 	typedef struct Angles{
 		float x;
 		float y;
 	}Angles;
+
+	/// method used to retrieve the singleton instance of the class engine
 	static BEengine* GetInstance();
+
+	/// method used to initialize the context of the engine
 	void Init(char* window_name, int x_position, int y_position, int width, int heigth, void(*keyCallback)(int, int, int), int argc, char *argv[]);
+	
+	/// method used to start the egine
 	int Start();
 
-	int AddLight(BElight *);
-	bool RemoveLigh(int indexLight);
+	/// retrieves the window id of the current instance
 	int get_window_id();
+
+	/// allows the loading of a scene given a certain path
 	BEnode* LoadScene(char *);
-	glm::mat4 get_perspective() const { return perspective_; }
+
+	/// allows retrieving the prespective 
+	glm::mat4 get_perspective() const;
 	glm::mat4 get_ortho() const { return ortho_; }
 	void SetPerspective(glm::mat4 perspective);
 	void SetOrtho(glm::mat4 ortho);

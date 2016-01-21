@@ -63,7 +63,7 @@ void BEmesh::Render(glm::mat4 world_matrix)
 		{
 			if (shadow_render_)
 				tmp_mesh->SetShadowRender(true);
-			
+
 			tmp_mesh->Render(world_matrix);
 
 			if (shadow_render_)
@@ -79,13 +79,19 @@ void BEmesh::CalcTransformation(glm::mat4 world_matrix)
 
 	if (to_mirror_)
 	{
-		glm::mat4 scaled = world_matrix * glm::scale(glm::mat4(1), glm::vec3(1, 1, -1)) * glm::translate(glm::mat4(), glm::vec3(.0f, .0f, -2 * glm::inverse(GetParent()->GetTransformation())[3].z))* transformation_;
+		glm::mat4 scale_matrix = glm::scale(glm::mat4(1), glm::vec3(1, 1, -1));
+		glm::mat4 parent_transformation_inverse = glm::inverse(GetParent()->GetTransformation());
+		glm::mat4 translation_offset = glm::translate(glm::mat4(), glm::vec3(.0f, .0f, -2 * parent_transformation_inverse[3].z /*get the Y translation of the parent (inverted axises)*/));
+		glm::mat4 scaled = world_matrix * scale_matrix * translation_offset* transformation_;
 		BEengine::lists_->PassMirrored(this, scaled);
 	}
 
 	if (to_shadow_)
 	{
-		glm::mat4 scaled = world_matrix * glm::translate(glm::mat4(), glm::vec3(.0f, .0f, glm::inverse(GetParent()->GetTransformation())[3].z))*  glm::scale(glm::mat4(1), glm::vec3(1.1, 1.1, 0)) * transformation_;
+		//the translation is still needed for meshes that are centered away from the plane where they are reflected upon
+		//the translation removes the offset translation
+		glm::mat4 parent_transformation_inverse = glm::translate(glm::mat4(), glm::vec3(.0f, .0f, glm::inverse(GetParent()->GetTransformation())[3].z));
+		glm::mat4 scaled = world_matrix *parent_transformation_inverse*  glm::scale(glm::mat4(1), glm::vec3(1.1, 1.1, 0)) * transformation_;
 		BEengine::lists_->PassShadowed(this, scaled);
 	}
 

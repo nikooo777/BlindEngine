@@ -380,3 +380,8 @@ void BEengine::PrintTextInfo()
 	// Redo ligting:
 	glEnable(GL_LIGHTING);
 }
+
+glm::mat4 BEengine::get_perspective() const
+{
+	return perspective_;
+}
