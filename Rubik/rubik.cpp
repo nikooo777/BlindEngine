@@ -75,7 +75,7 @@ Rubik::~Rubik()
 }
 
 
-void Rubik::RotateFace(Face face, bool inverse)
+void Rubik::RotateFace(Face face, bool inverted)
 {
 	if (animation_count_left > 0){
 		std::cout << "Animation in progress... input not allowed" << std::endl;
@@ -85,49 +85,33 @@ void Rubik::RotateFace(Face face, bool inverse)
 	BEnode* faces_to_swap[9];
 	int index = 0;
 	animation_root = new BEnode("animation_root", BEnode::ROOT);
-	BEnode* cube_root;
 
 	switch (face)
 	{
 	case Rubik::U_FACE:
-		//y doesn't change
 	{
 		//gather the cubes to rotate
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
 				faces_to_swap[index++] = cube_faces_[i][2][j];
 
-		cube_root = faces_to_swap[4]->GetParent();
+		// Setup the animation
+		glm::vec3 axis = glm::vec3(0, 0, (!inverted ? -1 : 1));
+		SetupAnimation(faces_to_swap, axis);
 
-		BuildSceneGraph(animation_root, faces_to_swap);
-
-		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(0, 0, (!inverse ? -1 : 1)));
-		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
-		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
-
-		RestoreSceneGraph(cube_root, faces_to_swap);
-
-		if (!inverse)
+		// Updating the position of each cube in our 3x3 matrix
+		index = 0;
+		if (!inverted)
 		{
-			index = 0;
 			for (int i = 0; i < 3; i++)
 				for (int j = 0; j < 3; j++)
-					cube_faces_[2 - j][2][i] = faces_to_swap[index++]; 
+					cube_faces_[j][2][2 - i] = faces_to_swap[index++];
 		}
 		else
 		{
-			index = 0;
-			int tmp;
-			cube_faces_[0][2][2] = faces_to_swap[index++]; 
-			cube_faces_[1][2][1] = faces_to_swap[index++]; 
-			cube_faces_[2][2][2] = faces_to_swap[index++]; 
-
-			cube_faces_[0][2][1] = faces_to_swap[index++]; 
-			cube_faces_[1][2][1] = faces_to_swap[index++]; 
-			cube_faces_[2][2][2] = faces_to_swap[index++];
-
-			for (int j = 0; j < 3; j++)
-				cube_faces_[j][2][0] = faces_to_swap[index++];
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[2 - j][2][i] = faces_to_swap[index++];
 		}
 
 	}
@@ -140,46 +124,52 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				faces_to_swap[index++] = cube_faces_[2][i][j];
 
+		// Setup the animation
+		glm::vec3 axis = glm::vec3((!inverted ? -1 : 1), 0, 0);
+		SetupAnimation(faces_to_swap, axis);
 
-		cube_root = faces_to_swap[4]->GetParent();
-
-		BuildSceneGraph(animation_root, faces_to_swap);
-
-		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(-1, 0, 0));
-		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
-		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
-
-		RestoreSceneGraph(cube_root, faces_to_swap);
-
+		// Updating the position of each cube in our 3x3 matrix
 		index = 0;
-		for (int i = 0; i < 3; i++)
-			for (int j = 0; j < 3; j++)
-				cube_faces_[2][2 - j][i] = faces_to_swap[index++]; 
+		if (!inverted)
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[2][2 - j][i] = faces_to_swap[index++];
+		}
+		else
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[2][j][2 - i] = faces_to_swap[index++];
+		}
 	}
 	break;
 	case Rubik::D_FACE:
 		//y doesn't change
 	{
-
 		//gather the cubes to rotate
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
 				faces_to_swap[index++] = cube_faces_[i][0][j];
 
-		cube_root = faces_to_swap[4]->GetParent();
+		// Setup the animation
+		glm::vec3 axis = glm::vec3(0, 0, (!inverted ? 1 : -1));
+		SetupAnimation(faces_to_swap, axis);
 
-		BuildSceneGraph(animation_root, faces_to_swap);
-
-		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(0, 0, 1));
-		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
-		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
-
-		RestoreSceneGraph(cube_root, faces_to_swap);
-
+		// Updating the position of each cube in our 3x3 matrix
 		index = 0;
-		for (int i = 0; i < 3; i++)
-			for (int j = 0; j < 3; j++)
-				cube_faces_[2 - j][0][i] = faces_to_swap[index++]; 
+		if (!inverted)
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[2 - j][0][i] = faces_to_swap[index++];
+		}
+		else
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[j][0][2 - i] = faces_to_swap[index++];
+		}
 	}
 	break;
 	case Rubik::L_FACE:
@@ -190,20 +180,24 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				faces_to_swap[index++] = cube_faces_[0][i][j];
 
-		cube_root = faces_to_swap[4]->GetParent();
+		// Setup the animation
+		glm::vec3 axis = glm::vec3((!inverted ? 1 : -1), 0, 0);
+		SetupAnimation(faces_to_swap, axis);
 
-		BuildSceneGraph(animation_root, faces_to_swap);
-
-		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(1, 0, 0));
-		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
-		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
-
-		RestoreSceneGraph(cube_root, faces_to_swap);
-
+		// Updating the position of each cube in our 3x3 matrix
 		index = 0;
-		for (int i = 0; i < 3; i++)
-			for (int j = 0; j < 3; j++)
-				cube_faces_[0][j][2 - i] = faces_to_swap[index++]; 
+		if (!inverted)
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[0][j][2 - i] = faces_to_swap[index++];
+		}
+		else
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[0][2 - j][i] = faces_to_swap[index++];
+		}
 	}
 	break;
 	case Rubik::F_FACE:
@@ -214,20 +208,24 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				faces_to_swap[index++] = cube_faces_[i][j][0];
 
-		cube_root = faces_to_swap[4]->GetParent();
+		// Setup the animation
+		glm::vec3 axis = glm::vec3(0, (!inverted ? 1 : -1), 0);
+		SetupAnimation(faces_to_swap, axis);
 
-		BuildSceneGraph(animation_root, faces_to_swap);
-
-		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(0, 1, 0));
-		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
-		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
-
-		RestoreSceneGraph(cube_root, faces_to_swap);
-
+		// Updating the position of each cube in our 3x3 matrix
 		index = 0;
-		for (int i = 0; i < 3; i++)
-			for (int j = 0; j < 3; j++)
-				cube_faces_[j][2 - i][0] = faces_to_swap[index++]; 
+		if (!inverted)
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[j][2 - i][0] = faces_to_swap[index++];
+		}
+		else
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[2 - j][i][0] = faces_to_swap[index++];
+		}
 	}
 	break;
 	case Rubik::B_FACE:
@@ -238,20 +236,24 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				faces_to_swap[index++] = cube_faces_[i][j][2];
 
-		cube_root = faces_to_swap[4]->GetParent();
+		// Setup the animation
+		glm::vec3 axis = glm::vec3(0, (!inverted ? -1 : 1), 0);
+		SetupAnimation(faces_to_swap, axis);
 
-		BuildSceneGraph(animation_root, faces_to_swap);
-
-		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(0, -1, 0));
-		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
-		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
-
-		RestoreSceneGraph(cube_root, faces_to_swap);
-
+		// Updating the position of each cube in our 3x3 matrix
 		index = 0;
-		for (int i = 0; i < 3; i++)
-			for (int j = 0; j < 3; j++)
-				cube_faces_[2 - j][i][2] = faces_to_swap[index++]; 
+		if (!inverted)
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[2 - j][i][2] = faces_to_swap[index++];
+		}
+		else
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[j][2 - i][2] = faces_to_swap[index++];
+		}
 	}
 	break;
 	case Rubik::M_FACE:
@@ -262,25 +264,110 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				faces_to_swap[index++] = cube_faces_[1][i][j];
 
-		cube_root = faces_to_swap[4]->GetParent();
+		// Setup the animation
+		glm::vec3 axis = glm::vec3((!inverted ? -1 : 1), 0, 0);
+		SetupAnimation(faces_to_swap, axis);
 
-		BuildSceneGraph(animation_root, faces_to_swap);
-
-		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(-1, 0, 0));
-		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
-		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
-
-		RestoreSceneGraph(cube_root, faces_to_swap);
-
+		// Updating the position of each cube in our 3x3 matrix
 		index = 0;
+		if (!inverted)
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[1][2 - j][i] = faces_to_swap[index++];
+		}
+		else
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[1][j][2 - i] = faces_to_swap[index++];
+		}
+	}
+	break;
+	case Rubik::MF_FACE:
+		//z doesn't change
+	{
+		//gather the cubes to rotate
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
-				cube_faces_[1][2 - j][i] = faces_to_swap[index++]; 
+				faces_to_swap[index++] = cube_faces_[i][1][j];
+
+		// Setup the animation
+		glm::vec3 axis = glm::vec3(0, 0, (!inverted ? 1 : -1));
+		SetupAnimation(faces_to_swap, axis);
+
+		// Updating the position of each cube in our 3x3 matrix
+		index = 0;
+		if (!inverted)
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[2 - j][1][i] = faces_to_swap[index++];
+		}
+		else
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[j][1][2 - i] = faces_to_swap[index++];
+		}
+	}
+	break;
+	case Rubik::ML_FACE:
+		//z doesn't change
+	{
+		//gather the cubes to rotate
+		for (int i = 0; i < 3; i++)
+			for (int j = 0; j < 3; j++)
+				faces_to_swap[index++] = cube_faces_[i][j][1];
+
+		// Setup the animation
+		glm::vec3 axis = glm::vec3(0, (!inverted ? 1 : -1), 0);
+		SetupAnimation(faces_to_swap, axis);
+
+		// Updating the position of each cube in our 3x3 matrix
+		index = 0;
+		if (!inverted)
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[j][2 - i][1] = faces_to_swap[index++];
+		}
+		else
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[2 - j][i][1] = faces_to_swap[index++];
+		}
 	}
 	break;
 	default:
 		break;
 	}
+}
+
+
+/************************************
+ * Method:	SetupAnimation
+ * Desc:	Setup the animation for the current rotation
+ *
+ * @param	BEnode** faces_to_swap, glm::vec3 axis
+ ************************************/
+void Rubik::SetupAnimation(BEnode** faces_to_swap, glm::vec3 axis)
+{
+	// Temporary save the parent of the cubes (every cube has same parent: the center of cube)
+	BEnode* cube_root = faces_to_swap[4]->GetParent();
+
+	// Adding faces to swap to the "virtual animation root"
+	BuildSceneGraph(animation_root, faces_to_swap);
+
+	// Setup the rotate-transformation
+	animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), axis);
+	animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
+	// Call the function for the animation
+	BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
+
+	// Restoring previous parent of faces_to_swap
+	RestoreSceneGraph(cube_root, faces_to_swap);
 }
 
 void Rubik::BuildSceneGraph(BEnode* parent, BEnode** faces_to_swap)
@@ -302,4 +389,5 @@ void Rubik::RestoreSceneGraph(BEnode* parent, BEnode** faces_to_swap)
 		faces_to_swap[i]->SetParent(parent);
 	}
 }
+
 

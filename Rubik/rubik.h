@@ -21,6 +21,8 @@ public:
 	}Face;
 
 	void RotateFace(Face face, bool inverse);
+	void SetupAnimation(BEnode** faces_to_swap, glm::vec3 axis);
+
 	//void PushBackFace(BEnode** faces_to_swap, BEnode* rotation_helper);
 	//void RelinkCubes(BEnode** faces_to_swap, BEnode* rotation_helper);
 	void BuildSceneGraph(BEnode* rotation_helper, BEnode** faces_to_swap);
