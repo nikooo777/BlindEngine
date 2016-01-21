@@ -101,19 +101,37 @@ void Rubik::RotateFace(Face face, bool inverse)
 
 		BuildSceneGraph(animation_root, faces_to_swap);
 
-		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(0, 0, 1));
+		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), glm::vec3(0, 0, (!inverse ? -1 : 1)));
 		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
 		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
-		
+
 		BuildSceneGraph(cube_root, faces_to_swap);
 
-		index = 0;
-		for (int i = 0; i < 3; i++)
+		if (!inverse)
+		{
+			index = 0;
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					cube_faces_[2 - j][2][i] = faces_to_swap[index++]; // fixed
+		}
+		else
+		{
+			index = 0;
+			int tmp;
+			cube_faces_[0][2][2] = faces_to_swap[index++]; 
+			cube_faces_[1][2][1] = faces_to_swap[index++]; 
+			cube_faces_[2][2][2] = faces_to_swap[index++]; 
+
+			cube_faces_[0][2][1] = faces_to_swap[index++]; 
+			cube_faces_[1][2][1] = faces_to_swap[index++]; 
+			cube_faces_[2][2][2] = faces_to_swap[index++];
+
 			for (int j = 0; j < 3; j++)
-				cube_faces_[2 - j][2][i] = faces_to_swap[index++]; // fixed
+				cube_faces_[j][2][0] = faces_to_swap[index++];
+		}
 
 	}
-		break;
+	break;
 	case Rubik::R_FACE:
 		//y doesn't change
 	{
@@ -138,7 +156,7 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				cube_faces_[2][2 - j][i] = faces_to_swap[index++]; // fixed
 	}
-		break;
+	break;
 	case Rubik::D_FACE:
 		//y doesn't change
 	{
@@ -163,7 +181,7 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				cube_faces_[2 - j][0][i] = faces_to_swap[index++]; // fixed
 	}
-		break;
+	break;
 	case Rubik::L_FACE:
 		//x doesn't change
 	{
@@ -187,7 +205,7 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				cube_faces_[0][j][2 - i] = faces_to_swap[index++]; // Fixed
 	}
-		break;
+	break;
 	case Rubik::F_FACE:
 		//z doesn't change
 	{
@@ -211,7 +229,7 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				cube_faces_[j][2 - i][0] = faces_to_swap[index++]; // Fixed
 	}
-		break;
+	break;
 	case Rubik::B_FACE:
 		//z doesn't change
 	{
@@ -235,8 +253,8 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				cube_faces_[2 - j][i][2] = faces_to_swap[index++]; // Fixed
 	}
-		break;
-	case Rubik::N_FACE:
+	break;
+	case Rubik::M_FACE:
 		//z doesn't change
 	{
 		//gather the cubes to rotate
@@ -259,7 +277,7 @@ void Rubik::RotateFace(Face face, bool inverse)
 			for (int j = 0; j < 3; j++)
 				cube_faces_[1][2 - j][i] = faces_to_swap[index++]; // Fixed
 	}
-		break;
+	break;
 	default:
 		break;
 	}

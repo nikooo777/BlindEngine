@@ -15,7 +15,9 @@ public:
 		L_FACE,
 		F_FACE,
 		B_FACE,
-		N_FACE
+		M_FACE,
+		MF_FACE,
+		ML_FACE
 	}Face;
 
 	void RotateFace(Face face, bool inverse);
