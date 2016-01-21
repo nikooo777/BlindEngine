@@ -258,10 +258,6 @@ void LIB_API BElist::AddLight(BElight* light)
 	lights_.insert(std::pair<BElight*, glm::mat4>(light, glm::mat4(1)));
 }
 
-void LIB_API BElist::AddLight(BElight* light, glm::mat4 f)
-{
-	lights_.insert(std::pair<BElight*, glm::mat4>(light, f));
-}
 void LIB_API BElist::Pass(BElight* light, glm::mat4 world_coords)
 {
 	lights_.find(light)->second = world_coords;
@@ -273,11 +269,6 @@ void LIB_API BElist::Pass(BElight* light, glm::mat4 world_coords)
 void LIB_API BElist::AddCamera(BEcamera* camera)
 {
 	cameras_.insert(std::pair<BEcamera*, glm::mat4>(camera, glm::mat4(1)));
-}
-
-void LIB_API BElist::AddCamera(BEcamera* camera, glm::mat4 f)
-{
-	cameras_.insert(std::pair<BEcamera*, glm::mat4>(camera, f));
 }
 
 void LIB_API BElist::Pass(BEcamera* camera, glm::mat4 world_coords)

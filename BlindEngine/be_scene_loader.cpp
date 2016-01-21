@@ -146,12 +146,12 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 		else if ((tmp_camera = FindCamera(this_node->mName)) != nullptr)
 		{
 			std::cout << "A camera was found. Extracting..." << std::endl;
-			node = nullptr; // @Todo: Edit it -> Only for not crash
+			node = nullptr; 
 		}
 		else if ((tmp_animation = FindAnimation(this_node->mName)) != nullptr)
 		{
 			std::cout << "An animation was found in the tree but it's not supported." << std::endl;
-			node = nullptr; // @Todo: Edit it -> Only to avoid a crash
+			node = nullptr;
 		}
 		else if ((tmp_light = FindLight(this_node->mName)) != nullptr)
 		{
@@ -160,7 +160,6 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 		}
 		else
 		{
-			std::cout << "NodeHelper possible --> Something unknown in the tree was found." << std::endl;
 			const std::string name = std::string(this_node->mName.C_Str());
 			node = new BEnode(name, BEnode::ROOT);
 		}
