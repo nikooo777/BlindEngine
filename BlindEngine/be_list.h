@@ -34,7 +34,6 @@ public:
 	void AddMirrored(BEmesh*mesh);
 
 	// Shadows
-	void AddShadowed(BEmesh*mesh);
 	void RemoveShadowed(BEmesh*mesh);
 	void PassShadowed(BEmesh*mesh, glm::mat4 world_coords);
 
@@ -45,15 +44,11 @@ public:
 
 	// Mesh
 	void AddMesh(BEmesh*mesh);
-	void AddMesh(BEmesh*mesh, glm::mat4 f);
-	void AddMeshToMap(BEmesh*mesh);
-
-	void PushMesh(BEmesh* mesh);
 
 	void Pass(BEmesh*mesh, glm::mat4 world_coords);
 	BEmesh* GetMesh(unsigned int index);
 	//glm::mat4 GetMeshTransformation(BEmesh* mesh){ return meshes_.at(mesh); }
-	BEmesh* GetMeshByName(std::string name);
+	//BEmesh* GetMeshByName(std::string name);
 	unsigned int GetMeshCount();
 
 	// Light
@@ -89,5 +84,5 @@ private:
 	std::vector<BEmesh*> mesh_ordered_references_;
 
 	// Find utility
-	std::map<std::string, BEmesh*> meshes_by_name_;
+	//std::map<std::string, BEmesh*> meshes_by_name_;
 };

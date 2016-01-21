@@ -18,10 +18,14 @@ void specialCallback(int key, int mouseX, int mouseY)
 	{
 	case GLUT_KEY_UP:
 		(*engine->get_angles()).x -= speed;
+		if ((*engine->get_angles()).x < 0)
+			(*engine->get_angles()).x = 0;
 		break;
 
 	case GLUT_KEY_DOWN:
 		(*engine->get_angles()).x += speed;
+		if ((*engine->get_angles()).x > 180)
+			(*engine->get_angles()).x = 180;
 		break;
 
 	case GLUT_KEY_LEFT:
@@ -89,23 +93,25 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		break;
 	case 'q':
 	{
-		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -engine->GetDeltaPadding()));
+		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, engine->GetDeltaPadding()));
 		glm::mat4 new_translation = translation * rubik_root_node->GetTransformation();
 		rubik_root_node->SetTransformation(new_translation);
 		break;
 	}
 	case 'y':
 	{
-		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, engine->GetDeltaPadding()));
+		glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -engine->GetDeltaPadding()));
 		glm::mat4 new_translation = translation * rubik_root_node->GetTransformation();
 		rubik_root_node->SetTransformation(new_translation);
 		break;
 	}
 	case '+':
-		engine->SetDeltaPadding(engine->GetDeltaPadding() + 0.5f);
+		if(engine->GetDeltaPadding() < 50)
+			engine->SetDeltaPadding(engine->GetDeltaPadding() + 0.5f);
 		break;
 	case '-':
-		engine->SetDeltaPadding(engine->GetDeltaPadding() - 0.5f);
+		if (engine->GetDeltaPadding())
+			engine->SetDeltaPadding(engine->GetDeltaPadding() - 0.5f);
 		break;
 
 		/************************************************************************/
@@ -114,24 +120,56 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	case 'f':
 		cube->RotateFace(Rubik::F_FACE, false);
 		break;
+	case 'F':
+		cube->RotateFace(Rubik::F_FACE, true);
+		break;
 	case 'b':
 		cube->RotateFace(Rubik::B_FACE, false);
+		break;
+	case 'B':
+		cube->RotateFace(Rubik::B_FACE, true);
 		break;
 	case 'r':
 		cube->RotateFace(Rubik::R_FACE, false);
 		break;
+	case 'R':
+		cube->RotateFace(Rubik::R_FACE, true);
+		break;
 	case 'l':
 		cube->RotateFace(Rubik::L_FACE, false);
+		break;
+	case 'L':
+		cube->RotateFace(Rubik::L_FACE, true);
 		break;
 	case 'u':
 		cube->RotateFace(Rubik::U_FACE, false);
 		break;
-		//find something better than "ground". d should be the one used but it's already used, so either solve that or IDK
+	case 'U':
+		cube->RotateFace(Rubik::U_FACE, true);
+		break;
 	case 'g':
 		cube->RotateFace(Rubik::D_FACE, false);
 		break;
-	case 'n':
-		cube->RotateFace(Rubik::N_FACE, false);
+	case 'G':
+		cube->RotateFace(Rubik::D_FACE, true);
+		break;
+	case 'm':
+		cube->RotateFace(Rubik::M_FACE, false);
+		break;
+	case 'M':
+		cube->RotateFace(Rubik::M_FACE, true);
+		break;
+	case 'k':
+		cube->RotateFace(Rubik::MF_FACE, false);
+		break;
+	case 'K':
+		cube->RotateFace(Rubik::MF_FACE, true);
+		break;
+	case 'j':
+		cube->RotateFace(Rubik::ML_FACE, false);
+		break;
+	case 'J':
+		cube->RotateFace(Rubik::ML_FACE, true);
 		break;
 	case '1':
 	{
@@ -162,7 +200,6 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	}
 	break;
 	}
-	engine->set_node_selected(rubik_root_node->get_name());
 	engine->CalcTransformation();
 }
 
@@ -187,7 +224,7 @@ int main(int argc, char *argv[])
 	/* Init + Preferences
 	/************************************************************************/
 	engine->Init("BlindEngine - Rubik", 100, 100, 1024, 768, nullptr, argc, argv);
-	engine->SetDeltaPadding(5.f);
+	engine->SetDeltaPadding(2.f);
 	engine->SetKeyboardCallBack(keyboardCallback);
 	engine->SetSpecialCallBack(specialCallback);
 

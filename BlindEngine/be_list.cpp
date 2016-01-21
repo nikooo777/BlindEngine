@@ -90,13 +90,6 @@ void LIB_API BElist::AddMirrored(BEmesh*mesh)
 /************************************************************************/
 // Shadows
 /************************************************************************/
-void LIB_API BElist::AddShadowed(BEmesh*mesh)
-{
-	Mesh* mesh_to_add = new Mesh;
-	mesh_to_add->mesh_ = mesh;
-	mesh_to_add->world_coords_ = glm::mat4(1);
-	shadows_v_.push_back(mesh_to_add);
-}
 
 void BElist::PassShadowed(BEmesh*mesh, glm::mat4 world_coords)
 {
@@ -137,36 +130,20 @@ void LIB_API BElist::RemoveShadowed(BEmesh*mesh)
 void LIB_API BElist::AddMesh(BEmesh*mesh)
 {
 	mesh_ordered_references_.push_back(mesh);
-	AddMesh(mesh, glm::mat4(1));
-}
 
-void LIB_API BElist::AddMesh(BEmesh*mesh, glm::mat4 f)
-{
 	Mesh* mesh_to_add = new Mesh;
 	mesh_to_add->mesh_ = mesh;
-	mesh_to_add->world_coords_ = f;
+	mesh_to_add->world_coords_ = glm::mat4();
 	meshes_v_.push_back(mesh_to_add);
 
+	Mesh* mesh_shad = new Mesh;
+	memcpy(mesh_shad, mesh_to_add, sizeof(Mesh));
+
 	if(mesh->get_material() && !mesh->get_material()->IsTransparent())
-		AddShadowed(mesh);
+		shadows_v_.push_back(mesh_shad);
+		//AddShadowed(mesh);
 }
 
-void LIB_API BElist::AddMeshToMap(BEmesh* mesh)
-{
-	bool mesh_found = false;
-	for (auto m : meshes_v_)
-	{
-		if (m->mesh_ == mesh)
-		{
-			mesh_found = true;
-			break;
-		}
-	}
-	if (!mesh_found)
-	{
-		PushMesh(mesh);
-	}
-}
 
 void BElist::Pass(BEmesh*mesh, glm::mat4 world_coords)
 {
@@ -180,14 +157,6 @@ void BElist::Pass(BEmesh*mesh, glm::mat4 world_coords)
 	}
 }
 
-LIB_API BEmesh* BElist::GetMeshByName(std::string name)
-{
-	auto search = meshes_by_name_.find(name);
-	if (search != meshes_by_name_.end())
-		return search->second;
-	else
-		return nullptr;
-}
 
 LIB_API void BElist::DeepSort()
 {
@@ -341,14 +310,4 @@ unsigned int BElist::GetMeshCount()
 	return meshes_v_.size();
 }
 
-void BElist::PushMesh(BEmesh* mesh)
-{
-	Mesh* mesh_to_add = new Mesh;
-	mesh_to_add->mesh_ = mesh;
-	mesh_to_add->world_coords_ = glm::mat4();
-	meshes_v_.push_back(mesh_to_add);
-
-	if (mesh->get_material() && !mesh->get_material()->IsTransparent())
-		AddShadowed(mesh);
-}
 
