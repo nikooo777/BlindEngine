@@ -85,7 +85,7 @@ void BEmesh::CalcTransformation(glm::mat4 world_matrix)
 
 	if (to_shadow_)
 	{
-		glm::mat4 scaled = world_matrix * glm::translate(glm::mat4(), glm::vec3(.0f, .0f, glm::inverse(GetParent()->GetTransformation())[3].z))*  glm::scale(glm::mat4(1), glm::vec3(1.1, 1.1, 0)) * transformation_;
+		glm::mat4 scaled = world_matrix * glm::translate(glm::mat4(), glm::vec3(.0f, .0f, .01f+glm::inverse(GetParent()->GetTransformation())[3].z))*  glm::scale(glm::mat4(1), glm::vec3(1.1, 1.1, 0)) * transformation_;
 		BEengine::lists_->PassShadowed(this, scaled);
 	}
 
