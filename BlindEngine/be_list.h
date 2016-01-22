@@ -25,7 +25,7 @@ public:
 	void RenderOpaqueMeshes();
 	void RenderReflectedMeshes();
 	void RenderLights();
-	void RenderCameras();
+	//void RenderCameras();
 	void RenderMirrored();
 	void RenderShadows();
 
@@ -54,8 +54,8 @@ public:
 	void Pass(BElight* light, glm::mat4 world_coords);
 
 	// Camera
-	void AddCamera(BEcamera* camera);
-	void Pass(BEcamera* camera, glm::mat4 world_coords);
+	/*void AddCamera(BEcamera* camera);
+	void Pass(BEcamera* camera, glm::mat4 world_coords);*/
 
 	void DeepSort();
 

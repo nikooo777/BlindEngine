@@ -5,11 +5,13 @@
 class Rubik
 {
 public:
+	static Rubik* cube;
+
 	Rubik(BEnode*);
 	~Rubik();
 	typedef enum Face
 	{
-		U_FACE,
+		U_FACE = 0,
 		R_FACE,
 		D_FACE,
 		L_FACE,
@@ -17,16 +19,23 @@ public:
 		B_FACE,
 		M_FACE,
 		MF_FACE,
-		ML_FACE
+		ML_FACE,
+		FACE_MAX
 	}Face;
 
-	void RotateFace(Face face, bool inverse);
-	void SetupAnimation(BEnode** faces_to_swap, glm::vec3 axis);
+	typedef struct Step
+	{
+		Face face;
+		bool inverted;
+	}Step;
 
-	//void PushBackFace(BEnode** faces_to_swap, BEnode* rotation_helper);
-	//void RelinkCubes(BEnode** faces_to_swap, BEnode* rotation_helper);
+	void RotateFace(Face face, bool inverted, bool fast_animation = false);
+	void SetupAnimation(BEnode** faces_to_swap, glm::vec3 axis, bool fast_animation = false);
 	void BuildSceneGraph(BEnode* rotation_helper, BEnode** faces_to_swap);
 	void RestoreSceneGraph(BEnode* parent, BEnode** faces_to_swap);
+
+	void ShuffleCube();
+	void SolveCube();
 private:
 	/*
 	*	    .+------+	UP: GREEN
@@ -61,5 +70,7 @@ private:
 
 	BEnode* cube_faces_[3][3][3];
 	BEnode* cube_root_;
+	
+	std::vector<Face> movements_;
 };
 

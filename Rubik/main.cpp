@@ -58,7 +58,6 @@ void specialCallback(int key, int mouseX, int mouseY)
 void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 {
 	static BEnode* rubik_root_node = BEnode::GetSuperRoot()->Find("Rubik_Downloaded");
-	static Rubik* cube = new Rubik(rubik_root_node);
 	BEengine* engine = BEengine::GetInstance();
 	switch (key)
 	{
@@ -118,58 +117,58 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		/* Cube controls                                                        */
 		/************************************************************************/
 	case 'f':
-		cube->RotateFace(Rubik::F_FACE, false);
+		Rubik::cube->RotateFace(Rubik::F_FACE, false);
 		break;
 	case 'F':
-		cube->RotateFace(Rubik::F_FACE, true);
+		Rubik::cube->RotateFace(Rubik::F_FACE, true);
 		break;
 	case 'b':
-		cube->RotateFace(Rubik::B_FACE, false);
+		Rubik::cube->RotateFace(Rubik::B_FACE, false);
 		break;
 	case 'B':
-		cube->RotateFace(Rubik::B_FACE, true);
+		Rubik::cube->RotateFace(Rubik::B_FACE, true);
 		break;
 	case 'r':
-		cube->RotateFace(Rubik::R_FACE, false);
+		Rubik::cube->RotateFace(Rubik::R_FACE, false);
 		break;
 	case 'R':
-		cube->RotateFace(Rubik::R_FACE, true);
+		Rubik::cube->RotateFace(Rubik::R_FACE, true);
 		break;
 	case 'l':
-		cube->RotateFace(Rubik::L_FACE, false);
+		Rubik::cube->RotateFace(Rubik::L_FACE, false);
 		break;
 	case 'L':
-		cube->RotateFace(Rubik::L_FACE, true);
+		Rubik::cube->RotateFace(Rubik::L_FACE, true);
 		break;
 	case 'u':
-		cube->RotateFace(Rubik::U_FACE, false);
+		Rubik::cube->RotateFace(Rubik::U_FACE, false);
 		break;
 	case 'U':
-		cube->RotateFace(Rubik::U_FACE, true);
+		Rubik::cube->RotateFace(Rubik::U_FACE, true);
 		break;
 	case 'g':
-		cube->RotateFace(Rubik::D_FACE, false);
+		Rubik::cube->RotateFace(Rubik::D_FACE, false);
 		break;
 	case 'G':
-		cube->RotateFace(Rubik::D_FACE, true);
+		Rubik::cube->RotateFace(Rubik::D_FACE, true);
 		break;
 	case 'm':
-		cube->RotateFace(Rubik::M_FACE, false);
+		Rubik::cube->RotateFace(Rubik::M_FACE, false);
 		break;
 	case 'M':
-		cube->RotateFace(Rubik::M_FACE, true);
+		Rubik::cube->RotateFace(Rubik::M_FACE, true);
 		break;
 	case 'k':
-		cube->RotateFace(Rubik::MF_FACE, false);
+		Rubik::cube->RotateFace(Rubik::MF_FACE, false);
 		break;
 	case 'K':
-		cube->RotateFace(Rubik::MF_FACE, true);
+		Rubik::cube->RotateFace(Rubik::MF_FACE, true);
 		break;
 	case 'j':
-		cube->RotateFace(Rubik::ML_FACE, false);
+		Rubik::cube->RotateFace(Rubik::ML_FACE, false);
 		break;
 	case 'J':
-		cube->RotateFace(Rubik::ML_FACE, true);
+		Rubik::cube->RotateFace(Rubik::ML_FACE, true);
 		break;
 	case '1':
 	{
@@ -199,6 +198,12 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 			light->SetDiffuse(glm::vec3(.9f, .9f, .9f));
 	}
 	break;
+	case ' ':
+		Rubik::cube->ShuffleCube();
+		break;
+	case 'p':
+		Rubik::cube->SolveCube();
+		break;
 	}
 	engine->CalcTransformation();
 }
@@ -241,6 +246,8 @@ int main(int argc, char *argv[])
 	/************************************************************************/
 	/* Init Rubik's cube
 	/************************************************************************/
+	Rubik::cube = new Rubik(BEnode::GetSuperRoot()->Find("Rubik_Downloaded"));
+
 	BEmaterial* plane = ((BEmesh*)BEnode::GetSuperRoot()->Find("MarmSurface"))->get_material();
 	plane->SetTransparency(0.6f);
 	RemoveShadow((BEmesh*)BEnode::GetSuperRoot()->Find("MarmSurface"));

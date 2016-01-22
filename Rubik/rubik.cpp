@@ -1,12 +1,20 @@
 #include "rubik.h"
+#include <time.h>
 
 //////////////////////////////////////////////////////////////////////////
 // Animations
 #define DURATION_ANIMATION 750
 #define LOOP_TIMER_ANIMATION 50
+#define DURATION_FAST_ANIMATION 100
+#define LOOP_TIMER_FAST_ANIMATION 10
 BEnode* animation_root = nullptr;
 glm::mat4 animation_transformation = glm::mat4(1);
 unsigned int animation_count_left = 0;
+
+bool should_shuffle = false;
+bool solving = false;
+std::vector<Rubik::Step> shuffle_movements_;
+std::vector<Rubik::Step> solve_movements_;
 
 void Animation(int value)
 {
@@ -21,10 +29,36 @@ void Animation(int value)
 	else
 	{
 		delete animation_root;
+
+		if (should_shuffle)
+		{
+			shuffle_movements_.pop_back();
+			if (shuffle_movements_.size() > 0)
+			{
+				Rubik::cube->RotateFace(shuffle_movements_.back().face, shuffle_movements_.back().inverted, true);
+			}
+			else
+			{
+				should_shuffle = false;
+			}
+		}
+
+		if (solving)
+		{
+			solve_movements_.pop_back();
+			if (solve_movements_.size()>0)
+			{
+				Rubik::cube->RotateFace(solve_movements_.back().face, solve_movements_.back().inverted, true);
+			}
+			else
+			{
+				solving = false;
+			}
+		}
 	}
 }
 //////////////////////////////////////////////////////////////////////////
-
+Rubik* Rubik::cube = nullptr;
 
 Rubik::Rubik(BEnode* cube_root)
 {
@@ -75,9 +109,9 @@ Rubik::~Rubik()
 }
 
 
-void Rubik::RotateFace(Face face, bool inverted)
+void Rubik::RotateFace(Face face, bool inverted, bool fast_animation)
 {
-	if (animation_count_left > 0){
+	if (animation_count_left > 0 || ((should_shuffle || solving) && !fast_animation)){
 		std::cout << "Animation in progress... input not allowed" << std::endl;
 		return;
 	}
@@ -97,7 +131,7 @@ void Rubik::RotateFace(Face face, bool inverted)
 
 		// Setup the animation
 		glm::vec3 axis = glm::vec3(0, 0, (!inverted ? -1 : 1));
-		SetupAnimation(faces_to_swap, axis);
+		SetupAnimation(faces_to_swap, axis, fast_animation);
 
 		// Updating the position of each cube in our 3x3 matrix
 		index = 0;
@@ -126,7 +160,7 @@ void Rubik::RotateFace(Face face, bool inverted)
 
 		// Setup the animation
 		glm::vec3 axis = glm::vec3((!inverted ? -1 : 1), 0, 0);
-		SetupAnimation(faces_to_swap, axis);
+		SetupAnimation(faces_to_swap, axis, fast_animation);
 
 		// Updating the position of each cube in our 3x3 matrix
 		index = 0;
@@ -154,7 +188,7 @@ void Rubik::RotateFace(Face face, bool inverted)
 
 		// Setup the animation
 		glm::vec3 axis = glm::vec3(0, 0, (!inverted ? 1 : -1));
-		SetupAnimation(faces_to_swap, axis);
+		SetupAnimation(faces_to_swap, axis, fast_animation);
 
 		// Updating the position of each cube in our 3x3 matrix
 		index = 0;
@@ -182,7 +216,7 @@ void Rubik::RotateFace(Face face, bool inverted)
 
 		// Setup the animation
 		glm::vec3 axis = glm::vec3((!inverted ? 1 : -1), 0, 0);
-		SetupAnimation(faces_to_swap, axis);
+		SetupAnimation(faces_to_swap, axis, fast_animation);
 
 		// Updating the position of each cube in our 3x3 matrix
 		index = 0;
@@ -210,7 +244,7 @@ void Rubik::RotateFace(Face face, bool inverted)
 
 		// Setup the animation
 		glm::vec3 axis = glm::vec3(0, (!inverted ? 1 : -1), 0);
-		SetupAnimation(faces_to_swap, axis);
+		SetupAnimation(faces_to_swap, axis, fast_animation);
 
 		// Updating the position of each cube in our 3x3 matrix
 		index = 0;
@@ -238,7 +272,7 @@ void Rubik::RotateFace(Face face, bool inverted)
 
 		// Setup the animation
 		glm::vec3 axis = glm::vec3(0, (!inverted ? -1 : 1), 0);
-		SetupAnimation(faces_to_swap, axis);
+		SetupAnimation(faces_to_swap, axis, fast_animation);
 
 		// Updating the position of each cube in our 3x3 matrix
 		index = 0;
@@ -266,7 +300,7 @@ void Rubik::RotateFace(Face face, bool inverted)
 
 		// Setup the animation
 		glm::vec3 axis = glm::vec3((!inverted ? -1 : 1), 0, 0);
-		SetupAnimation(faces_to_swap, axis);
+		SetupAnimation(faces_to_swap, axis, fast_animation);
 
 		// Updating the position of each cube in our 3x3 matrix
 		index = 0;
@@ -294,7 +328,7 @@ void Rubik::RotateFace(Face face, bool inverted)
 
 		// Setup the animation
 		glm::vec3 axis = glm::vec3(0, 0, (!inverted ? 1 : -1));
-		SetupAnimation(faces_to_swap, axis);
+		SetupAnimation(faces_to_swap, axis, fast_animation);
 
 		// Updating the position of each cube in our 3x3 matrix
 		index = 0;
@@ -322,7 +356,7 @@ void Rubik::RotateFace(Face face, bool inverted)
 
 		// Setup the animation
 		glm::vec3 axis = glm::vec3(0, (!inverted ? 1 : -1), 0);
-		SetupAnimation(faces_to_swap, axis);
+		SetupAnimation(faces_to_swap, axis, fast_animation);
 
 		// Updating the position of each cube in our 3x3 matrix
 		index = 0;
@@ -343,6 +377,14 @@ void Rubik::RotateFace(Face face, bool inverted)
 	default:
 		break;
 	}
+
+	if (!solving)
+	{
+		Step tmp;
+		tmp.face = face;
+		tmp.inverted = !inverted;
+		solve_movements_.push_back(tmp);
+	}
 }
 
 
@@ -352,7 +394,7 @@ void Rubik::RotateFace(Face face, bool inverted)
  *
  * @param	BEnode** faces_to_swap, glm::vec3 axis
  ************************************/
-void Rubik::SetupAnimation(BEnode** faces_to_swap, glm::vec3 axis)
+void Rubik::SetupAnimation(BEnode** faces_to_swap, glm::vec3 axis, bool fast_animation)
 {
 	// Temporary save the parent of the cubes (every cube has same parent: the center of cube)
 	BEnode* cube_root = faces_to_swap[4]->GetParent();
@@ -360,11 +402,22 @@ void Rubik::SetupAnimation(BEnode** faces_to_swap, glm::vec3 axis)
 	// Adding faces to swap to the "virtual animation root"
 	BuildSceneGraph(animation_root, faces_to_swap);
 
-	// Setup the rotate-transformation
-	animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), axis);
-	animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
-	// Call the function for the animation
-	BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
+	if (fast_animation)
+	{
+		// Setup the rotate-transformation
+		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_FAST_ANIMATION) / ((float)DURATION_FAST_ANIMATION), axis);
+		animation_count_left = DURATION_FAST_ANIMATION / LOOP_TIMER_FAST_ANIMATION;
+		// Call the function for the animation
+		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_FAST_ANIMATION);
+	}
+	else
+	{
+		// Setup the rotate-transformation
+		animation_transformation = glm::rotate(glm::mat4(1), glm::half_pi<float>() * ((float)LOOP_TIMER_ANIMATION) / ((float)DURATION_ANIMATION), axis);
+		animation_count_left = DURATION_ANIMATION / LOOP_TIMER_ANIMATION;
+		// Call the function for the animation
+		BEengine::GetInstance()->AddTimerCallBack(Animation, LOOP_TIMER_ANIMATION);
+	}
 
 	// Restoring previous parent of faces_to_swap
 	RestoreSceneGraph(cube_root, faces_to_swap);
@@ -390,4 +443,56 @@ void Rubik::RestoreSceneGraph(BEnode* parent, BEnode** faces_to_swap)
 	}
 }
 
+void Rubik::ShuffleCube()
+{
+	if (should_shuffle || solving)
+	{
+		std::cout << "Busy... " << std::endl;
+		return;
+	}
+
+	should_shuffle = true;
+
+	Face all_faces[FACE_MAX] = {
+		U_FACE,
+		R_FACE,
+		D_FACE,
+		L_FACE,
+		F_FACE,
+		B_FACE,
+		M_FACE,
+		MF_FACE,
+		ML_FACE };
+
+	srand(time(0));
+
+	for (int i = 0; i < 10; i++)
+	{
+		Step tmp;
+		tmp.face = all_faces[(rand() % FACE_MAX + 1) - 1];
+		tmp.inverted = rand() % 2 == 1;
+
+		shuffle_movements_.push_back(tmp);
+	}
+
+	Rubik::cube->RotateFace(shuffle_movements_.back().face, shuffle_movements_.back().inverted, true);
+}
+
+void Rubik::SolveCube()
+{
+	if (solving || should_shuffle)
+	{
+		std::cout << "Busy... " << std::endl;
+		return;
+	}
+
+	if (solve_movements_.size() == 0)
+	{
+		std::cout << "Nothing to solve..." << std::endl;
+		return;
+	}
+	solving = true;
+
+	Rubik::cube->RotateFace(solve_movements_.back().face, solve_movements_.back().inverted, true);
+}
 

@@ -16,7 +16,7 @@ void LIB_API BElist::RenderAll()
 {
 	RenderLights();
 	RenderMeshes();
-	RenderCameras();
+	//RenderCameras();
 }
 
 void LIB_API BElist::RenderMeshes()
@@ -55,14 +55,13 @@ void LIB_API BElist::RenderLights()
 	}
 }
 
-void LIB_API BElist::RenderCameras()
-{
-	for (const auto& pair : cameras_)
-	{
-		pair.first->Render(pair.second);
-	}
-}
-
+//void LIB_API BElist::RenderCameras()
+//{
+//	for (const auto& pair : cameras_)
+//	{
+//		pair.first->Render(pair.second);
+//	}
+//}
 
 /************************************************************************/
 // Mirrored
@@ -267,15 +266,15 @@ void LIB_API BElist::Pass(BElight* light, glm::mat4 world_coords)
 /************************************************************************/
 // Camera
 /************************************************************************/
-void LIB_API BElist::AddCamera(BEcamera* camera)
-{
-	cameras_.insert(std::pair<BEcamera*, glm::mat4>(camera, glm::mat4(1)));
-}
-
-void LIB_API BElist::Pass(BEcamera* camera, glm::mat4 world_coords)
-{
-	cameras_.find(camera)->second = world_coords;
-}
+//void LIB_API BElist::AddCamera(BEcamera* camera)
+//{
+//	cameras_.insert(std::pair<BEcamera*, glm::mat4>(camera, glm::mat4(1)));
+//}
+//
+//void LIB_API BElist::Pass(BEcamera* camera, glm::mat4 world_coords)
+//{
+//	cameras_.find(camera)->second = world_coords;
+//}
 
 BEmesh* BElist::GetMesh(unsigned int index)
 {
