@@ -13,12 +13,13 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-g" />
 					<Add option="-std=c++11" />
+					<Add option="-g" />
 					<Add option="-fPIC" />
 				</Compiler>
 				<Linker>
-					<Add library="../bin/Debug/BlindEngine.so" />
+					<Add option="-Wl,-R./" />
+					<Add library="BlindEngine" />
 					<Add directory="../bin/Debug" />
 				</Linker>
 			</Target>
@@ -34,7 +35,8 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="../bin/Release/BlindEngine.so" />
+					<Add option="-Wl,-R./" />
+					<Add library="BlindEngine" />
 					<Add directory="../bin/Release" />
 				</Linker>
 			</Target>
