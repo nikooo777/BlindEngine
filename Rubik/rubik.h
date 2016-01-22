@@ -23,13 +23,19 @@ public:
 		FACE_MAX
 	}Face;
 
+	typedef struct Step
+	{
+		Face face;
+		bool inverted;
+	}Step;
+
 	void RotateFace(Face face, bool inverted, bool fast_animation = false);
 	void SetupAnimation(BEnode** faces_to_swap, glm::vec3 axis, bool fast_animation = false);
 	void BuildSceneGraph(BEnode* rotation_helper, BEnode** faces_to_swap);
 	void RestoreSceneGraph(BEnode* parent, BEnode** faces_to_swap);
 
 	void ShuffleCube();
-
+	void SolveCube();
 private:
 	/*
 	*	    .+------+	UP: GREEN

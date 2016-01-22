@@ -201,6 +201,9 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	case ' ':
 		Rubik::cube->ShuffleCube();
 		break;
+	case 'p':
+		Rubik::cube->SolveCube();
+		break;
 	}
 	engine->CalcTransformation();
 }
