@@ -23,7 +23,7 @@ BEsceneLoader::~BEsceneLoader()
 */
 BEnode*  BEsceneLoader::LoadScene(char * scene_path)
 {
-	std::cout << "loading scene located in:" << scene_path << std::endl;
+	std::cout << "loading scene located in: " << scene_path << std::endl;
 	scene_ = (aiScene *)importer_.ReadFile(scene_path, aiProcess_Triangulate);
 	if (scene_ == nullptr)
 	{
@@ -74,12 +74,11 @@ BEnode*  BEsceneLoader::LoadScene(char * scene_path)
 		std::map<std::string, GLuint> textureIdMap;
 
 		/* scan scene's materials for textures */
-		for (unsigned int m = 0; m < scene_->mNumMaterials; ++m)
-		{
+
 			int texIndex = 0;
 			aiString path;  // filename
 
-			aiReturn texFound = scene_->mMaterials[m]->GetTexture(aiTextureType_DIFFUSE, texIndex, &path);
+			aiReturn texFound = scene_->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, texIndex, &path);
 			while (texFound == AI_SUCCESS)
 			{
 				std::cout << "   " << "\tTexture: " << path.C_Str() << std::endl;
@@ -87,9 +86,9 @@ BEnode*  BEsceneLoader::LoadScene(char * scene_path)
 				textureIdMap[path.data] = 0;
 				// more textures?
 				texIndex++;
-				texFound = scene_->mMaterials[m]->GetTexture(aiTextureType_DIFFUSE, texIndex, &path);
+				texFound = scene_->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, texIndex, &path);
 			}
-		}
+		
 	}
 
 	std::cout << std::endl << "***********MESHES**************" << std::endl;
@@ -119,13 +118,6 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 {
 	BEnode *node; // To change: Added only for compiling
 
-	//std::cout << "   mName : " << this_node->mName.C_Str() << std::endl;
-	//std::cout << "   mChildren : " << this_node->mChildren << std::endl;
-	//std::cout << "   mNumChildren : " << this_node->mNumChildren << std::endl;
-	//std::cout << "   mNumMeshes : " << this_node->mNumMeshes << std::endl;
-	//std::cout << "   mParent : " << this_node->mParent << std::endl;
-	//std::cout << "   mTransformation : " << this_node->mTransformation[0][0] << std::endl;
-
 	// If parent isn't null, search wich type of node it is
 	if (parent != nullptr)
 	{
@@ -145,7 +137,8 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 		}
 		else if ((tmp_camera = FindCamera(this_node->mName)) != nullptr)
 		{
-			std::cout << "A camera was found. Extracting..." << std::endl;
+			//std::cout << "A camera was found. Extracting..." << std::endl;
+			std::cout << "A camera was found in the tree but it's not supported." << std::endl;
 			node = nullptr; 
 		}
 		else if ((tmp_animation = FindAnimation(this_node->mName)) != nullptr)
@@ -155,7 +148,7 @@ BEnode* BEsceneLoader::BuildScene(aiNode* root, BEnode* parent, aiNode* this_nod
 		}
 		else if ((tmp_light = FindLight(this_node->mName)) != nullptr)
 		{
-			std::cout << "A light was found. Extracting..." << std::endl;
+			//std::cout << "A light was found. Extracting..." << std::endl;
 			node = ExtractLight(tmp_light);
 		}
 		else

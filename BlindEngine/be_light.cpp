@@ -37,7 +37,6 @@ BElight::BElight(const LightType type, const std::string name, glm::vec4 ambient
 	case SPOTLIGHT:
 		//slide 39 of cg_opengl.pdf
 		position_ = glm::vec4(position, 1.f);;
-		std::cout << glm::to_string(direction) << std::endl;
 		break;
 	}
 }

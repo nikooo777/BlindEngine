@@ -29,7 +29,7 @@ void BEtexture::Render(glm::mat4 world_matrix)
 void BEtexture::LoadTexture(std::string path, std::string name)
 {
 
-	std::cout << "Loading a texture at path: " << path << "with name: " << name << std::endl;
+	//std::cout << "Loading a texture at path: " << path << "with name: " << name << std::endl;
 	std::string full_path = path + name;
 
 	// Load an image from file:
