@@ -52,16 +52,16 @@ public:
 	void SetKeyboardCallBack(void(*callback)(unsigned char key, int mouseX, int mouseY));
 	void SetSpecialCallBack(void(*callback)(int key, int mouseX, int mouseY));
 	inline float GetDeltaZoom(){ return delta_zoom_; }
-	std::string get_node_selected();
-	void set_node_selected(std::string name);
 	static BElist* lists_;
 	float* get_fps();
 	float * get_distance();
 	int * get_frames();
 	Angles* get_angles();
 	void PrintTextInfo();
+
+	void AddText(std::string text){ text_.push_back(text); }
+
 private:
-	std::string node_selected_;
 	static BEengine* instance_;
 	int window_id_;
 	bool initialized_ = false;
@@ -78,4 +78,6 @@ private:
 	float fps_;
 	BEengine();
 	~BEengine();
+
+	std::vector<std::string> text_;
 };

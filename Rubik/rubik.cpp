@@ -3,10 +3,10 @@
 
 //////////////////////////////////////////////////////////////////////////
 // Animations
-#define DURATION_ANIMATION 750
-#define LOOP_TIMER_ANIMATION 50
-#define DURATION_FAST_ANIMATION 100
-#define LOOP_TIMER_FAST_ANIMATION 10
+#define DURATION_ANIMATION 500
+#define LOOP_TIMER_ANIMATION 25
+#define DURATION_FAST_ANIMATION 75
+#define LOOP_TIMER_FAST_ANIMATION 5
 BEnode* animation_root = nullptr;
 glm::mat4 animation_transformation = glm::mat4(1);
 unsigned int animation_count_left = 0;

@@ -258,7 +258,6 @@ int LIB_API BEengine::Start()
 
 	if (BEengine::initialized_)
 	{
-		node_selected_ = std::string("none or default");
 		BEengine::GetInstance()->CalcTransformation();
 
 		// Enter the main FreeGLUT processing loop:
@@ -317,15 +316,6 @@ void LIB_API BEengine::SetOrtho(glm::mat4 ortho)
 	ortho_ = ortho;
 }
 
-std::string BEengine::get_node_selected()
-{
-	return node_selected_;
-}
-
-void BEengine::set_node_selected(std::string name)
-{
-	node_selected_ = name;
-}
 
 //rendering distance pointer (modifiable)
 float * BEengine::get_distance()
@@ -358,23 +348,28 @@ void BEengine::PrintTextInfo()
 	glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
 
-	float go_up = 10.0f;
+	
 	static float delta = 20.0f;
+	float go_up = 10.0f - delta/2;
 
 	// Write some text:
-	char text[64];
+	char text[255];
 
-	snprintf(text, sizeof text, "FPS: %.1f", fps_);
-	glRasterPos2f(1.0f, go_up);
-	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
-
-	snprintf(text, sizeof text, "Selected: %s", node_selected_.c_str());
-	glRasterPos2f(1.0f, go_up += delta);
-	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
+	for (auto tex : text_)
+	{
+		snprintf(text, sizeof text, "%s", tex.c_str());
+		glRasterPos2f(1.0f, go_up += delta);
+		glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
+	}
 
 	snprintf(text, sizeof text, "Speed Padding: %.2f", delta_padding_);
 	glRasterPos2f(1.0f, go_up += delta);
 	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
+
+	snprintf(text, sizeof text, "FPS: %.1f", fps_);
+	glRasterPos2f(1.0f, go_up += delta);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
+
 
 
 	// Redo ligting:
