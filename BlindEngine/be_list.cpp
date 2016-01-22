@@ -54,6 +54,7 @@ void LIB_API BElist::RenderLights()
 		pair.first->Render(pair.second);
 	}
 }
+
 void LIB_API BElist::RenderCameras()
 {
 	for (const auto& pair : cameras_)
@@ -104,7 +105,7 @@ void BElist::PassShadowed(BEmesh*mesh, glm::mat4 world_coords)
 }
 
 
-void LIB_API BElist::RemoveShadowed(BEmesh*mesh)
+void LIB_API BElist::RemoveShadows(BEmesh*mesh)
 {
 	unsigned int i = 0;
 	bool found = false;
@@ -165,10 +166,10 @@ LIB_API void BElist::DeepSort()
 		return a->world_coords_[3].z > b->world_coords_[3].z;
 	});
 
-	std::sort(mirrored_v_.begin(), mirrored_v_.end(), [](Mesh* a, Mesh* b)
+	/*std::sort(mirrored_v_.begin(), mirrored_v_.end(), [](Mesh* a, Mesh* b)
 	{
 		return a->world_coords_[3].z > b->world_coords_[3].z;
-	});
+	});*/
 }
 
 void BElist::RenderOpaqueMeshes()

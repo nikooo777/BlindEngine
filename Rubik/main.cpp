@@ -211,7 +211,7 @@ void AddReflection(BEmesh*mesh)
 
 void RemoveShadow(BEmesh*mesh)
 {
-	BEengine::GetInstance()->lists_->RemoveShadowed(mesh);
+	BEengine::GetInstance()->lists_->RemoveShadows(mesh);
 	mesh->SetIsShadowed(false);
 }
 

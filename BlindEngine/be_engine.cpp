@@ -221,7 +221,7 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 
 	// Create the window with a specific title:
-	window_id_ = glutCreateWindow(window_name);
+	window_id_ = glutCreateWindow(window_name); //OpenGL context is initialized at this point
 
 	// Set callback functions:
 	glutDisplayFunc(displayCallback);

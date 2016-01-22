@@ -34,7 +34,7 @@ public:
 	void AddMirrored(BEmesh*mesh);
 
 	// Shadows
-	void RemoveShadowed(BEmesh*mesh);
+	void RemoveShadows(BEmesh*mesh);
 	void PassShadowed(BEmesh*mesh, glm::mat4 world_coords);
 
 	// Material
