@@ -232,7 +232,24 @@ int main(int argc, char *argv[])
 	engine->SetDeltaPadding(2.f);
 	engine->SetKeyboardCallBack(keyboardCallback);
 	engine->SetSpecialCallBack(specialCallback);
+	
+	// Set text
+	engine->AddText("(Hold SHIFT to inverse the move)");
+	engine->AddText("[m] Middle, [k] Middle_Front, [j] Middle_Left");
+	engine->AddText("[l] Left, [f] Front, [b] Back");
+	engine->AddText("[u] Up, [g] Down, [r] Right");
+	engine->AddText("Commands:");
+	engine->AddText(" ");
 
+	engine->AddText("[3]/[4] Omni dark/bright");
+	engine->AddText("[1]/[2] Toggle Spot1/2");
+	engine->AddText("Lights:");
+	engine->AddText(" ");
+
+	engine->AddText("[p] Solve the Cube");
+	engine->AddText("[SPACE] Generate 10 random moves");
+	engine->AddText("Utility:");
+	engine->AddText(" ");
 
 	/************************************************************************/
 	/* Load scenes
