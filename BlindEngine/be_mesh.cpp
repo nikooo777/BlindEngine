@@ -23,6 +23,22 @@ BEmesh::BEmesh(std::string name, glm::vec3* vertices, long vertices_count, glm::
 
 	if (material_ && material_->IsTransparent())
 		to_shadow_ = false;
+	
+	
+
+	glGenBuffers(1, &vertex_vbo_);
+	glBindBuffer(GL_ARRAY_BUFFER, vertex_vbo_);
+	glBufferData(GL_ARRAY_BUFFER, vertices_count * 3 * sizeof(float), texture_coords_, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &normal_vbo_);
+	glBindBuffer(GL_ARRAY_BUFFER, normal_vbo_);
+	glBufferData(GL_ARRAY_BUFFER, vertices_count * 3 * sizeof(float), normals_, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &texture_vbo_);
+	glBindBuffer(GL_ARRAY_BUFFER, texture_vbo_);
+	glBufferData(GL_ARRAY_BUFFER, vertices_count * 2 * sizeof(float), texture_coords_, GL_STATIC_DRAW);
+
+
 }
 
 BEmesh::~BEmesh()
@@ -31,6 +47,9 @@ BEmesh::~BEmesh()
 	delete[] normals_;
 	delete[] texture_coords_;
 	delete[] material_;
+	glDeleteBuffers(1, &vertex_vbo_);
+	glDeleteBuffers(1, &normal_vbo_);
+	glDeleteBuffers(1, &texture_vbo_);
 }
 
 void BEmesh::Render(glm::mat4 world_matrix)
@@ -47,15 +66,35 @@ void BEmesh::Render(glm::mat4 world_matrix)
 		material_->Render(world_matrix);
 	}
 
+	/*
 	glBegin(GL_TRIANGLES);
 	for (unsigned int i = 0; i < vertices_count_; i++)
 	{
-		glNormal3fv(glm::value_ptr(normals_[i]));
-		glTexCoord2fv(glm::value_ptr(texture_coords_[i]));
-		glVertex3fv(glm::value_ptr(vertices_[i]));
+	glNormal3fv(glm::value_ptr(normals_[i]));
+	glTexCoord2fv(glm::value_ptr(texture_coords_[i]));
+	glVertex3fv(glm::value_ptr(vertices_[i]));
 	}
 	glEnd();
+	*/
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
+	glBindBuffer(GL_ARRAY_BUFFER, vertex_vbo_);
+	glVertexPointer(3, GL_FLOAT, 0, nullptr);
+
+	glBindBuffer(GL_ARRAY_BUFFER, normal_vbo_);
+	glNormalPointer(GL_FLOAT, 0, nullptr);
+
+	glBindBuffer(GL_ARRAY_BUFFER, texture_vbo_);
+	glTexCoordPointer(2, GL_FLOAT, 0, nullptr);
+
+	glDrawArrays(GL_TRIANGLES, 0, vertices_count_);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	
 	for (unsigned int i = 0; i < sub_meshes_count_; i++)
 	{
 		BEmesh* tmp_mesh = BEengine::lists_->GetMesh(sub_meshes_[i]);

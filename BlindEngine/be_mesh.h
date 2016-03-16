@@ -50,4 +50,9 @@ private:
 	bool to_mirror_ = false;
 	bool to_shadow_ = true;
 	bool shadow_render_ = false;
+
+	// Vertex buffers:
+	unsigned int vertex_vbo_;
+	unsigned int normal_vbo_;
+	unsigned int texture_vbo_;
 };
