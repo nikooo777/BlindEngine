@@ -216,6 +216,19 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 
 	FreeImage_Initialise();
 
+	//glew initialization
+	glewExperimental = GL_TRUE;
+
+	if (GLEW_OK != glewInit())
+	{
+		std::cout << "Error loading glew! Not supported" << std::endl;
+	}
+
+	if (!glewIsSupported("GL_VERSION_2_1"))
+	{
+		std::cout << "Error: required openGL version not supported!" << std::endl;
+	}
+
 
 	// Set some optional flags:
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);

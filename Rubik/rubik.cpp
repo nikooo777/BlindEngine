@@ -464,7 +464,7 @@ void Rubik::ShuffleCube()
 		MF_FACE,
 		ML_FACE };
 
-	srand(time(0));
+	srand((unsigned int)time(NULL));
 
 	for (int i = 0; i < 10; i++)
 	{

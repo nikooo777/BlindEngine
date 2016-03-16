@@ -9,6 +9,9 @@
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtc/constants.hpp>
 
+// Glew (include it before GL.h):
+#include <GL/glew.h>
+
 //Freeglut
 #include <GL/freeglut.h>
 #include <GL/glut.h>
