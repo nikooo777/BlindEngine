@@ -64,13 +64,13 @@ LIB_API BEengine* BEengine::GetInstance()
 BEengine::BEengine()
 {
 	angles_ = new Angles{ 15.f, 0.f };
-	#ifdef WIN32
-    distance_ = -15.f;
-    delta_zoom_ = 1.f;
-    #else
-    distance_ = -500.f;
-    delta_zoom_ = 50.f;
-    #endif // WIN32
+#ifdef WIN32
+	distance_ = -15.f;
+	delta_zoom_ = 1.f;
+#else
+	distance_ = -500.f;
+	delta_zoom_ = 50.f;
+#endif // WIN32
 	lists_ = new BElist();
 	fps_ = 0;
 	frames_ = 0;
@@ -203,6 +203,14 @@ void timerCallback(int value)
 	glutTimerFunc(1000, timerCallback, 0);
 }
 
+/**
+* Debug message callback for OpenGL. See https://www.opengl.org/wiki/Debug_Output
+*/
+void __stdcall DebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam)
+{
+	std::cout << "OpenGL says: \"" << std::string(message) << "\"" << std::endl;
+}
+
 //////////////////////////////////////////////////////////////////////////
 void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, int width, int heigth, void(*keyCallback)(int, int, int), int argc, char *argv[])
 {
@@ -213,6 +221,9 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 
 	// FreeGLUT can parse command-line params, in case:
 	glutInit(&argc, argv);
+	glutInitContextVersion(4, 4);
+	glutInitContextFlags(GLUT_CORE_PROFILE | GLUT_DEBUG); // <-- Debug flag required by the OpenGL debug callback
+
 
 	FreeImage_Initialise();
 
@@ -224,24 +235,43 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 
 	//glew initialization
 	glewExperimental = GL_TRUE;
+	GLenum error = glewInit();
 
-	if (GLEW_OK != glewInit())
+	if (GLEW_OK != error)
 	{
-		std::cout << "Error loading glew! Not supported" << std::endl;
+		std::cout << "Error: " << glewGetErrorString(error) << std::endl;
+		return;
+	}
+	else if (GLEW_VERSION_4_4)
+	{
+		std::cout << "Driver supports OpenGL 4.4\n" << std::endl;
+	}
+	else
+	{
+		std::cout << "Error: OpenGL 4.4 not supported\n" << std::endl;
 		return;
 	}
 
-	// OpenGL 2.1 is required:
-	if (!glewIsSupported("GL_VERSION_2_1"))
-	{
-		std::cout << "OpenGL 2.1 not supported" << std::endl;
-		return;
-	}
+	// Register OpenGL debug callback:
+	//glDebugMessageCallback((GLDEBUGPROC)DebugCallback, nullptr);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+
+	int oglVersion[2];
+	glGetIntegerv(GL_MAJOR_VERSION, &oglVersion[0]);
+	glGetIntegerv(GL_MINOR_VERSION, &oglVersion[1]);
+	std::cout << "   Version  . . :  " << glGetString(GL_VERSION) << " [" << oglVersion[0] << "." << oglVersion[1] << "]" << std::endl;
+	std::cout << "   GLSL . . . . :  " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+	std::cout << std::endl;
+
 
 	// Set callback functions:
 	glutDisplayFunc(displayCallback);
 	glutReshapeFunc(reshapeCallback);
 	glutTimerFunc(1000, timerCallback, 0);
+
+	// Init VAO:
+	glGenVertexArrays(1, &vao_);
+	glBindVertexArray(vao_);
 
 	// Global OpenGL settings:
 	//glClearColor(1.0f, 0.6f, 0.1f, 1.0f);
@@ -363,9 +393,9 @@ void BEengine::PrintTextInfo()
 	glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
 
-	
+
 	static float delta = 20.0f;
-	float go_up = 10.0f - delta/2;
+	float go_up = 10.0f - delta / 2;
 
 	// Write some text:
 	char text[255];

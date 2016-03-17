@@ -67,6 +67,8 @@ private:
 	bool initialized_ = false;
 	float delta_padding_ = 1.f;
 	float delta_zoom_;
+	// Init VAO:
+	GLuint vao_;
 	void(*keyboard_callback_)(unsigned char key, int mouseX, int mouseY);
 	void(*special_callback_)(int key, int mouseX, int mouseY);
 	// Matrices:
