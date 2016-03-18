@@ -24,21 +24,21 @@ BEmesh::BEmesh(std::string name, glm::vec3* vertices, long vertices_count, glm::
 	if (material_ && material_->IsTransparent())
 		to_shadow_ = false;
 
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	//OLD_gl //glEnableClientState(GL_VERTEX_ARRAY);
+	//OLD_gl //glEnableClientState(GL_NORMAL_ARRAY);
+	//OLD_gl //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	glGenBuffers(1, &vertex_vbo_);
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_vbo_);
-	glBufferData(GL_ARRAY_BUFFER, vertices_count * 3 * sizeof(float), vertices_, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &normal_vbo_);
-	glBindBuffer(GL_ARRAY_BUFFER, normal_vbo_);
-	glBufferData(GL_ARRAY_BUFFER, vertices_count * 3 * sizeof(float), normals_, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &texture_vbo_);
-	glBindBuffer(GL_ARRAY_BUFFER, texture_vbo_);
-	glBufferData(GL_ARRAY_BUFFER, vertices_count * 2 * sizeof(float), texture_coords_, GL_STATIC_DRAW);
+	//OLD_gl //glGenBuffers(1, &vertex_vbo_);
+	//OLD_gl //glBindBuffer(GL_ARRAY_BUFFER, vertex_vbo_);
+	//OLD_gl //glBufferData(GL_ARRAY_BUFFER, vertices_count * 3 * sizeof(float), vertices_, GL_STATIC_DRAW);
+	//OLD_gl //
+	//OLD_gl //glGenBuffers(1, &normal_vbo_);
+	//OLD_gl //glBindBuffer(GL_ARRAY_BUFFER, normal_vbo_);
+	//OLD_gl //glBufferData(GL_ARRAY_BUFFER, vertices_count * 3 * sizeof(float), normals_, GL_STATIC_DRAW);
+	//OLD_gl //
+	//OLD_gl //glGenBuffers(1, &texture_vbo_);
+	//OLD_gl //glBindBuffer(GL_ARRAY_BUFFER, texture_vbo_);
+	//OLD_gl //glBufferData(GL_ARRAY_BUFFER, vertices_count * 2 * sizeof(float), texture_coords_, GL_STATIC_DRAW);
 
 
 }
@@ -57,7 +57,7 @@ BEmesh::~BEmesh()
 void BEmesh::Render(glm::mat4 world_matrix)
 {
 	//std::cout << "Rendering Mesh: " << BEobject::get_name() << std::endl;
-	glLoadMatrixf(glm::value_ptr(world_matrix));
+	//OLD_gl //glLoadMatrixf(glm::value_ptr(world_matrix));
 
 	if (shadow_render_)
 	{
@@ -79,16 +79,16 @@ void BEmesh::Render(glm::mat4 world_matrix)
 	glEnd();
 	*/
 
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_vbo_);
-	glVertexPointer(3, GL_FLOAT, 0, nullptr);
+	//OLD_gl //glBindBuffer(GL_ARRAY_BUFFER, vertex_vbo_);
+	//OLD_gl //glVertexPointer(3, GL_FLOAT, 0, nullptr);
 
-	glBindBuffer(GL_ARRAY_BUFFER, normal_vbo_);
-	glNormalPointer(GL_FLOAT, 0, nullptr);
+	//OLD_gl //glBindBuffer(GL_ARRAY_BUFFER, normal_vbo_);
+	//OLD_gl //glNormalPointer(GL_FLOAT, 0, nullptr);
 
-	glBindBuffer(GL_ARRAY_BUFFER, texture_vbo_);
-	glTexCoordPointer(2, GL_FLOAT, 0, nullptr);
+	//OLD_gl //glBindBuffer(GL_ARRAY_BUFFER, texture_vbo_);
+	//OLD_gl //glTexCoordPointer(2, GL_FLOAT, 0, nullptr);
 
-	glDrawArrays(GL_TRIANGLES, 0, vertices_count_);
+	//OLD_gl //glDrawArrays(GL_TRIANGLES, 0, vertices_count_);
 
 	for (unsigned int i = 0; i < sub_meshes_count_; i++)
 	{

@@ -28,7 +28,7 @@ public:
 
 	/// method used to initialize the context of the engine
 	void Init(char* window_name, int x_position, int y_position, int width, int heigth, void(*keyCallback)(int, int, int), int argc, char *argv[]);
-	
+
 	/// method used to start the egine
 	int Start();
 

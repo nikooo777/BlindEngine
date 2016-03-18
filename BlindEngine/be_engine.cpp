@@ -116,19 +116,19 @@ void displayCallback()
 	//////
 	// 3D:
 	// Set perpsective matrix:
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(glm::value_ptr(BEengine::GetInstance()->get_perspective()));
-	glMatrixMode(GL_MODELVIEW);
+	//OLD_gl //glMatrixMode(GL_PROJECTION);
+	//OLD_gl //glLoadMatrixf(glm::value_ptr(BEengine::GetInstance()->get_perspective()));
+	//OLD_gl //glMatrixMode(GL_MODELVIEW);
 
 	BEengine::lists_->RenderAll();
 
 	//////
 	// 2D:
 	// Set orthographic projection:
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(glm::value_ptr(BEengine::GetInstance()->get_ortho()));
-	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(glm::value_ptr(glm::mat4(1.0)));
+	//OLD_gl //glMatrixMode(GL_PROJECTION);
+	//OLD_gl //glLoadMatrixf(glm::value_ptr(BEengine::GetInstance()->get_ortho()));
+	//OLD_gl //glMatrixMode(GL_MODELVIEW);
+	//OLD_gl //glLoadMatrixf(glm::value_ptr(glm::mat4(1.0)));
 
 	BEengine::GetInstance()->PrintTextInfo();
 
@@ -253,7 +253,7 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 	}
 
 	// Register OpenGL debug callback:
-	//glDebugMessageCallback((GLDEBUGPROC)DebugCallback, nullptr);
+	glDebugMessageCallback((GLDEBUGPROC)DebugCallback, nullptr);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
 	int oglVersion[2];
@@ -277,8 +277,8 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 	//glClearColor(1.0f, 0.6f, 0.1f, 1.0f);
 	glClearColor(.2f, .2f, .2f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_NORMALIZE);
+	//OLD_gl //glEnable(GL_LIGHTING);
+	//OLD_gl //glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glEnable(GL_ALPHA_TEST);
@@ -390,8 +390,8 @@ int* BEengine::get_frames()
 void BEengine::PrintTextInfo()
 {
 	// Disable lighting before rendering 2D text:
-	glDisable(GL_LIGHTING);
-	glDisable(GL_TEXTURE_2D);
+	//OLD_gl //glDisable(GL_LIGHTING);
+	//OLD_gl //glDisable(GL_TEXTURE_2D);
 
 
 	static float delta = 20.0f;
@@ -403,22 +403,22 @@ void BEengine::PrintTextInfo()
 	for (auto tex : text_)
 	{
 		snprintf(text, sizeof text, "%s", tex.c_str());
-		glRasterPos2f(1.0f, go_up += delta);
-		glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
+		//OLD_gl//glRasterPos2f(1.0f, go_up += delta);
+		//OLD_gl//glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
 	}
 
 	snprintf(text, sizeof text, "Speed Padding: %.2f", delta_padding_);
-	glRasterPos2f(1.0f, go_up += delta);
-	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
+	//OLD_gl//glRasterPos2f(1.0f, go_up += delta);
+	//OLD_gl//glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
 
 	snprintf(text, sizeof text, "FPS: %.1f", fps_);
-	glRasterPos2f(1.0f, go_up += delta);
-	glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
+	//OLD_gl//glRasterPos2f(1.0f, go_up += delta);
+	//OLD_gl//glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)text);
 
 
 
 	// Redo ligting:
-	glEnable(GL_LIGHTING);
+	//OLD_gl //glEnable(GL_LIGHTING);
 }
 
 glm::mat4 BEengine::get_perspective() const
