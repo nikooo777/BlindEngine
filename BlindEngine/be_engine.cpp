@@ -30,6 +30,80 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////
+// SHADERS //
+/////////////
+
+//////////////////////////////////////////
+char *vertShader = R"(
+   #version 440 core
+
+   // Uniforms:
+   uniform mat4 projection;
+   uniform mat4 modelview;
+   uniform mat3 normalMatrix;
+
+   // Attributes:
+   layout(location = 0) in vec3 in_Position;
+   layout(location = 1) in vec3 in_Normal;
+
+   // Varying:
+   out vec4 fragPosition;
+   out vec3 normal;   
+
+   void main(void)
+   {
+      fragPosition = modelview * vec4(in_Position, 1.0);
+      gl_Position = projection * fragPosition;      
+      normal = normalMatrix * in_Normal;
+   }
+)";
+
+//////////////////////////////////////////
+char *fragShader = R"(
+   #version 440 core
+
+   in vec4 fragPosition;
+   in vec3 normal;   
+   
+   out vec4 fragOutput;
+
+   // Material properties:
+   uniform vec3 matAmbient;
+   uniform vec3 matDiffuse;
+   uniform vec3 matSpecular;
+   uniform float matShininess;
+
+   // Light properties:
+   uniform vec3 lightPosition; 
+   uniform vec3 lightAmbient; 
+   uniform vec3 lightDiffuse; 
+   uniform vec3 lightSpecular;
+
+   void main(void)
+   {      
+      // Ambient term:
+      vec3 fragColor = matAmbient * lightAmbient;
+
+      // Diffuse term:
+      vec3 _normal = normalize(normal);
+      vec3 lightDirection = normalize(lightPosition - fragPosition.xyz);      
+      float nDotL = dot(lightDirection, _normal);   
+      if (nDotL > 0.0)
+      {
+         fragColor += matDiffuse * nDotL * lightDiffuse;
+      
+         // Specular term:
+         vec3 halfVector = normalize(lightDirection + normalize(-fragPosition.xyz));                     
+         float nDotHV = dot(_normal, halfVector);         
+         fragColor += matSpecular * pow(nDotHV, matShininess) * lightSpecular;
+      } 
+      
+      // Final color:
+      fragOutput = vec4(fragColor, 1.0);
+   }
+)";
+
+/////////////
 // GLOBALS //
 /////////////
 BEnode *root;
@@ -119,6 +193,8 @@ void displayCallback()
 	//OLD_gl //glMatrixMode(GL_PROJECTION);
 	//OLD_gl //glLoadMatrixf(glm::value_ptr(BEengine::GetInstance()->get_perspective()));
 	//OLD_gl //glMatrixMode(GL_MODELVIEW);
+	BEshader* shader = BEengine::GetInstance()->get_shader();
+	shader->setMatrix(shader->projLoc, BEengine::GetInstance()->get_perspective());
 
 	BEengine::lists_->RenderAll();
 
@@ -129,6 +205,8 @@ void displayCallback()
 	//OLD_gl //glLoadMatrixf(glm::value_ptr(BEengine::GetInstance()->get_ortho()));
 	//OLD_gl //glMatrixMode(GL_MODELVIEW);
 	//OLD_gl //glLoadMatrixf(glm::value_ptr(glm::mat4(1.0)));
+	shader->setMatrix(shader->projLoc, BEengine::GetInstance()->get_ortho());
+	shader->setMatrix(shader->mvLoc, glm::mat4());
 
 	BEengine::GetInstance()->PrintTextInfo();
 
@@ -280,9 +358,18 @@ void LIB_API BEengine::Init(char* window_name, int x_position, int y_position, i
 	//OLD_gl //glEnable(GL_LIGHTING);
 	//OLD_gl //glEnable(GL_NORMALIZE);
 	glEnable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
-	glEnable(GL_ALPHA_TEST);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+
+	// Compile shaders:
+	BEshader vertex_shader;
+	vertex_shader.loadFromMemory(BEshader::TYPE_VERTEX, vertShader);
+
+	BEshader pixel_shader;
+	pixel_shader.loadFromMemory(BEshader::TYPE_FRAGMENT, fragShader);
+
+	shader_.build(&vertex_shader, &pixel_shader);
+	shader_.Render(glm::mat4());
+	shader_.initParam();
 
 	BEengine::initialized_ = true;
 }

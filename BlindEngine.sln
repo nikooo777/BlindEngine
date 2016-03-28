@@ -10,6 +10,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rubik", "Rubik\Rubik.vcxpro
 		{765D2080-3C56-4612-A955-5676323949C5} = {765D2080-3C56-4612-A955-5676323949C5}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Razor", "razor\razor.vcxproj", "{FCA132A6-826A-4CC0-95BE-9A5B53330C82}"
+	ProjectSection(ProjectDependencies) = postProject
+		{765D2080-3C56-4612-A955-5676323949C5} = {765D2080-3C56-4612-A955-5676323949C5}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +45,16 @@ Global
 		{9D6B3D2B-E947-4BCC-A06A-588CAD620D1B}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{9D6B3D2B-E947-4BCC-A06A-588CAD620D1B}.Release|Win32.ActiveCfg = Release|Win32
 		{9D6B3D2B-E947-4BCC-A06A-588CAD620D1B}.Release|Win32.Build.0 = Release|Win32
+		{FCA132A6-826A-4CC0-95BE-9A5B53330C82}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{FCA132A6-826A-4CC0-95BE-9A5B53330C82}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{FCA132A6-826A-4CC0-95BE-9A5B53330C82}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{FCA132A6-826A-4CC0-95BE-9A5B53330C82}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FCA132A6-826A-4CC0-95BE-9A5B53330C82}.Debug|Win32.Build.0 = Debug|Win32
+		{FCA132A6-826A-4CC0-95BE-9A5B53330C82}.Release|Any CPU.ActiveCfg = Release|Win32
+		{FCA132A6-826A-4CC0-95BE-9A5B53330C82}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{FCA132A6-826A-4CC0-95BE-9A5B53330C82}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{FCA132A6-826A-4CC0-95BE-9A5B53330C82}.Release|Win32.ActiveCfg = Release|Win32
+		{FCA132A6-826A-4CC0-95BE-9A5B53330C82}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

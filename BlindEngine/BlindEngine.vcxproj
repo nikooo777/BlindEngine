@@ -20,6 +20,7 @@
     <ClCompile Include="be_scene_loader.cpp" />
     <ClCompile Include="be_object.cpp" />
     <ClCompile Include="be_material.cpp" />
+    <ClCompile Include="be_shader.cpp" />
     <ClCompile Include="be_texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -34,6 +35,7 @@
     <ClInclude Include="be_node.h" />
     <ClInclude Include="be_object.h" />
     <ClInclude Include="be_material.h" />
+    <ClInclude Include="be_shader.h" />
     <ClInclude Include="be_texture.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

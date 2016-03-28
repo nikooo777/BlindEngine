@@ -10,6 +10,7 @@
 #include "be_list.h"
 #include "be_scene_loader.h"
 #include "be_node.h"
+#include "be_shader.h"
 
 /************************************************************************/
 // Engine class header
@@ -60,26 +61,32 @@ public:
 	void PrintTextInfo();
 
 	void AddText(std::string text){ text_.push_back(text); }
-
+	BEshader* get_shader()
+	{
+		return &shader_;
+	}
 private:
 	static BEengine* instance_;
 	int window_id_;
 	bool initialized_ = false;
 	float delta_padding_ = 1.f;
 	float delta_zoom_;
-	// Init VAO:
 	GLuint vao_;
 	void(*keyboard_callback_)(unsigned char key, int mouseX, int mouseY);
 	void(*special_callback_)(int key, int mouseX, int mouseY);
+	
 	// Matrices:
 	glm::mat4 perspective_;
 	glm::mat4 ortho_;
+
 	float distance_;
 	Angles* angles_;
 	int frames_;
 	float fps_;
+	BEshader shader_;
+	std::vector<std::string> text_;
+
 	BEengine();
 	~BEengine();
 
-	std::vector<std::string> text_;
 };

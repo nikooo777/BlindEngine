@@ -74,6 +74,7 @@ void BElight::Render(glm::mat4 world_matrix)
 
 	//if the current light is a directional light, then direction is passed instead
 	//OLD_gl //glLightfv(light_number_, GL_POSITION, glm::value_ptr(position_));
+	BEshader* shader = BEengine::GetInstance()->get_shader();
 
 	if (type_ == SPOTLIGHT)
 	{
@@ -88,6 +89,13 @@ void BElight::Render(glm::mat4 world_matrix)
 	if (type_ == OMNIDIRECTIONAL)
 	{
 		//OLD_gl //glLightfv(light_number_, GL_SPOT_CUTOFF, &cutoff_);
+		//printf("%f - %f - %f\n", mat[3][0], mat[3][1], mat[3][2]);
+		shader->setVec3(shader->lightPositionLoc, glm::vec3(world_matrix*position_));
+
+		//m_shader->setVec3(m_shader->lightPositionLoc, TE_VEC3(0.0f,5.0f,-5.0f));
+		shader->setVec3(shader->lightAmbientLoc, glm::vec3(ambient_));
+		shader->setVec3(shader->lightDiffuseLoc, glm::vec3(diffuse_));
+		shader->setVec3(shader->lightSpecularLoc, glm::vec3(specular_));
 	}
 }
 

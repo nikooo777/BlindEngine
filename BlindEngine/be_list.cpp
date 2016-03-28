@@ -14,45 +14,50 @@ BElist::~BElist()
 /************************************************************************/
 void LIB_API BElist::RenderAll()
 {
+	glDepthFunc(GL_LEQUAL);
 	RenderLights();
-	RenderMeshes();
+	//RenderMeshes();
 	//RenderCameras();
 }
 
 void LIB_API BElist::RenderMeshes()
 {
-	SetupStencil();
+	//SetupStencil();
 
-	// we need to render them first in order to prepare the stencil buffer
-	RenderTransparentMeshes();
+	//// we need to render them first in order to prepare the stencil buffer
+	//RenderTransparentMeshes();
 
-	// after this call, anything drawn outside the stencil buffer area is discarded
-	EnableStencilFiltering();
+	//// after this call, anything drawn outside the stencil buffer area is discarded
+	//EnableStencilFiltering();
 
-	// Clear the transparent meshes from the buffer
-	glClear(GL_COLOR_BUFFER_BIT);
+	//// Clear the transparent meshes from the buffer
+	//glClear(GL_COLOR_BUFFER_BIT);
 
-	// Rendering only reflected meshes
-	RenderReflectedMeshes();
+	//// Rendering only reflected meshes
+	//RenderReflectedMeshes();
 
-	// toggle stencil off
-	glDisable(GL_STENCIL_TEST);
+	//// toggle stencil off
+	//glDisable(GL_STENCIL_TEST);
 
 	// Rendering "normal" meshes
 	RenderOpaqueMeshes();
 
-	// Rendering transparents objects
-	RenderTransparentMeshes();
+	//// Rendering transparents objects
+	//RenderTransparentMeshes();
 
-	RenderShadows();
+	//RenderShadows();
 }
 
 void LIB_API BElist::RenderLights()
 {
 	for (const auto& pair : lights_)
 	{
+		RenderMeshes();
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		pair.first->Render(pair.second);
 	}
+		glDisable(GL_BLEND);
 }
 
 //void LIB_API BElist::RenderCameras()

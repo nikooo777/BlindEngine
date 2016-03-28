@@ -28,17 +28,17 @@ BEmesh::BEmesh(std::string name, glm::vec3* vertices, long vertices_count, glm::
 	//OLD_gl //glEnableClientState(GL_NORMAL_ARRAY);
 	//OLD_gl //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	//OLD_gl //glGenBuffers(1, &vertex_vbo_);
-	//OLD_gl //glBindBuffer(GL_ARRAY_BUFFER, vertex_vbo_);
-	//OLD_gl //glBufferData(GL_ARRAY_BUFFER, vertices_count * 3 * sizeof(float), vertices_, GL_STATIC_DRAW);
-	//OLD_gl //
-	//OLD_gl //glGenBuffers(1, &normal_vbo_);
-	//OLD_gl //glBindBuffer(GL_ARRAY_BUFFER, normal_vbo_);
-	//OLD_gl //glBufferData(GL_ARRAY_BUFFER, vertices_count * 3 * sizeof(float), normals_, GL_STATIC_DRAW);
-	//OLD_gl //
-	//OLD_gl //glGenBuffers(1, &texture_vbo_);
-	//OLD_gl //glBindBuffer(GL_ARRAY_BUFFER, texture_vbo_);
-	//OLD_gl //glBufferData(GL_ARRAY_BUFFER, vertices_count * 2 * sizeof(float), texture_coords_, GL_STATIC_DRAW);
+	glGenBuffers(1, &vertex_vbo_);
+	glBindBuffer(GL_ARRAY_BUFFER, vertex_vbo_);
+	glBufferData(GL_ARRAY_BUFFER, vertices_count * 3 * sizeof(float), vertices_, GL_STATIC_DRAW);
+	
+	glGenBuffers(1, &normal_vbo_);
+	glBindBuffer(GL_ARRAY_BUFFER, normal_vbo_);
+	glBufferData(GL_ARRAY_BUFFER, vertices_count * 3 * sizeof(float), normals_, GL_STATIC_DRAW);
+	
+	/*glGenBuffers(1, &texture_vbo_);
+	glBindBuffer(GL_ARRAY_BUFFER, texture_vbo_);
+	glBufferData(GL_ARRAY_BUFFER, vertices_count * 2 * sizeof(float), texture_coords_, GL_STATIC_DRAW);*/
 
 
 }
@@ -58,12 +58,16 @@ void BEmesh::Render(glm::mat4 world_matrix)
 {
 	//std::cout << "Rendering Mesh: " << BEobject::get_name() << std::endl;
 	//OLD_gl //glLoadMatrixf(glm::value_ptr(world_matrix));
-
-	if (shadow_render_)
+	BEshader* shader = BEengine::GetInstance()->get_shader();
+	glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(world_matrix));
+	shader->setMatrix(shader->normalMatLoc, normalMatrix);
+	shader->setMatrix(shader->mvLoc, world_matrix);
+	
+	/*if (shadow_render_)
 	{
 		BEmaterial::mat_shadow->Render(world_matrix);
 	}
-	else if (material_)
+	else */if (material_)
 	{
 		material_->Render(world_matrix);
 	}
@@ -79,16 +83,15 @@ void BEmesh::Render(glm::mat4 world_matrix)
 	glEnd();
 	*/
 
-	//OLD_gl //glBindBuffer(GL_ARRAY_BUFFER, vertex_vbo_);
-	//OLD_gl //glVertexPointer(3, GL_FLOAT, 0, nullptr);
+	glBindBuffer(GL_ARRAY_BUFFER, vertex_vbo_);
+	glVertexAttribPointer((GLuint)0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+	glEnableVertexAttribArray(0);
 
-	//OLD_gl //glBindBuffer(GL_ARRAY_BUFFER, normal_vbo_);
-	//OLD_gl //glNormalPointer(GL_FLOAT, 0, nullptr);
+	glBindBuffer(GL_ARRAY_BUFFER, normal_vbo_);
+	glVertexAttribPointer((GLuint)1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+	glEnableVertexAttribArray(1);
 
-	//OLD_gl //glBindBuffer(GL_ARRAY_BUFFER, texture_vbo_);
-	//OLD_gl //glTexCoordPointer(2, GL_FLOAT, 0, nullptr);
-
-	//OLD_gl //glDrawArrays(GL_TRIANGLES, 0, vertices_count_);
+	glDrawArrays(GL_TRIANGLES, 0, vertices_count_);
 
 	for (unsigned int i = 0; i < sub_meshes_count_; i++)
 	{
